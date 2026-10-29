@@ -18,5 +18,10 @@ public final class Config {
             .comment("Also connect parts placed by machines and fake players (for example Create deployers).")
             .define("connectPartsPlacedByMachines", true);
 
+    public static final ModConfigSpec.BooleanValue WRENCH_PICKUP = BUILDER
+            .comment("Sneak + right click with a wrench takes a cannon part (every part this mod has a",
+                    "recipe for) back into the inventory as the part itself.")
+            .define("wrenchPickupParts", true);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

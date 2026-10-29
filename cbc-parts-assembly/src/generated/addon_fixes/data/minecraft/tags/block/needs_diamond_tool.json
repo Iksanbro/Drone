@@ -1,0 +1,213 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbc_at:nethersteel_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:nethersteel_fume_extractor",
+      "required": false
+    },
+    {
+      "id": "cbc_at:nethersteel_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:nethersteel_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:built_up_nethersteel_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:built_up_nethersteel_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_nethersteel_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_nethersteel_fume_extractor",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_nethersteel_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_nethersteel_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:steel_cannon_barrel",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:built_up_steel_cannon_barrel",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:steel_cannon_chamber",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:built_up_steel_cannon_chamber",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:thick_steel_cannon_chamber",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:very_small_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:small_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:medium_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:large_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:very_large_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_very_small_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_small_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_medium_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_large_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_very_large_steel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:steel_quickfiring_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:steel_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:incomplete_steel_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_steel_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:steel_screw_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:incomplete_steel_screw_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_steel_screw_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:nethersteel_cannon_barrel",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:built_up_nethersteel_cannon_barrel",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:nethersteel_cannon_chamber",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:built_up_nethersteel_cannon_chamber",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:thick_nethersteel_cannon_chamber",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:very_small_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:small_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:medium_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:large_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:very_large_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_very_small_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_small_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_medium_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_large_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_very_large_nethersteel_cannon_layer",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:nethersteel_screw_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:incomplete_nethersteel_screw_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:unbored_nethersteel_screw_breech",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:built_up_cannon",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:nethersteel_block",
+      "required": false
+    }
+  ]
+}

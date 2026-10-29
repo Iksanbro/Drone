@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "createbigcannons:casting_sand",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:cannon_cast",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:finished_cannon_cast",
+      "required": false
+    }
+  ]
+}

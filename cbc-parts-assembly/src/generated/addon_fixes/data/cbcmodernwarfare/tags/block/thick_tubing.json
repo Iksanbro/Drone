@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:gun_launcher_chamber",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:carbon_steel_slab",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:era_slab",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:tan_era_slab",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:green_era_slab",
+      "required": false
+    }
+  ]
+}

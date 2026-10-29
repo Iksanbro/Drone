@@ -1,0 +1,57 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:composite_block",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:carbon_steel_block",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:carbon_steel_stairs",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:carbon_steel_slab",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:era_block",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:era_stairs",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:era_slab",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:tan_era_block",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:tan_era_stairs",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:tan_era_slab",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:green_era_block",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:green_era_stairs",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:green_era_slab",
+      "required": false
+    }
+  ]
+}

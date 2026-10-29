@@ -19,5 +19,6 @@ public final class CBCPartsAssembly {
         container.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
         // Lowest priority: run only when no other mod cancelled the placement.
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, CannonPartConnector::onBlockPlaced);
+        NeoForge.EVENT_BUS.addListener(CannonPartWrench::onRightClickBlock);
     }
 }

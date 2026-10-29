@@ -1,0 +1,413 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbc_at:cast_iron_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_vert_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_vert_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_vert_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_vert_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_vert_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_vert_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_vert_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_vert_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_vert_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:infrared_seeker_guidance",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:optical_command_guidance",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:manual_command_guidance",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:solid_fuel_tank",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:solid_fuel_thruster",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:solid_fuel_split_thruster",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:rotarycannon_ammo_drum",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:built_up_gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_chamber",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_quickfiring_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_built_up_gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_gun_launcher_chamber",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_gun_launcher_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_gun_launcher_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:torpedo_screw_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:torpedo_tube",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:cast_iron_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:cast_iron_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:cast_iron_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_cast_iron_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_cast_iron_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_cast_iron_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_cast_iron_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_cast_iron_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:compact_mount",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:mediumcannon_breech_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:mediumcannon_barrel_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:rotarycannon_breech_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:rotarycannon_bearing_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:rotarycannon_barrel_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:hefrag_shell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:heap_shell",
+      "required": false
+    }
+  ]
+}

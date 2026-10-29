@@ -1,0 +1,917 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbc_at:bronze_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_fume_extractor",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_fume_extractor",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_fume_extractor",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:built_up_steel_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:built_up_steel_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_vert_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_vert_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_vert_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_vert_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_vert_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_vert_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_vert_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_vert_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_vert_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_vert_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_vert_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_vert_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_vert_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_vert_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_vert_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_heavy_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_heavy_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_heavy_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_heavy_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_heavy_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:bronze_heavy_autocannon_qfbreech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_heavy_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_heavy_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_heavy_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_heavy_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_heavy_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:cast_iron_heavy_autocannon_qfbreech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_heavy_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_heavy_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_heavy_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_heavy_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_heavy_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:steel_heavy_autocannon_qfbreech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:muzzle_brake_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:fume_extractor_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:silencer_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:rifled_barrel_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:twin_autocannon_barrel_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:twin_autocannon_recoil_spring_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:twin_autocannon_breech_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:twin_autocannon_silencer_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:twin_autocannon_muzzle_brake_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:vert_twin_autocannon_barrel_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:vert_twin_autocannon_recoil_spring_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:vert_twin_autocannon_breech_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:vert_twin_autocannon_silencer_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:vert_twin_autocannon_muzzle_brake_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:autocannon_silencer_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:autocannon_muzzle_brake_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:heavy_autocannon_barrel_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:heavy_autocannon_recoil_spring_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:heavy_autocannon_breech_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:heavy_autocannon_qfbreech_cast_mould",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_fume_extractor",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_fume_extractor",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_fume_extractor",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_rifled_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_vert_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_vert_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_vert_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_vert_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_vert_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_vert_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_vert_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_vert_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_vert_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_vert_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_vert_twin_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_vert_twin_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_vert_twin_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_vert_twin_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_vert_twin_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_heavy_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_heavy_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_heavy_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_heavy_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_heavy_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_bronze_heavy_autocannon_qfbreech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_heavy_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_heavy_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_heavy_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_heavy_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_heavy_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_cast_iron_heavy_autocannon_qfbreech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_heavy_autocannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_heavy_autocannon_muzzle_brake",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_heavy_autocannon_silencer",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_heavy_autocannon_recoil_spring",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_heavy_autocannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbc_at:unbored_steel_heavy_autocannon_qfbreech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:smoke_discharger",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:remote_gun_sight",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:periscope_arc_sight",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:periscope_ring_sight",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:rocket_rails",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:rocket_rails_end",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:built_up_gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_chamber",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_quickfiring_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_built_up_gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_gun_launcher_chamber",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_gun_launcher_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_gun_launcher_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:torpedo_screw_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:torpedo_tube",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_rotarycannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_rotarycannon_bearing",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_rotarycannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:cast_iron_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:cast_iron_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:cast_iron_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_cast_iron_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_cast_iron_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_cast_iron_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_cast_iron_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_cast_iron_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_bronze_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_steel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:unbored_nethersteel_mediumcannon_recoil_barrel",
+      "required": false
+    }
+  ]
+}

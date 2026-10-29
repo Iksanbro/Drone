@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:gun_launcher_chamber",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:torpedo_tube",
+      "required": false
+    }
+  ]
+}

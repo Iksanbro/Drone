@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:built_up_gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_chamber",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:torpedo_tube",
+      "required": false
+    }
+  ]
+}

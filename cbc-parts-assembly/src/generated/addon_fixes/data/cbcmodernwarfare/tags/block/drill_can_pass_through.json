@@ -1,0 +1,69 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:built_up_gun_launcher_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:gun_launcher_chamber",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_gun_launcher_sliding_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:cast_iron_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_cast_iron_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_cast_iron_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:bronze_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_bronze_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:steel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_steel_mediumcannon_breech",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:nethersteel_mediumcannon_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_recoil_barrel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_breech",
+      "required": false
+    }
+  ]
+}

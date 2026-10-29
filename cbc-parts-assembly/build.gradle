@@ -30,6 +30,8 @@ repositories {
 
 // Data files are produced by tools/generate_data.py
 sourceSets.main.resources.srcDir 'src/generated/resources'
+// Addon loot tables and block tags moved to the 1.21 paths, produced by tools/convert_addon_data.py
+sourceSets.main.resources.srcDir 'src/generated/addon_fixes'
 
 // In-game tests (./gradlew runGameTestServer). Not part of the released jar.
 sourceSets {
