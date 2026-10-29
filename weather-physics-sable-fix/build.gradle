@@ -1,0 +1,97 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.141'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = "weather-physics-sable-fix-${minecraft_version}"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    exclusiveContent {
+        forRepository { maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' } }
+        filter { includeGroup 'maven.modrinth' }
+    }
+    exclusiveContent {
+        forRepository { maven { name = 'CurseMaven'; url = 'https://cursemaven.com' } }
+        filter { includeGroup 'curse.maven' }
+    }
+}
+
+// In-game test (./gradlew runGameTestServer). Not part of the released jar.
+sourceSets {
+    gametest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    // Mods that are only put on the classpath of dev runs
+    localRuntime
+    runtimeClasspath.extendsFrom localRuntime
+    gametestCompileOnly.extendsFrom compileOnly
+    gametestRuntimeClasspath.extendsFrom localRuntime
+}
+
+neoForge {
+    version = neo_version
+    addModdingDependenciesTo(sourceSets.gametest)
+
+    runs {
+        client {
+            client()
+        }
+        gameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.gametest
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+        }
+        configureEach {
+            logLevel = org.slf4j.event.Level.INFO
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+            sourceSet(sourceSets.gametest)
+        }
+    }
+}
+
+dependencies {
+    compileOnly("maven.modrinth:sable:${sable_modrinth}") { transitive = false }
+
+    localRuntime "maven.modrinth:sable:${sable_modrinth}"
+    localRuntime "maven.modrinth:weather-storms-tornadoes:${weather2_modrinth}"
+    localRuntime "maven.modrinth:coroutil:${coroutil_modrinth}"
+    localRuntime "curse.maven:weather-physics-1541520:${weather_physics_curse_file}"
+}
+
+var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    var replaceProperties = [
+            minecraft_version: minecraft_version,
+            neo_version      : neo_version,
+            mod_id           : mod_id,
+            mod_name         : mod_name,
+            mod_license      : mod_license,
+            mod_version      : mod_version,
+            mod_authors      : mod_authors,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from 'src/main/templates'
+    into 'build/generated/sources/modMetadata'
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
