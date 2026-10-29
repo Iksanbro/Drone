@@ -11,12 +11,12 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/bronze"
+    "tag": "c:ingots/bronze"
   },
-  "loops": 1,
+  "loops": 11,
   "results": [
     {
-      "id": "cbcmodernwarfare:bronze_mediumcannon_recoil_barrel"
+      "id": "cbcmodernwarfare:incomplete_bronze_mediumcannon_recoil_barrel"
     }
   ],
   "sequence": [
@@ -54,38 +54,6 @@
       ]
     },
     {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
-        },
-        {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
-        },
-        {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
-        }
-      ]
-    },
-    {
       "type": "create:pressing",
       "ingredients": [
         {
@@ -103,22 +71,6 @@
       "ingredients": [
         {
           "item": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
-        },
-        {
-          "item": "cbcmodernwarfare:heavy_recoil_spring"
         }
       ],
       "results": [

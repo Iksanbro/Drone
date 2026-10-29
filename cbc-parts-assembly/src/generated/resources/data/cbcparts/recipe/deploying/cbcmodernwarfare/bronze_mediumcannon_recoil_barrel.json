@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmw_recipe_fix"
+    }
+  ],
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "cbcmodernwarfare:incomplete_bronze_mediumcannon_recoil_barrel"
+    },
+    {
+      "item": "cbcmodernwarfare:heavy_recoil_spring"
+    }
+  ],
+  "results": [
+    {
+      "id": "cbcmodernwarfare:bronze_mediumcannon_recoil_barrel"
+    }
+  ]
+}

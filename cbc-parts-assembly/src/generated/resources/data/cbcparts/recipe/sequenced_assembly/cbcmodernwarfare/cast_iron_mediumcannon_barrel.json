@@ -11,9 +11,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/cast_iron"
+    "tag": "c:ingots/cast_iron"
   },
-  "loops": 1,
+  "loops": 2,
   "results": [
     {
       "id": "cbcmodernwarfare:cast_iron_mediumcannon_barrel"
@@ -36,6 +36,70 @@
         }
       ],
       "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ]
     },
     {
       "type": "create:pressing",

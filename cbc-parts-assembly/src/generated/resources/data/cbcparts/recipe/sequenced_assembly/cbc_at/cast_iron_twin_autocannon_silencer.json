@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/cast_iron"
+    "tag": "c:ingots/cast_iron"
   },
-  "loops": 1,
+  "loops": 17,
   "results": [
     {
       "id": "cbc_at:cast_iron_twin_autocannon_silencer"
@@ -40,7 +40,7 @@
           "item": "cbcparts:unfinished_cast_iron_twin_autocannon_silencer"
         },
         {
-          "tag": "c:storage_blocks/cast_iron"
+          "tag": "c:ingots/cast_iron"
         }
       ],
       "results": [

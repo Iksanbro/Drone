@@ -11,12 +11,12 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/bronze"
+    "tag": "c:ingots/bronze"
   },
-  "loops": 1,
+  "loops": 11,
   "results": [
     {
-      "id": "cbcmodernwarfare:bronze_mediumcannon_breech"
+      "id": "cbcmodernwarfare:incomplete_bronze_mediumcannon_breech"
     }
   ],
   "sequence": [
@@ -54,38 +54,6 @@
       ]
     },
     {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
-        },
-        {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_mediumcannon_breech"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
-        },
-        {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_mediumcannon_breech"
-        }
-      ]
-    },
-    {
       "type": "create:pressing",
       "ingredients": [
         {
@@ -103,22 +71,6 @@
       "ingredients": [
         {
           "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_mediumcannon_breech"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
-        },
-        {
-          "item": "cbcmodernwarfare:bronze_mediumcannon_falling_breech"
         }
       ],
       "results": [

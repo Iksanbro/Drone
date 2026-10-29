@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/steel"
+    "tag": "c:ingots/steel"
   },
-  "loops": 1,
+  "loops": 2,
   "results": [
     {
       "id": "createbigcannons:steel_autocannon_barrel"
@@ -32,6 +32,70 @@
         }
       ],
       "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_autocannon_barrel"
+        }
+      ]
     },
     {
       "type": "create:pressing",

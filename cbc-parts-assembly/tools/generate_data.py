@@ -49,8 +49,7 @@ CAST_IRON, BRONZE, STEEL, NETHERSTEEL = "cast_iron", "bronze", "steel", "nethers
 AUTOCANNON_MATERIALS = [CAST_IRON, BRONZE, STEEL]
 
 METAL_MULTIPLIER = 3
-INGOTS_PER_BLOCK = 9
-MAX_METAL_DEPLOYS_PER_LOOP = 4
+MAX_INGOTS_PER_LOOP = 4
 
 # CBC:AT 0.1.4c ships these mould recipes in a format 1.21.1 cannot parse. Without the mould
 # the part cannot be cast, so its world process is broken and it gets no recipe.
@@ -63,10 +62,6 @@ CBCAT_BROKEN_MOULDS = {
 
 def ingot(material: str) -> dict:
     return {"tag": f"c:ingots/{material}"}
-
-
-def storage_block(material: str) -> dict:
-    return {"tag": f"c:storage_blocks/{material}"}
 
 
 @dataclass
@@ -149,51 +144,31 @@ def build_parts() -> tuple[list[Part], list[Skipped]]:
 # ----------------------------------------------------------------------------------------
 # Recipe plan
 
-def metal_deploys(material: str, amount: int) -> list:
-    blocks, ingots = divmod(amount, INGOTS_PER_BLOCK)
-    return [("deploy", storage_block(material))] * blocks + [("deploy", ingot(material))] * ingots
-
-
 def part_plan(p: Part) -> tuple[dict, list, int]:
-    """Returns (base ingredient, steps of one loop, loops).
+    """Returns (base ingredient, steps of one loop, loops) of the sequenced assembly.
 
-    The base is a storage block (9 ingots); the remaining metal is deployed in the loops.
-    Every loop: mould in the deployer (kept), metal, press, saw (= boring). A part that needs
-    an item after boring gets it once, so its recipe has a single loop.
+    Starts from one ingot; every loop: mould in the deployer (kept), ingots, press, saw
+    (= boring). Uses the fewest loops with at most MAX_INGOTS_PER_LOOP ingots per loop.
+    The item an incomplete block needs is not part of it: see part_result().
     """
-    metal = p.ingots * METAL_MULTIPLIER
-    rest = metal - INGOTS_PER_BLOCK
-    if rest < 0:
-        raise ValueError(f"{p.result}: less metal than one block")
+    rest = p.ingots * METAL_MULTIPLIER - 1
     mould = ("deploy", {"item": p.mould}, True)
-    if p.component:
-        steps = [mould] + metal_deploys(p.material, rest) + [("press",), ("cut",), ("deploy", {"item": p.component})]
-        if len(steps) > 8:
-            raise ValueError(f"{p.result}: too many steps for one loop")
-        return storage_block(p.material), steps, 1
-    for loops in range(1, rest + 2):
-        if rest % loops:
-            continue
-        per_loop = metal_deploys(p.material, rest // loops)
-        if len(per_loop) <= MAX_METAL_DEPLOYS_PER_LOOP:
-            return storage_block(p.material), [mould] + per_loop + [("press",), ("cut",)], loops
+    for loops in range(1, rest + 1):
+        if rest % loops == 0 and rest // loops <= MAX_INGOTS_PER_LOOP:
+            steps = [mould] + [("deploy", ingot(p.material))] * (rest // loops) + [("press",), ("cut",)]
+            return ingot(p.material), steps, loops
     raise ValueError(f"{p.result}: no plan")
 
 
+def part_result(p: Part) -> str:
+    """What the sequenced assembly makes. A part that needs an item after boring comes out as
+    its incomplete block, as after boring in the world; a deploying recipe then adds the item."""
+    return f"{p.mod}:incomplete_{p.block}" if p.component else p.result
+
+
 def plan_metal(p: Part) -> int:
-    base, steps, loops = part_plan(p)
-    per_loop = 0
-    for st in steps:
-        if st[0] == "deploy" and st[1] == ingot(p.material):
-            per_loop += 1
-        elif st[0] == "deploy" and st[1] == storage_block(p.material):
-            per_loop += INGOTS_PER_BLOCK
-    return INGOTS_PER_BLOCK + per_loop * loops
-
-
-def plan_component_count(p: Part) -> int:
     _, steps, loops = part_plan(p)
-    return sum(1 for st in steps if p.component and st[0] == "deploy" and st[1] == {"item": p.component}) * loops
+    return 1 + loops * sum(1 for st in steps if st[0] == "deploy" and st[1] == ingot(p.material))
 
 
 # ----------------------------------------------------------------------------------------
@@ -252,8 +227,6 @@ def check(parts: list[Part]) -> None:
         seen[key] = p.result
         if plan_metal(p) != p.ingots * METAL_MULTIPLIER:
             sys.exit(f"{p.result}: metal {plan_metal(p)} != {p.ingots} x {METAL_MULTIPLIER}")
-        if plan_component_count(p) != (1 if p.component else 0):
-            sys.exit(f"{p.result}: component used {plan_component_count(p)} times")
     names = [p.unfinished for p in parts]
     if len(names) != len(set(names)):
         sys.exit("Duplicate unfinished item names")
@@ -272,7 +245,14 @@ def generate() -> tuple[list[Part], list[Skipped]]:
         base, steps, loops = part_plan(p)
         transitional = f"{MOD_ID}:{p.unfinished}"
         write_json(os.path.join(recipe_dir, p.mod, f"{p.block}.json"),
-                   sequenced(mod_loaded(*p.mods), base, steps, loops, transitional, p.result))
+                   sequenced(mod_loaded(*p.mods), base, steps, loops, transitional, part_result(p)))
+        if p.component:
+            write_json(os.path.join(GEN_RES, "data", MOD_ID, "recipe", "deploying", p.mod, f"{p.block}.json"), {
+                "neoforge:conditions": mod_loaded(*p.mods),
+                "type": "create:deploying",
+                "ingredients": [{"item": part_result(p)}, {"item": p.component}],
+                "results": [{"id": p.result}],
+            })
         write_json(os.path.join(model_dir, f"{p.unfinished}.json"), {"parent": f"{p.mod}:item/{p.block}"})
 
     write_java(parts)
@@ -347,18 +327,21 @@ def write_docs(parts: list[Part], skipped: list[Skipped]) -> None:
         "и только если этот процесс в мире работает. Рецепт добавлен рядом с литьём, ничего не заменено.",
         "",
         "Ресурсы те же, что у литья. Металл ×3, остальное в прежнем количестве:",
-        "форма держится в деплоере и не тратится (при литье она тоже возвращается),",
-        "предмет для incomplete-блока (экстрактор, пружина) тратится один раз.",
-        "Старт: блок материала (9 слитков).",
+        "форма держится в деплоере и не тратится (при литье она тоже возвращается).",
+        "Старт: один слиток материала.",
+        "",
+        "Деталям, которым в мире после сверления нужен предмет (экстрактор, пружина), сборка даёт",
+        "incomplete-деталь, как после сверления. Затем деплоер ставит в неё этот предмет (один раз).",
         "",
     ]
     for mod in (CBC, CBCAT, NW):
         lines += [f"## {MOD_TITLE[mod]}", "",
-                  "| Деталь | Литьё, слитков | Рецепт, слитков | Шаги одного цикла | Циклов |",
-                  "|---|---|---|---|---|"]
+                  "| Деталь | Литьё, слитков | Рецепт, слитков | Шаги одного цикла | Циклов | Потом деплоер |",
+                  "|---|---|---|---|---|---|"]
         for p in (p for p in parts if p.mod == mod):
             _, steps, loops = part_plan(p)
-            lines.append(f"| `{p.result}` | {p.ingots} | {plan_metal(p)} | {steps_text(steps)} | {loops} |")
+            then = f"`{part_result(p)}` + `{p.component}`" if p.component else "—"
+            lines.append(f"| `{p.result}` | {p.ingots} | {plan_metal(p)} | {steps_text(steps)} | {loops} | {then} |")
         lines.append("")
     lines += ["## Без рецепта", "", "Процесс в мире сломан или отсутствует, поэтому мод ничего не добавляет.", "",
               "| Деталь | Причина |", "|---|---|"]
@@ -388,7 +371,7 @@ def validate(dirs: list[str], parts: list[Part]) -> int:
     known = collect_ids(dirs)
     needed: set[str] = set()
     for p in parts:
-        needed |= {p.result, p.mould}
+        needed |= {p.result, p.mould, part_result(p)}
         if p.component:
             needed.add(p.component)
     missing = sorted(i for i in needed if i not in known)

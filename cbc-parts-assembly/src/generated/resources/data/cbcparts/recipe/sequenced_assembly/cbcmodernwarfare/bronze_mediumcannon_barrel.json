@@ -11,9 +11,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/bronze"
+    "tag": "c:ingots/bronze"
   },
-  "loops": 1,
+  "loops": 2,
   "results": [
     {
       "id": "cbcmodernwarfare:bronze_mediumcannon_barrel"
@@ -36,6 +36,70 @@
         }
       ],
       "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_barrel"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_barrel"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_barrel"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_barrel"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_barrel"
+        }
+      ]
     },
     {
       "type": "create:pressing",

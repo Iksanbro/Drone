@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/bronze"
+    "tag": "c:ingots/bronze"
   },
-  "loops": 1,
+  "loops": 17,
   "results": [
     {
       "id": "cbc_at:bronze_vert_twin_autocannon_barrel"
@@ -40,7 +40,7 @@
           "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_barrel"
         },
         {
-          "tag": "c:storage_blocks/bronze"
+          "tag": "c:ingots/bronze"
         }
       ],
       "results": [

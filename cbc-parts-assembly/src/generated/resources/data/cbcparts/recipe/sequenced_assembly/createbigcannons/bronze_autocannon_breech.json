@@ -7,12 +7,12 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/bronze"
+    "tag": "c:ingots/bronze"
   },
-  "loops": 1,
+  "loops": 11,
   "results": [
     {
-      "id": "createbigcannons:bronze_autocannon_breech"
+      "id": "createbigcannons:incomplete_bronze_autocannon_breech"
     }
   ],
   "sequence": [
@@ -50,38 +50,6 @@
       ]
     },
     {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_autocannon_breech"
-        },
-        {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_autocannon_breech"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_autocannon_breech"
-        },
-        {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_autocannon_breech"
-        }
-      ]
-    },
-    {
       "type": "create:pressing",
       "ingredients": [
         {
@@ -99,22 +67,6 @@
       "ingredients": [
         {
           "item": "cbcparts:unfinished_bronze_autocannon_breech"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_autocannon_breech"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_autocannon_breech"
-        },
-        {
-          "item": "createbigcannons:bronze_autocannon_breech_extractor"
         }
       ],
       "results": [

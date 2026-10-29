@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/cast_iron"
+    "tag": "c:ingots/cast_iron"
   },
-  "loops": 5,
+  "loops": 23,
   "results": [
     {
       "id": "cbc_at:cast_iron_vert_twin_autocannon_breech"
@@ -32,38 +32,6 @@
         }
       ],
       "keep_held_item": true
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_breech"
-        },
-        {
-          "tag": "c:ingots/cast_iron"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_breech"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_breech"
-        },
-        {
-          "tag": "c:ingots/cast_iron"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_breech"
-        }
-      ]
     },
     {
       "type": "create:deploying",

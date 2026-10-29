@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:storage_blocks/bronze"
+    "tag": "c:ingots/bronze"
   },
-  "loops": 5,
+  "loops": 23,
   "results": [
     {
       "id": "cbc_at:bronze_vert_twin_autocannon_recoil_spring"
@@ -32,38 +32,6 @@
         }
       ],
       "keep_held_item": true
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
-        },
-        {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
-        },
-        {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
-        }
-      ]
     },
     {
       "type": "create:deploying",

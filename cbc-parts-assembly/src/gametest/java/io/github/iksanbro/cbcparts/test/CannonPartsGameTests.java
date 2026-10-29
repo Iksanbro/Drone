@@ -69,8 +69,9 @@ public final class CannonPartsGameTests {
         int checked = 0;
         for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
             if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
+            if (holder.value() instanceof DeployerApplicationRecipe) continue; // second stage, run below
             if (!(holder.value() instanceof SequencedAssemblyRecipe recipe)) {
-                errors.add(holder.id() + ": the mod must only add sequenced assembly recipes");
+                errors.add(holder.id() + ": unexpected recipe type " + holder.value().getClass().getSimpleName());
                 continue;
             }
             checked++;
@@ -90,8 +91,10 @@ public final class CannonPartsGameTests {
     }
 
     private static Optional<GeneratedParts.UnfinishedPart> partFor(ResourceLocation result) {
+        String path = result.getPath().startsWith("incomplete_") ? result.getPath().substring("incomplete_".length()) : result.getPath();
+        ResourceLocation finished = ResourceLocation.fromNamespaceAndPath(result.getNamespace(), path);
         return loadedParts().stream()
-                .filter(p -> p.modId().equals(result.getNamespace()) && p.targetPath().equals(result.getPath()))
+                .filter(p -> p.modId().equals(finished.getNamespace()) && p.targetPath().equals(finished.getPath()))
                 .findFirst();
     }
 
@@ -152,10 +155,49 @@ public final class CannonPartsGameTests {
             item = out.get(0);
         }
         if (!ItemStack.isSameItem(item, expected)) return "ended with " + item + " instead of " + expected;
+        if (!bases[0].is(net.minecraft.tags.ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ingots/" + materialOf(part.get())))))
+            return "does not start from an ingot of its material: " + bases[0];
+
+        ResourceLocation finished = ResourceLocation.fromNamespaceAndPath(part.get().modId(), part.get().targetPath());
+        if (!BuiltInRegistries.ITEM.getKey(item.getItem()).equals(finished)) {
+            // Incomplete part: a deploying recipe must add the one missing item, as in the world.
+            String second = runSecondStage(level, item, finished);
+            if (second.startsWith("!")) return second.substring(1);
+            otherItems++;
+        }
         int wanted = part.get().castingIngots() * 3;
         if (metal != wanted) return "uses " + metal + " ingots of metal, casting uses " + part.get().castingIngots();
         if (otherItems > 1) return "consumes " + otherItems + " non-metal items";
         return null;
+    }
+
+    private static String materialOf(GeneratedParts.UnfinishedPart part) {
+        for (String m : new String[] {"cast_iron", "bronze", "nethersteel", "steel"}) {
+            if (part.targetPath().startsWith(m + "_")) return m;
+        }
+        return "?";
+    }
+
+    /** Finds the deploying recipe for the incomplete item the way a deployer does; "!" marks an error. */
+    private static String runSecondStage(ServerLevel level, ItemStack incomplete, ResourceLocation finished) {
+        for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
+            if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
+            if (!(holder.value() instanceof DeployerApplicationRecipe deploy)) continue;
+            if (!deploy.getProcessedItem().test(incomplete)) continue;
+            if (deploy.shouldKeepHeldItem()) return "!second stage keeps its held item";
+            ItemStack held = deploy.getRequiredHeldItem().getItems()[0].copy();
+            if (metalOf(held) != 0) return "!second stage adds metal";
+            ItemStackHandler inv = new ItemStackHandler(2);
+            inv.setStackInSlot(0, incomplete.copy());
+            inv.setStackInSlot(1, held);
+            var found = level.getRecipeManager().getRecipeFor(AllRecipeTypes.DEPLOYING.<RecipeWrapper, DeployerApplicationRecipe>getType(),
+                    new RecipeWrapper(inv), level);
+            if (found.isEmpty() || !found.get().id().equals(holder.id())) return "!deployer picks " + found.map(RecipeHolder::id).orElse(null);
+            ItemStack out = deploy.rollResults(level.random).get(0);
+            if (!BuiltInRegistries.ITEM.getKey(out.getItem()).equals(finished)) return "!second stage makes " + out;
+            return "ok";
+        }
+        return "!no deploying recipe for " + incomplete;
     }
 
     /**
