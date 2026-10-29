@@ -9,7 +9,7 @@
   "ingredient": {
     "tag": "c:ingots/steel"
   },
-  "loops": 3,
+  "loops": 2,
   "results": [
     {
       "id": "cbc_at:steel_twin_autocannon_breech"
@@ -34,6 +34,24 @@
       "keep_held_item": true
     },
     {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_twin_autocannon_breech"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_steel",
+          "amount": 248
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_twin_autocannon_breech"
+        }
+      ]
+    },
+    {
       "type": "create:deploying",
       "ingredients": [
         {
@@ -41,6 +59,19 @@
         },
         {
           "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_twin_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_twin_autocannon_breech"
         }
       ],
       "results": [
@@ -74,7 +105,23 @@
         {
           "type": "neoforge:tag",
           "tag": "c:molten_steel",
-          "amount": 330
+          "amount": 247
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_twin_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_twin_autocannon_breech"
+        },
+        {
+          "tag": "c:ingots/steel"
         }
       ],
       "results": [

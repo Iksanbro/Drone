@@ -34,13 +34,15 @@
       "keep_held_item": true
     },
     {
-      "type": "create:deploying",
+      "type": "create:filling",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_cast_iron_autocannon_muzzle_brake"
         },
         {
-          "tag": "c:ingots/cast_iron"
+          "type": "neoforge:tag",
+          "tag": "c:molten_cast_iron",
+          "amount": 225
         }
       ],
       "results": [
@@ -57,6 +59,19 @@
         },
         {
           "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_autocannon_muzzle_brake"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_autocannon_muzzle_brake"
         }
       ],
       "results": [
@@ -90,7 +105,23 @@
         {
           "type": "neoforge:tag",
           "tag": "c:molten_cast_iron",
-          "amount": 450
+          "amount": 225
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_autocannon_muzzle_brake"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_autocannon_muzzle_brake"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
         }
       ],
       "results": [

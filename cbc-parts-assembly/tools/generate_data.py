@@ -144,35 +144,50 @@ def build_parts() -> tuple[list[Part], list[Skipped]]:
 # Recipe plan
 
 MB_PER_INGOT = 90
-MAX_METAL_PER_LOOP_MB = 8 * MB_PER_INGOT   # keeps the poured part well under the 1000 mB spout tank
+MAX_ONE_LOOP_MB = 12 * MB_PER_INGOT   # more metal than this is split into two loops
 MAX_INGOTS_PER_LOOP = 3
+SPOUT_TANK_MB = 1000
 
 
 def molten(material: str, amount: int) -> dict:
     return {"type": "neoforge:tag", "tag": f"c:molten_{material}", "amount": amount}
 
 
+def split_evenly(total: int, parts: int) -> list[int]:
+    base, extra = divmod(total, parts)
+    return [base + (1 if i < extra else 0) for i in range(parts)]
+
+
 def part_plan(p: Part) -> tuple[dict, list, int]:
     """Returns (base ingredient, steps of one loop, loops) of the sequenced assembly.
 
-    Starts from one ingot. Every loop: mould in the deployer (kept), some ingots by deployer,
-    molten metal of the same material by spout, mechanical press, mechanical saw (= boring).
-    Loops: the fewest that split the remaining metal into equal whole-mB parts of at most
-    MAX_METAL_PER_LOOP_MB. About half of each loop is solid ingots, the rest is poured.
-    The item an incomplete block needs is not part of it: see part_result().
+    Starts from one ingot. A loop: mould by deployer (kept), then ingots by deployer separated
+    by spout (molten metal) and mechanical press in turn, then one more spout or press, then
+    the mechanical saw (= boring). Two steps of the same machine never follow each other, also
+    across loops (saw -> deployer). One saw per loop and at most two loops, so a chain has one
+    or two saws. Metal up to MAX_ONE_LOOP_MB goes in one loop, more in two.
     """
     rest_mb = (p.ingots * METAL_MULTIPLIER - 1) * MB_PER_INGOT
-    for loops in range(1, 64):
-        if rest_mb % loops or rest_mb // loops > MAX_METAL_PER_LOOP_MB:
-            continue
-        per_loop = rest_mb // loops
-        ingots = min(MAX_INGOTS_PER_LOOP, per_loop // MB_PER_INGOT // 2)
-        fluid = per_loop - ingots * MB_PER_INGOT
-        steps = [("deploy", {"item": p.mould}, True)]
-        steps += [("deploy", ingot(p.material))] * ingots
-        steps += [("fill", molten(p.material, fluid)), ("press",), ("cut",)]
-        return ingot(p.material), steps, loops
-    raise ValueError(f"{p.result}: no plan")
+    loops = 1 if rest_mb <= MAX_ONE_LOOP_MB else 2
+    per_loop = rest_mb // loops
+    if per_loop * loops != rest_mb:
+        raise ValueError(f"{p.result}: metal does not split into loops")
+    ingots = min(MAX_INGOTS_PER_LOOP, per_loop // MB_PER_INGOT // 2)
+    separators = [("fill" if i % 2 == 0 else "press") for i in range(ingots + 1)]
+    fills = split_evenly(per_loop - ingots * MB_PER_INGOT, separators.count("fill"))
+    steps: list = [("deploy", {"item": p.mould}, True)]
+    for i, sep in enumerate(separators):
+        steps.append(("fill", molten(p.material, fills.pop(0))) if sep == "fill" else ("press",))
+        if i < ingots:
+            steps.append(("deploy", ingot(p.material)))
+    steps.append(("cut",))
+    return ingot(p.material), steps, loops
+
+
+def chain(p: Part) -> list[str]:
+    """Machine of every step of the whole chain, loops unrolled."""
+    _, steps, loops = part_plan(p)
+    return [st[0] for st in steps] * loops
 
 
 def part_result(p: Part) -> str:
@@ -252,6 +267,15 @@ def check(parts: list[Part]) -> None:
         if key in seen:
             sys.exit(f"Ambiguous recipe start: {p.result} and {seen[key]}")
         seen[key] = p.result
+        c = chain(p)
+        if any(x == y for x, y in zip(c, c[1:])):
+            sys.exit(f"{p.result}: same machine twice in a row: {c}")
+        saws = c.count("cut")
+        if not 1 <= saws <= 2 or (len(c) < 5 and saws != 1):
+            sys.exit(f"{p.result}: {saws} saws in a chain of {len(c)} steps")
+        _, steps, _ = part_plan(p)
+        if any(st[0] == "fill" and not 0 < st[1]["amount"] <= SPOUT_TANK_MB for st in steps):
+            sys.exit(f"{p.result}: spout amount out of range")
         if plan_metal(p) != p.ingots * METAL_MULTIPLIER:
             sys.exit(f"{p.result}: metal {plan_metal(p)} != {p.ingots} x {METAL_MULTIPLIER}")
     names = [p.unfinished for p in parts]

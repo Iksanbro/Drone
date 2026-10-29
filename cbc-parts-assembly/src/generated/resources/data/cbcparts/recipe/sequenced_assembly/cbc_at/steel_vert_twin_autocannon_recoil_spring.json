@@ -9,7 +9,7 @@
   "ingredient": {
     "tag": "c:ingots/steel"
   },
-  "loops": 3,
+  "loops": 2,
   "results": [
     {
       "id": "cbc_at:steel_vert_twin_autocannon_recoil_spring"
@@ -34,13 +34,15 @@
       "keep_held_item": true
     },
     {
-      "type": "create:deploying",
+      "type": "create:filling",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_steel_vert_twin_autocannon_recoil_spring"
         },
         {
-          "tag": "c:ingots/steel"
+          "type": "neoforge:tag",
+          "tag": "c:molten_steel",
+          "amount": 383
         }
       ],
       "results": [
@@ -57,6 +59,19 @@
         },
         {
           "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_vert_twin_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_vert_twin_autocannon_recoil_spring"
         }
       ],
       "results": [
@@ -90,7 +105,23 @@
         {
           "type": "neoforge:tag",
           "tag": "c:molten_steel",
-          "amount": 420
+          "amount": 382
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_vert_twin_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_vert_twin_autocannon_recoil_spring"
+        },
+        {
+          "tag": "c:ingots/steel"
         }
       ],
       "results": [

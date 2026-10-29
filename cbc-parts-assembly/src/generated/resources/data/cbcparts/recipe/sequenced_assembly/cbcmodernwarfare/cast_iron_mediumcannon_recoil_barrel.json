@@ -13,7 +13,7 @@
   "ingredient": {
     "tag": "c:ingots/cast_iron"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "cbcmodernwarfare:incomplete_cast_iron_mediumcannon_recoil_barrel"
@@ -38,6 +38,24 @@
       "keep_held_item": true
     },
     {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_recoil_barrel"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_cast_iron",
+          "amount": 360
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_recoil_barrel"
+        }
+      ]
+    },
+    {
       "type": "create:deploying",
       "ingredients": [
         {
@@ -45,6 +63,19 @@
         },
         {
           "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_recoil_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_recoil_barrel"
         }
       ],
       "results": [
@@ -78,7 +109,23 @@
         {
           "type": "neoforge:tag",
           "tag": "c:molten_cast_iron",
-          "amount": 315
+          "amount": 360
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_recoil_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_recoil_barrel"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
         }
       ],
       "results": [

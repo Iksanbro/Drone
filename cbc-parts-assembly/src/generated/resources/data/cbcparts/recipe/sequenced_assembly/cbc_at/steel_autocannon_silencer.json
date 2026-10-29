@@ -34,13 +34,15 @@
       "keep_held_item": true
     },
     {
-      "type": "create:deploying",
+      "type": "create:filling",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_steel_autocannon_silencer"
         },
         {
-          "tag": "c:ingots/steel"
+          "type": "neoforge:tag",
+          "tag": "c:molten_steel",
+          "amount": 225
         }
       ],
       "results": [
@@ -57,6 +59,19 @@
         },
         {
           "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_autocannon_silencer"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_autocannon_silencer"
         }
       ],
       "results": [
@@ -90,7 +105,23 @@
         {
           "type": "neoforge:tag",
           "tag": "c:molten_steel",
-          "amount": 450
+          "amount": 225
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_autocannon_silencer"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_autocannon_silencer"
+        },
+        {
+          "tag": "c:ingots/steel"
         }
       ],
       "results": [

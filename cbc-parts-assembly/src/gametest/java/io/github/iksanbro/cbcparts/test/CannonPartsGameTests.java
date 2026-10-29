@@ -65,7 +65,8 @@ public final class CannonPartsGameTests {
      * Runs every sequenced assembly recipe of the mod step by step, looking each step up the
      * same way the deployer, press and saw of Create do. Fails if a step is not found, if a
      * different recipe answers (ambiguous start), if the end result is wrong, or if the recipe
-     * does not use exactly 3x the metal of the casting and at most one other consumed item.
+     * does not use exactly 3x the metal of the casting and at most one other consumed item, if
+     * the same machine works twice in a row, or if the chain has other than 1-2 saws.
      */
     @GameTest(template = "empty")
     public static void everyRecipeBuildsItsPartForTripleMetal(GameTestHelper helper) {
@@ -128,8 +129,13 @@ public final class CannonPartsGameTests {
         int otherItems = metal == 0 ? 1 : 0;
         List<SequencedRecipe<?>> sequence = recipe.getSequence();
         int total = recipe.getLoops() * sequence.size();
+        Class<?> previousMachine = null;
+        int saws = 0;
         for (int i = 0; i < total; i++) {
             ProcessingRecipe<?, ?> step = sequence.get(i % sequence.size()).getRecipe();
+            if (step.getClass() == previousMachine) return "step " + i + " repeats " + step.getClass().getSimpleName();
+            previousMachine = step.getClass();
+            if (step instanceof CuttingRecipe) saws++;
             Optional<? extends RecipeHolder<? extends ProcessingRecipe<?, ?>>> found;
             if (step instanceof DeployerApplicationRecipe deploy) {
                 ItemStack[] held = deploy.getRequiredHeldItem().getItems();
@@ -178,6 +184,7 @@ public final class CannonPartsGameTests {
             item = out.get(0);
         }
         if (!ItemStack.isSameItem(item, expected)) return "ended with " + item + " instead of " + expected;
+        if (saws < 1 || saws > 2 || (total < 5 && saws != 1)) return saws + " saws in a chain of " + total + " steps";
         if (!bases[0].is(net.minecraft.tags.ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ingots/" + materialOf(part.get())))))
             return "does not start from an ingot of its material: " + bases[0];
 
@@ -223,6 +230,74 @@ public final class CannonPartsGameTests {
             return "ok";
         }
         return "!no deploying recipe for " + incomplete;
+    }
+
+    /**
+     * No two recipes may start the same way, or a machine would pick one at random (by load order).
+     * For the first step of every recipe of this mod, every possible base item and held item is
+     * tried against all deploying recipes in the game, sequenced (of any mod) and plain; exactly
+     * one must match. The same for the second-stage deploying recipes. Also checks that a plain
+     * ingot under a press, saw or spout never starts one of this mod's recipes.
+     */
+    @GameTest(template = "empty")
+    public static void noRecipeConflicts(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        var manager = level.getRecipeManager();
+        List<String> errors = new ArrayList<>();
+        int combos = 0;
+        for (RecipeHolder<?> holder : manager.getRecipes()) {
+            if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
+            ItemStack[] bases;
+            ItemStack[] helds;
+            if (holder.value() instanceof SequencedAssemblyRecipe recipe) {
+                if (!(recipe.getSequence().get(0).getRecipe() instanceof DeployerApplicationRecipe first)) {
+                    errors.add(holder.id() + ": does not start with the deployer");
+                    continue;
+                }
+                bases = recipe.getIngredient().getItems();
+                helds = first.getRequiredHeldItem().getItems();
+            } else if (holder.value() instanceof DeployerApplicationRecipe deploy) {
+                bases = deploy.getProcessedItem().getItems();
+                helds = deploy.getRequiredHeldItem().getItems();
+            } else {
+                continue;
+            }
+            for (ItemStack base : bases) {
+                for (ItemStack held : helds) {
+                    combos++;
+                    ItemStackHandler inv = new ItemStackHandler(2);
+                    inv.setStackInSlot(0, base.copy());
+                    inv.setStackInSlot(1, held.copy());
+                    RecipeWrapper input = new RecipeWrapper(inv);
+                    Set<ResourceLocation> matches = new HashSet<>();
+                    SequencedAssemblyRecipe.getRecipes(level, base, AllRecipeTypes.DEPLOYING.<RecipeWrapper, DeployerApplicationRecipe>getType(),
+                                    DeployerApplicationRecipe.class, r -> r.value().matches(input, level))
+                            .forEach(r -> matches.add(r.id()));
+                    manager.getRecipesFor(AllRecipeTypes.DEPLOYING.<RecipeWrapper, DeployerApplicationRecipe>getType(), input, level)
+                            .forEach(r -> matches.add(r.id()));
+                    // a sequenced recipe answers with the id of its step, a plain one with its own id
+                    long distinct = matches.stream().map(id -> id.getPath().replaceAll("_step_\\d+$", "")).distinct().count();
+                    if (distinct != 1) errors.add(holder.id() + ": " + base + " + " + held + " matches " + matches);
+                }
+            }
+        }
+        // A plain ingot under the press, saw or spout must not start this mod's recipes.
+        for (String material : new String[] {"cast_iron", "bronze", "steel", "nethersteel"}) {
+            var tag = net.minecraft.tags.ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ingots/" + material));
+            for (var entry : BuiltInRegistries.ITEM.getTagOrEmpty(tag)) {
+                ItemStack ingot = new ItemStack(entry.value());
+                List<RecipeHolder<?>> started = new ArrayList<>();
+                started.addAll(SequencedAssemblyRecipe.getRecipes(level, ingot, AllRecipeTypes.PRESSING.<SingleRecipeInput, PressingRecipe>getType(), PressingRecipe.class, r -> true));
+                started.addAll(SequencedAssemblyRecipe.getRecipes(level, ingot, AllRecipeTypes.CUTTING.<RecipeWrapper, CuttingRecipe>getType(), CuttingRecipe.class, r -> true));
+                started.addAll(SequencedAssemblyRecipe.getRecipes(level, ingot, AllRecipeTypes.FILLING.<SingleRecipeInput, FillingRecipe>getType(), FillingRecipe.class, r -> true));
+                for (RecipeHolder<?> r : started) {
+                    if (r.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) errors.add(ingot + " starts " + r.id() + " without the deployer");
+                }
+            }
+        }
+        CBCPartsAssembly.LOGGER.info("[test] recipe starts checked for conflicts: {}", combos);
+        if (!errors.isEmpty()) helper.fail(String.join("\n", errors));
+        helper.succeed();
     }
 
     /**
