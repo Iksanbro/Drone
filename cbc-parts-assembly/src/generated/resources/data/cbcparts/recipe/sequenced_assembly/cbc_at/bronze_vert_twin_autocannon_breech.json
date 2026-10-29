@@ -1,0 +1,85 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_at"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "createbigcannons:bronze_autocannon_breech_extractor"
+  },
+  "loops": 3,
+  "results": [
+    {
+      "id": "cbc_at:bronze_vert_twin_autocannon_breech"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_breech"
+        },
+        {
+          "item": "cbc_at:vert_twin_autocannon_breech_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_breech"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_breech"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_breech"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_breech"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_breech"
+  }
+}

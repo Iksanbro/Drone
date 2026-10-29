@@ -1,0 +1,69 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "cbcmodernwarfare:steel_rotaryannon_breech_extractor"
+  },
+  "loops": 3,
+  "results": [
+    {
+      "id": "cbcmodernwarfare:steel_rotarycannon_breech"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_rotarycannon_breech"
+        },
+        {
+          "item": "cbcmodernwarfare:rotarycannon_breech_cast_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_rotarycannon_breech"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_rotarycannon_breech"
+        },
+        {
+          "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_rotarycannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_rotarycannon_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_rotarycannon_breech"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_steel_rotarycannon_breech"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/bronze"
+  },
+  "loops": 3,
+  "results": [
+    {
+      "id": "cbcmodernwarfare:bronze_mediumcannon_recoil_barrel"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
+        },
+        {
+          "item": "cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
+        },
+        {
+          "item": "cbcmodernwarfare:heavy_recoil_spring"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_bronze_mediumcannon_recoil_barrel"
+  }
+}

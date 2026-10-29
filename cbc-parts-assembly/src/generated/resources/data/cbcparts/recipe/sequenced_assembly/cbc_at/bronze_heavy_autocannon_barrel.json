@@ -1,0 +1,98 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_at"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/bronze"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "cbc_at:bronze_heavy_autocannon_barrel"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        },
+        {
+          "item": "cbc_at:heavy_autocannon_barrel_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_bronze_heavy_autocannon_barrel"
+  }
+}

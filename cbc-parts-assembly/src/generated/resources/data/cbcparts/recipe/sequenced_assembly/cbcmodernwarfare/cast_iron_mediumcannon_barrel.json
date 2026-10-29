@@ -1,0 +1,82 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/cast_iron"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "cbcmodernwarfare:cast_iron_mediumcannon_barrel"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        },
+        {
+          "item": "cbcmodernwarfare:mediumcannon_barrel_cast_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_cast_iron_mediumcannon_barrel"
+  }
+}

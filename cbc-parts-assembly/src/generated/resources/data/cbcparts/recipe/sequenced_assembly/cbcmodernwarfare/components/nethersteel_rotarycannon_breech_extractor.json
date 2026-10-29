@@ -1,0 +1,52 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/nethersteel"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "cbcmodernwarfare:nethersteel_rotarycannon_breech_extractor"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_nethersteel_rotarycannon_breech_extractor"
+        },
+        {
+          "tag": "c:plates/iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_nethersteel_rotarycannon_breech_extractor"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_nethersteel_rotarycannon_breech_extractor"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_nethersteel_rotarycannon_breech_extractor"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_nethersteel_rotarycannon_breech_extractor"
+  }
+}

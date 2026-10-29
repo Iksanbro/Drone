@@ -1,0 +1,65 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/nethersteel"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "cbcmodernwarfare:nethersteel_mediumcannon_falling_breech"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_nethersteel_mediumcannon_falling_breech"
+        },
+        {
+          "item": "create:andesite_alloy"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_nethersteel_mediumcannon_falling_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_nethersteel_mediumcannon_falling_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_nethersteel_mediumcannon_falling_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_nethersteel_mediumcannon_falling_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_nethersteel_mediumcannon_falling_breech"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_nethersteel_mediumcannon_falling_breech"
+  }
+}

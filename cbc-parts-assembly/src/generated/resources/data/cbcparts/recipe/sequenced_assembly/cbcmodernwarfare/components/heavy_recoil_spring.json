@@ -1,0 +1,52 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "createbigcannons:recoil_spring"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "cbcmodernwarfare:heavy_recoil_spring"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_heavy_recoil_spring"
+        },
+        {
+          "tag": "c:plates/iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_heavy_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_heavy_recoil_spring"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_heavy_recoil_spring"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_heavy_recoil_spring"
+  }
+}

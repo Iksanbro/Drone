@@ -1,0 +1,98 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_at"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/cast_iron"
+  },
+  "loops": 3,
+  "results": [
+    {
+      "id": "cbc_at:cast_iron_vert_twin_autocannon_silencer"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        },
+        {
+          "item": "cbc_at:vert_twin_autocannon_silencer_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+  }
+}

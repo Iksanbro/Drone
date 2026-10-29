@@ -1,0 +1,116 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.141'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = "cbc-parts-assembly-${minecraft_version}"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    maven {
+        name = 'Create'
+        url = 'https://maven.createmod.net'
+        content { includeGroup 'com.simibubi.create' }
+    }
+    exclusiveContent {
+        forRepository { maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' } }
+        filter { includeGroup 'maven.modrinth' }
+    }
+    exclusiveContent {
+        forRepository { maven { name = 'CurseMaven'; url = 'https://cursemaven.com' } }
+        filter { includeGroup 'curse.maven' }
+    }
+}
+
+// Data files are produced by tools/generate_data.py
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+// In-game tests (./gradlew runGameTestServer). Not part of the released jar.
+sourceSets {
+    gametest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    // Mods that are only put on the classpath of dev runs, never into the published metadata
+    localRuntime
+    runtimeClasspath.extendsFrom localRuntime
+    gametestCompileOnly.extendsFrom compileOnly
+    gametestRuntimeClasspath.extendsFrom localRuntime
+}
+
+neoForge {
+    version = neo_version
+    addModdingDependenciesTo(sourceSets.gametest)
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+        gameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.gametest
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+        }
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.INFO
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+            sourceSet(sourceSets.gametest)
+        }
+    }
+}
+
+dependencies {
+    compileOnly("com.simibubi.create:create-1.21.1:${create_version}:slim") { transitive = false }
+
+    gametestCompileOnly "maven.modrinth:create-big-cannons:${cbc_modrinth}"
+
+    localRuntime "maven.modrinth:create:${create_modrinth}"
+    localRuntime "maven.modrinth:rpl:${rpl_modrinth}"
+    localRuntime "maven.modrinth:create-big-cannons:${cbc_modrinth}"
+    // Run with -PwithoutAddons to test the mod with Create Big Cannons alone
+    if (!project.hasProperty('withoutAddons')) {
+        localRuntime "maven.modrinth:create-big-cannons-advanced-technologies:${cbcat_modrinth}"
+        localRuntime "curse.maven:cbc-neo-warfare-1552960:${neo_warfare_curse_file}"
+    }
+}
+
+var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    var replaceProperties = [
+            minecraft_version: minecraft_version,
+            neo_version      : neo_version,
+            mod_id           : mod_id,
+            mod_name         : mod_name,
+            mod_license      : mod_license,
+            mod_version      : mod_version,
+            mod_authors      : mod_authors,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from 'src/main/templates'
+    into 'build/generated/sources/modMetadata'
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

@@ -1,0 +1,101 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_at"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/bronze"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "cbc_at:bronze_twin_autocannon_recoil_spring"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        },
+        {
+          "item": "cbc_at:twin_autocannon_recoil_spring_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        },
+        {
+          "item": "createbigcannons:recoil_spring"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_bronze_twin_autocannon_recoil_spring"
+  }
+}
