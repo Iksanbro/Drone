@@ -13,7 +13,7 @@
   "ingredient": {
     "tag": "c:ingots/bronze"
   },
-  "loops": 11,
+  "loops": 2,
   "results": [
     {
       "id": "cbcmodernwarfare:incomplete_bronze_mediumcannon_breech"
@@ -45,6 +45,40 @@
         },
         {
           "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_bronze",
+          "amount": 315
         }
       ],
       "results": [

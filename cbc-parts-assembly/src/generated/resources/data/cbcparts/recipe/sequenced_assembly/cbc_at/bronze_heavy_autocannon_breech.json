@@ -9,7 +9,7 @@
   "ingredient": {
     "tag": "c:ingots/bronze"
   },
-  "loops": 17,
+  "loops": 3,
   "results": [
     {
       "id": "cbc_at:bronze_heavy_autocannon_breech"
@@ -41,6 +41,40 @@
         },
         {
           "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_heavy_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_heavy_autocannon_breech"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_heavy_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_heavy_autocannon_breech"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_bronze",
+          "amount": 330
         }
       ],
       "results": [

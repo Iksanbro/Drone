@@ -49,7 +49,6 @@ CAST_IRON, BRONZE, STEEL, NETHERSTEEL = "cast_iron", "bronze", "steel", "nethers
 AUTOCANNON_MATERIALS = [CAST_IRON, BRONZE, STEEL]
 
 METAL_MULTIPLIER = 3
-MAX_INGOTS_PER_LOOP = 4
 
 # CBC:AT 0.1.4c ships these mould recipes in a format 1.21.1 cannot parse. Without the mould
 # the part cannot be cast, so its world process is broken and it gets no recipe.
@@ -144,19 +143,35 @@ def build_parts() -> tuple[list[Part], list[Skipped]]:
 # ----------------------------------------------------------------------------------------
 # Recipe plan
 
+MB_PER_INGOT = 90
+MAX_METAL_PER_LOOP_MB = 8 * MB_PER_INGOT   # keeps the poured part well under the 1000 mB spout tank
+MAX_INGOTS_PER_LOOP = 3
+
+
+def molten(material: str, amount: int) -> dict:
+    return {"type": "neoforge:tag", "tag": f"c:molten_{material}", "amount": amount}
+
+
 def part_plan(p: Part) -> tuple[dict, list, int]:
     """Returns (base ingredient, steps of one loop, loops) of the sequenced assembly.
 
-    Starts from one ingot; every loop: mould in the deployer (kept), ingots, press, saw
-    (= boring). Uses the fewest loops with at most MAX_INGOTS_PER_LOOP ingots per loop.
+    Starts from one ingot. Every loop: mould in the deployer (kept), some ingots by deployer,
+    molten metal of the same material by spout, mechanical press, mechanical saw (= boring).
+    Loops: the fewest that split the remaining metal into equal whole-mB parts of at most
+    MAX_METAL_PER_LOOP_MB. About half of each loop is solid ingots, the rest is poured.
     The item an incomplete block needs is not part of it: see part_result().
     """
-    rest = p.ingots * METAL_MULTIPLIER - 1
-    mould = ("deploy", {"item": p.mould}, True)
-    for loops in range(1, rest + 1):
-        if rest % loops == 0 and rest // loops <= MAX_INGOTS_PER_LOOP:
-            steps = [mould] + [("deploy", ingot(p.material))] * (rest // loops) + [("press",), ("cut",)]
-            return ingot(p.material), steps, loops
+    rest_mb = (p.ingots * METAL_MULTIPLIER - 1) * MB_PER_INGOT
+    for loops in range(1, 64):
+        if rest_mb % loops or rest_mb // loops > MAX_METAL_PER_LOOP_MB:
+            continue
+        per_loop = rest_mb // loops
+        ingots = min(MAX_INGOTS_PER_LOOP, per_loop // MB_PER_INGOT // 2)
+        fluid = per_loop - ingots * MB_PER_INGOT
+        steps = [("deploy", {"item": p.mould}, True)]
+        steps += [("deploy", ingot(p.material))] * ingots
+        steps += [("fill", molten(p.material, fluid)), ("press",), ("cut",)]
+        return ingot(p.material), steps, loops
     raise ValueError(f"{p.result}: no plan")
 
 
@@ -166,9 +181,19 @@ def part_result(p: Part) -> str:
     return f"{p.mod}:incomplete_{p.block}" if p.component else p.result
 
 
-def plan_metal(p: Part) -> int:
+def plan_metal_mb(p: Part) -> tuple[int, int]:
+    """(solid mB, poured mB) the recipe uses, the base ingot included."""
     _, steps, loops = part_plan(p)
-    return 1 + loops * sum(1 for st in steps if st[0] == "deploy" and st[1] == ingot(p.material))
+    solid = MB_PER_INGOT + loops * MB_PER_INGOT * sum(1 for st in steps if st[0] == "deploy" and st[1] == ingot(p.material))
+    poured = loops * sum(st[1]["amount"] for st in steps if st[0] == "fill")
+    return solid, poured
+
+
+def plan_metal(p: Part) -> int:
+    solid, poured = plan_metal_mb(p)
+    if (solid + poured) % MB_PER_INGOT:
+        raise ValueError(f"{p.result}: metal is not a whole number of ingots")
+    return (solid + poured) // MB_PER_INGOT
 
 
 # ----------------------------------------------------------------------------------------
@@ -187,6 +212,8 @@ def step_json(step: tuple, transitional: str) -> dict:
         if len(step) > 2 and step[2]:
             js["keep_held_item"] = True
         return js
+    if kind == "fill":
+        return {"type": "create:filling", "ingredients": [t, step[1]], "results": out}
     if kind == "press":
         return {"type": "create:pressing", "ingredients": [t], "results": out}
     if kind == "cut":
@@ -312,6 +339,8 @@ def steps_text(steps: list) -> str:
         if st[0] == "deploy":
             keep = " (остаётся)" if len(st) > 2 and st[2] else ""
             out.append(f"деплоер: {ing_name(st[1])}{keep}")
+        elif st[0] == "fill":
+            out.append(f"дозатор: {st[1]['amount']} mB `#{st[1]['tag']}`")
         else:
             out.append(STEP_RU[st[0]])
     return " → ".join(out)
@@ -328,7 +357,8 @@ def write_docs(parts: list[Part], skipped: list[Skipped]) -> None:
         "",
         "Ресурсы те же, что у литья. Металл ×3, остальное в прежнем количестве:",
         "форма держится в деплоере и не тратится (при литье она тоже возвращается).",
-        "Старт: один слиток материала.",
+        "Старт: один слиток материала. В каждом цикле часть металла идёт слитками (деплоер),",
+        "часть расплавом того же металла (дозатор), затем механический пресс и механическая пила.",
         "",
         "Деталям, которым в мире после сверления нужен предмет (экстрактор, пружина), сборка даёт",
         "incomplete-деталь, как после сверления. Затем деплоер ставит в неё этот предмет (один раз).",
@@ -336,12 +366,14 @@ def write_docs(parts: list[Part], skipped: list[Skipped]) -> None:
     ]
     for mod in (CBC, CBCAT, NW):
         lines += [f"## {MOD_TITLE[mod]}", "",
-                  "| Деталь | Литьё, слитков | Рецепт, слитков | Шаги одного цикла | Циклов | Потом деплоер |",
+                  "| Деталь | Литьё, слитков | Рецепт, слитков (слитками + расплавом) | Шаги одного цикла | Циклов | Потом деплоер |",
                   "|---|---|---|---|---|---|"]
         for p in (p for p in parts if p.mod == mod):
             _, steps, loops = part_plan(p)
             then = f"`{part_result(p)}` + `{p.component}`" if p.component else "—"
-            lines.append(f"| `{p.result}` | {p.ingots} | {plan_metal(p)} | {steps_text(steps)} | {loops} | {then} |")
+            solid, poured = plan_metal_mb(p)
+            metal = f"{plan_metal(p)} ({solid // MB_PER_INGOT} + {poured} mB)"
+            lines.append(f"| `{p.result}` | {p.ingots} | {metal} | {steps_text(steps)} | {loops} | {then} |")
         lines.append("")
     lines += ["## Без рецепта", "", "Процесс в мире сломан или отсутствует, поэтому мод ничего не добавляет.", "",
               "| Деталь | Причина |", "|---|---|"]

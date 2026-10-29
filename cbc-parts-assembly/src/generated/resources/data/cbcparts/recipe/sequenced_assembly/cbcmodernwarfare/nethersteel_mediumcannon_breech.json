@@ -13,7 +13,7 @@
   "ingredient": {
     "tag": "c:ingots/nethersteel"
   },
-  "loops": 11,
+  "loops": 2,
   "results": [
     {
       "id": "cbcmodernwarfare:incomplete_nethersteel_mediumcannon_breech"
@@ -45,6 +45,40 @@
         },
         {
           "tag": "c:ingots/nethersteel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_nethersteel_mediumcannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_nethersteel_mediumcannon_breech"
+        },
+        {
+          "tag": "c:ingots/nethersteel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_nethersteel_mediumcannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_nethersteel_mediumcannon_breech"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_nethersteel",
+          "amount": 315
         }
       ],
       "results": [

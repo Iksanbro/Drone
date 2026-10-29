@@ -1,6 +1,8 @@
 package io.github.iksanbro.cbcparts.test;
 
 import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.content.fluids.spout.FillingBySpout;
+import com.simibubi.create.content.fluids.transfer.FillingRecipe;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.kinetics.press.PressingRecipe;
 import com.simibubi.create.content.kinetics.saw.CuttingRecipe;
@@ -30,7 +32,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -98,13 +103,13 @@ public final class CannonPartsGameTests {
                 .findFirst();
     }
 
-    /** Ingots of metal in one item: 1 for an ingot, 9 for a storage block, 0 otherwise. */
+    /** Metal in one item in mB: 90 for an ingot, 810 for a storage block, 0 otherwise. */
     private static int metalOf(ItemStack stack) {
         return stack.getTags().mapToInt(tag -> {
             if (!tag.location().getNamespace().equals("c")) return 0;
             String path = tag.location().getPath();
-            if (path.startsWith("ingots/")) return 1;
-            if (path.startsWith("storage_blocks/")) return 9;
+            if (path.startsWith("ingots/")) return 90;
+            if (path.startsWith("storage_blocks/")) return 810;
             return 0;
         }).max().orElse(0);
     }
@@ -118,6 +123,8 @@ public final class CannonPartsGameTests {
         if (part.isEmpty()) return "makes " + expected + ", which is not in the part list";
 
         int metal = metalOf(item);
+        int poured = 0;
+        boolean pressed = false, sawed = false;
         int otherItems = metal == 0 ? 1 : 0;
         List<SequencedRecipe<?>> sequence = recipe.getSequence();
         int total = recipe.getLoops() * sequence.size();
@@ -137,6 +144,20 @@ public final class CannonPartsGameTests {
                 inv.setStackInSlot(1, held[0].copy());
                 found = SequencedAssemblyRecipe.getRecipe(level, new RecipeWrapper(inv),
                         AllRecipeTypes.DEPLOYING.getType(), DeployerApplicationRecipe.class);
+            } else if (step instanceof FillingRecipe) {
+                // Same calls the spout makes, with a full tank of the part's molten metal.
+                Fluid fluid = BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CBC, "molten_" + materialOf(part.get())));
+                FluidStack tank = new FluidStack(fluid, 1000);
+                int amount = FillingBySpout.getRequiredAmountForItem(level, item, tank);
+                if (amount <= 0) return "step " + i + ": spout cannot fill " + item + " with " + tank.getHoverName().getString();
+                found = SequencedAssemblyRecipe.getRecipe(level, new SingleRecipeInput(item),
+                        AllRecipeTypes.FILLING.getType(), FillingRecipe.class);
+                if (found.isEmpty() || !found.get().id().getPath().startsWith(id.getPath()))
+                    return "step " + i + " spout picks " + found.map(RecipeHolder::id).orElse(null);
+                metal += amount;
+                poured += amount;
+                item = FillingBySpout.fillItem(level, amount, item, tank.copy());
+                continue;
             } else if (step instanceof PressingRecipe) {
                 found = SequencedAssemblyRecipe.getRecipe(level, item,
                         AllRecipeTypes.PRESSING.getType(), PressingRecipe.class);
@@ -147,6 +168,8 @@ public final class CannonPartsGameTests {
                 return "step " + i + ": unexpected step type " + step.getClass().getSimpleName();
             }
             if (found.isEmpty()) return "step " + i + " (" + step.getClass().getSimpleName() + ") not found for " + item;
+            pressed |= step instanceof PressingRecipe;
+            sawed |= step instanceof CuttingRecipe;
             if (!found.get().id().getPath().startsWith(id.getPath())) {
                 return "step " + i + " picked another recipe: " + found.get().id();
             }
@@ -165,8 +188,10 @@ public final class CannonPartsGameTests {
             if (second.startsWith("!")) return second.substring(1);
             otherItems++;
         }
-        int wanted = part.get().castingIngots() * 3;
-        if (metal != wanted) return "uses " + metal + " ingots of metal, casting uses " + part.get().castingIngots();
+        int wanted = part.get().castingIngots() * 3 * 90;
+        if (metal != wanted) return "uses " + metal + " mB of metal, casting uses " + part.get().castingIngots() * 90 + " mB";
+        if (poured == 0 || poured == metal) return "metal must be part ingots, part poured by spout (poured " + poured + " of " + metal + " mB)";
+        if (!pressed || !sawed) return "must use the mechanical press and saw";
         if (otherItems > 1) return "consumes " + otherItems + " non-metal items";
         return null;
     }

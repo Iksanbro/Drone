@@ -9,7 +9,7 @@
   "ingredient": {
     "tag": "c:ingots/bronze"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "cbc_at:bronze_autocannon_silencer"
@@ -82,13 +82,15 @@
       ]
     },
     {
-      "type": "create:deploying",
+      "type": "create:filling",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_bronze_autocannon_silencer"
         },
         {
-          "tag": "c:ingots/bronze"
+          "type": "neoforge:tag",
+          "tag": "c:molten_bronze",
+          "amount": 450
         }
       ],
       "results": [

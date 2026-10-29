@@ -9,7 +9,7 @@
   "ingredient": {
     "tag": "c:ingots/bronze"
   },
-  "loops": 23,
+  "loops": 3,
   "results": [
     {
       "id": "cbc_at:bronze_vert_twin_autocannon_recoil_spring"
@@ -41,6 +41,56 @@
         },
         {
           "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_vert_twin_autocannon_recoil_spring"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_bronze",
+          "amount": 420
         }
       ],
       "results": [

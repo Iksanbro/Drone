@@ -13,7 +13,7 @@
   "ingredient": {
     "tag": "c:ingots/steel"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "cbcmodernwarfare:steel_mediumcannon_barrel"
@@ -86,13 +86,15 @@
       ]
     },
     {
-      "type": "create:deploying",
+      "type": "create:filling",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_steel_mediumcannon_barrel"
         },
         {
-          "tag": "c:ingots/steel"
+          "type": "neoforge:tag",
+          "tag": "c:molten_steel",
+          "amount": 450
         }
       ],
       "results": [

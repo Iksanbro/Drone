@@ -9,7 +9,7 @@
   "ingredient": {
     "tag": "c:ingots/cast_iron"
   },
-  "loops": 23,
+  "loops": 3,
   "results": [
     {
       "id": "cbc_at:cast_iron_vert_twin_autocannon_silencer"
@@ -41,6 +41,56 @@
         },
         {
           "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_silencer"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_cast_iron",
+          "amount": 420
         }
       ],
       "results": [

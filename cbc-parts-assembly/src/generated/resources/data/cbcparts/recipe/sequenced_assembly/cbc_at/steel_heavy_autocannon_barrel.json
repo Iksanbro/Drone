@@ -9,7 +9,7 @@
   "ingredient": {
     "tag": "c:ingots/steel"
   },
-  "loops": 17,
+  "loops": 3,
   "results": [
     {
       "id": "cbc_at:steel_heavy_autocannon_barrel"
@@ -41,6 +41,40 @@
         },
         {
           "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_heavy_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_heavy_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_heavy_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_heavy_autocannon_barrel"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_steel",
+          "amount": 330
         }
       ],
       "results": [

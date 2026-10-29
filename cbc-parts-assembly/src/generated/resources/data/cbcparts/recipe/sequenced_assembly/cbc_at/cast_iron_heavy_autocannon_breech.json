@@ -9,7 +9,7 @@
   "ingredient": {
     "tag": "c:ingots/cast_iron"
   },
-  "loops": 17,
+  "loops": 3,
   "results": [
     {
       "id": "cbc_at:cast_iron_heavy_autocannon_breech"
@@ -41,6 +41,40 @@
         },
         {
           "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_heavy_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_heavy_autocannon_breech"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_heavy_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_heavy_autocannon_breech"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_cast_iron",
+          "amount": 330
         }
       ],
       "results": [

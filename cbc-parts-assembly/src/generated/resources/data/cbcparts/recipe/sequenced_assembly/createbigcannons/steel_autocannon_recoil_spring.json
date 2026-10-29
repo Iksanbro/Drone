@@ -9,7 +9,7 @@
   "ingredient": {
     "tag": "c:ingots/steel"
   },
-  "loops": 11,
+  "loops": 2,
   "results": [
     {
       "id": "createbigcannons:incomplete_steel_autocannon_recoil_spring"
@@ -41,6 +41,40 @@
         },
         {
           "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_autocannon_recoil_spring"
+        },
+        {
+          "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_autocannon_recoil_spring"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_steel",
+          "amount": 315
         }
       ],
       "results": [
