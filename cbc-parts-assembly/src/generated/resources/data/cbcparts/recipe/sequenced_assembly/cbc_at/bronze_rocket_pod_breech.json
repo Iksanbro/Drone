@@ -1,0 +1,163 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_at"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/bronze"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "cbc_at:bronze_rocket_pod_breech"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        },
+        {
+          "item": "cbc_at:rocket_pod_breech_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_bronze",
+          "amount": 518
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_bronze",
+          "amount": 517
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_bronze_rocket_pod_breech"
+  }
+}

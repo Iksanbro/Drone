@@ -76,6 +76,7 @@ public final class CannonPartsGameTests {
         for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
             if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
             if (holder.value() instanceof DeployerApplicationRecipe) continue; // second stage, run below
+            if (holder.value() instanceof CuttingRecipe) continue; // mould recipe, checked by the world test
             if (!(holder.value() instanceof SequencedAssemblyRecipe recipe)) {
                 errors.add(holder.id() + ": unexpected recipe type " + holder.value().getClass().getSimpleName());
                 continue;
@@ -195,6 +196,7 @@ public final class CannonPartsGameTests {
             if (second.startsWith("!")) return second.substring(1);
             otherItems++;
         }
+        if (part.get().castingIngots() == 0) return null; // helper item, not a cannon part
         int wanted = part.get().castingIngots() * 3 * 90;
         if (metal != wanted) return "uses " + metal + " mB of metal, casting uses " + part.get().castingIngots() * 90 + " mB";
         if (poured == 0 || poured == metal) return "metal must be part ingots, part poured by spout (poured " + poured + " of " + metal + " mB)";
@@ -325,6 +327,7 @@ public final class CannonPartsGameTests {
             if (!(holder.value() instanceof SequencedAssemblyRecipe recipe)) continue;
             if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
             ResourceLocation part = BuiltInRegistries.ITEM.getKey(recipe.getResultItem(level.registryAccess()).getItem());
+            if (partFor(part).map(p -> p.castingIngots() == 0).orElse(false)) continue; // helper item
             ResourceLocation incomplete = ResourceLocation.fromNamespaceAndPath(part.getNamespace(), "incomplete_" + part.getPath());
             if (!worldResults.contains(part) && !worldResults.contains(incomplete)) {
                 errors.add(part + ": no casting/boring recipe in the world");
@@ -337,22 +340,52 @@ public final class CannonPartsGameTests {
                 errors.add(part + ": first step is not the mould");
             }
         }
+        // the item a second-stage recipe fits must be obtainable too
+        for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
+            if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
+            if (!(holder.value() instanceof DeployerApplicationRecipe deploy)) continue;
+            Item component = deploy.getRequiredHeldItem().getItems()[0].getItem();
+            if (!craftable.contains(component)) errors.add(holder.id() + ": " + BuiltInRegistries.ITEM.getKey(component) + " cannot be crafted");
+        }
         if (!errors.isEmpty()) helper.fail(String.join("\n", errors));
         helper.succeed();
     }
 
-    /** Parts whose world process is broken or missing get nothing. */
+    /**
+     * Looks for gaps: every part of a non-big cannon family that the world makes by casting and
+     * boring (CBC block recipes of all installed mods) must have a recipe of this mod.
+     */
     @GameTest(template = "empty")
-    public static void brokenPartsGetNoRecipe(GameTestHelper helper) {
+    public static void everyWorldMadePartHasRecipe(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        List<String> forbidden = List.of("rotarycannon", "twin_autocannon_barrel", "rocket_pod");
-        for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
-            if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
-            String path = BuiltInRegistries.ITEM.getKey(holder.value().getResultItem(level.registryAccess()).getItem()).getPath();
-            for (String f : forbidden) {
-                if (path.contains(f) && !path.contains("vert_twin")) helper.fail("unexpected recipe " + holder.id());
+        List<Class<?>> families = new ArrayList<>();
+        for (String name : io.github.iksanbro.cbcparts.CannonPartConnector.FAMILY_INTERFACES) {
+            try {
+                families.add(Class.forName(name, false, CannonPartsGameTests.class.getClassLoader()));
+            } catch (ClassNotFoundException e) {
+                // mod not installed
             }
         }
+        Set<ResourceLocation> covered = new HashSet<>();
+        for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
+            if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
+            ResourceLocation out = BuiltInRegistries.ITEM.getKey(holder.value().getResultItem(level.registryAccess()).getItem());
+            covered.add(out);
+        }
+        Set<ResourceLocation> worldParts = new java.util.TreeSet<>();
+        for (BlockRecipe recipe : BlockRecipesManager.getRecipes()) {
+            ResourceLocation result = BuiltInRegistries.BLOCK.getKey(recipe.getResultBlock());
+            if (result.getPath().startsWith("unbored_")) continue; // casting; the part comes from boring
+            ResourceLocation part = ResourceLocation.fromNamespaceAndPath(result.getNamespace(),
+                    result.getPath().replaceFirst("^incomplete_", ""));
+            var block = BuiltInRegistries.BLOCK.get(part);
+            if (families.stream().anyMatch(c -> c.isInstance(block))) worldParts.add(part);
+        }
+        List<ResourceLocation> missing = worldParts.stream().filter(p -> !covered.contains(p)).toList();
+        CBCPartsAssembly.LOGGER.info("[test] world-made non-big parts: {}, without recipe: {}", worldParts.size(), missing);
+        if (!missing.isEmpty()) helper.fail("world-made parts without a recipe: " + missing);
+        if (worldParts.size() != (int) loadedParts().stream().filter(p -> p.castingIngots() > 0).count())
+            helper.fail("world-made parts " + worldParts.size() + " != parts with recipe");
         helper.succeed();
     }
 

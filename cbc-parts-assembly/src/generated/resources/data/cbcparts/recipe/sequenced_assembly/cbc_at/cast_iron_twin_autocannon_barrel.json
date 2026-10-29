@@ -1,0 +1,163 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_at"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/cast_iron"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "cbc_at:cast_iron_twin_autocannon_barrel"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        },
+        {
+          "item": "cbc_at:twin_autocannon_barrel_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_cast_iron",
+          "amount": 248
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_cast_iron",
+          "amount": 247
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_cast_iron_twin_autocannon_barrel"
+  }
+}

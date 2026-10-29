@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "cbcmodernwarfare:incomplete_nethersteel_rotarycannon_bearing"
+    },
+    {
+      "item": "create:shaft"
+    }
+  ],
+  "results": [
+    {
+      "id": "cbcmodernwarfare:nethersteel_rotarycannon_bearing"
+    }
+  ]
+}

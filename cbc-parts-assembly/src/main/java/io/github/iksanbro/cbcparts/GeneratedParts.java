@@ -12,7 +12,7 @@ public final class GeneratedParts {
     /**
      * One unfinished item: its own name, the mods its recipe needs (the first one owns the
      * finished part), the id of the finished part, the ingots the world casting uses and the
-     * ingots the recipe uses.
+     * ingots the recipe uses. Helper items that are not cannon parts have castingIngots 0.
      */
     public record UnfinishedPart(String name, List<String> requiredMods, String targetPath,
                                  int castingIngots, int recipeIngots) {
@@ -33,6 +33,7 @@ public final class GeneratedParts {
             new UnfinishedPart("unfinished_steel_autocannon_recoil_spring", List.of("createbigcannons"), "steel_autocannon_recoil_spring", 4, 12),
             new UnfinishedPart("unfinished_cast_iron_autocannon_silencer", List.of("cbc_at"), "cast_iron_autocannon_silencer", 3, 9),
             new UnfinishedPart("unfinished_cast_iron_autocannon_muzzle_brake", List.of("cbc_at"), "cast_iron_autocannon_muzzle_brake", 3, 9),
+            new UnfinishedPart("unfinished_cast_iron_twin_autocannon_barrel", List.of("cbc_at"), "cast_iron_twin_autocannon_barrel", 6, 18),
             new UnfinishedPart("unfinished_cast_iron_twin_autocannon_recoil_spring", List.of("cbc_at"), "cast_iron_twin_autocannon_recoil_spring", 6, 18),
             new UnfinishedPart("unfinished_cast_iron_twin_autocannon_breech", List.of("cbc_at"), "cast_iron_twin_autocannon_breech", 6, 18),
             new UnfinishedPart("unfinished_cast_iron_twin_autocannon_silencer", List.of("cbc_at"), "cast_iron_twin_autocannon_silencer", 6, 18),
@@ -48,8 +49,11 @@ public final class GeneratedParts {
             new UnfinishedPart("unfinished_cast_iron_heavy_autocannon_recoil_spring", List.of("cbc_at"), "cast_iron_heavy_autocannon_recoil_spring", 6, 18),
             new UnfinishedPart("unfinished_cast_iron_heavy_autocannon_breech", List.of("cbc_at"), "cast_iron_heavy_autocannon_breech", 6, 18),
             new UnfinishedPart("unfinished_cast_iron_heavy_autocannon_qfbreech", List.of("cbc_at"), "cast_iron_heavy_autocannon_qfbreech", 6, 18),
+            new UnfinishedPart("unfinished_cast_iron_rocket_pod_rail", List.of("cbc_at"), "cast_iron_rocket_pod_rail", 10, 30),
+            new UnfinishedPart("unfinished_cast_iron_rocket_pod_breech", List.of("cbc_at"), "cast_iron_rocket_pod_breech", 10, 30),
             new UnfinishedPart("unfinished_bronze_autocannon_silencer", List.of("cbc_at"), "bronze_autocannon_silencer", 3, 9),
             new UnfinishedPart("unfinished_bronze_autocannon_muzzle_brake", List.of("cbc_at"), "bronze_autocannon_muzzle_brake", 3, 9),
+            new UnfinishedPart("unfinished_bronze_twin_autocannon_barrel", List.of("cbc_at"), "bronze_twin_autocannon_barrel", 6, 18),
             new UnfinishedPart("unfinished_bronze_twin_autocannon_recoil_spring", List.of("cbc_at"), "bronze_twin_autocannon_recoil_spring", 6, 18),
             new UnfinishedPart("unfinished_bronze_twin_autocannon_breech", List.of("cbc_at"), "bronze_twin_autocannon_breech", 6, 18),
             new UnfinishedPart("unfinished_bronze_twin_autocannon_silencer", List.of("cbc_at"), "bronze_twin_autocannon_silencer", 6, 18),
@@ -65,8 +69,11 @@ public final class GeneratedParts {
             new UnfinishedPart("unfinished_bronze_heavy_autocannon_recoil_spring", List.of("cbc_at"), "bronze_heavy_autocannon_recoil_spring", 6, 18),
             new UnfinishedPart("unfinished_bronze_heavy_autocannon_breech", List.of("cbc_at"), "bronze_heavy_autocannon_breech", 6, 18),
             new UnfinishedPart("unfinished_bronze_heavy_autocannon_qfbreech", List.of("cbc_at"), "bronze_heavy_autocannon_qfbreech", 6, 18),
+            new UnfinishedPart("unfinished_bronze_rocket_pod_rail", List.of("cbc_at"), "bronze_rocket_pod_rail", 10, 30),
+            new UnfinishedPart("unfinished_bronze_rocket_pod_breech", List.of("cbc_at"), "bronze_rocket_pod_breech", 10, 30),
             new UnfinishedPart("unfinished_steel_autocannon_silencer", List.of("cbc_at"), "steel_autocannon_silencer", 3, 9),
             new UnfinishedPart("unfinished_steel_autocannon_muzzle_brake", List.of("cbc_at"), "steel_autocannon_muzzle_brake", 3, 9),
+            new UnfinishedPart("unfinished_steel_twin_autocannon_barrel", List.of("cbc_at"), "steel_twin_autocannon_barrel", 6, 18),
             new UnfinishedPart("unfinished_steel_twin_autocannon_recoil_spring", List.of("cbc_at"), "steel_twin_autocannon_recoil_spring", 6, 18),
             new UnfinishedPart("unfinished_steel_twin_autocannon_breech", List.of("cbc_at"), "steel_twin_autocannon_breech", 6, 18),
             new UnfinishedPart("unfinished_steel_twin_autocannon_silencer", List.of("cbc_at"), "steel_twin_autocannon_silencer", 6, 18),
@@ -82,6 +89,8 @@ public final class GeneratedParts {
             new UnfinishedPart("unfinished_steel_heavy_autocannon_recoil_spring", List.of("cbc_at"), "steel_heavy_autocannon_recoil_spring", 6, 18),
             new UnfinishedPart("unfinished_steel_heavy_autocannon_breech", List.of("cbc_at"), "steel_heavy_autocannon_breech", 6, 18),
             new UnfinishedPart("unfinished_steel_heavy_autocannon_qfbreech", List.of("cbc_at"), "steel_heavy_autocannon_qfbreech", 6, 18),
+            new UnfinishedPart("unfinished_steel_rocket_pod_rail", List.of("cbc_at"), "steel_rocket_pod_rail", 10, 30),
+            new UnfinishedPart("unfinished_steel_rocket_pod_breech", List.of("cbc_at"), "steel_rocket_pod_breech", 10, 30),
             new UnfinishedPart("unfinished_cast_iron_mediumcannon_barrel", List.of("cbcmodernwarfare", "cbcmw_recipe_fix"), "cast_iron_mediumcannon_barrel", 3, 9),
             new UnfinishedPart("unfinished_cast_iron_mediumcannon_breech", List.of("cbcmodernwarfare", "cbcmw_recipe_fix"), "cast_iron_mediumcannon_breech", 4, 12),
             new UnfinishedPart("unfinished_cast_iron_mediumcannon_recoil_barrel", List.of("cbcmodernwarfare", "cbcmw_recipe_fix"), "cast_iron_mediumcannon_recoil_barrel", 4, 12),
@@ -93,6 +102,18 @@ public final class GeneratedParts {
             new UnfinishedPart("unfinished_steel_mediumcannon_recoil_barrel", List.of("cbcmodernwarfare", "cbcmw_recipe_fix"), "steel_mediumcannon_recoil_barrel", 4, 12),
             new UnfinishedPart("unfinished_nethersteel_mediumcannon_barrel", List.of("cbcmodernwarfare", "cbcmw_recipe_fix"), "nethersteel_mediumcannon_barrel", 3, 9),
             new UnfinishedPart("unfinished_nethersteel_mediumcannon_breech", List.of("cbcmodernwarfare", "cbcmw_recipe_fix"), "nethersteel_mediumcannon_breech", 4, 12),
-            new UnfinishedPart("unfinished_nethersteel_mediumcannon_recoil_barrel", List.of("cbcmodernwarfare", "cbcmw_recipe_fix"), "nethersteel_mediumcannon_recoil_barrel", 4, 12)
+            new UnfinishedPart("unfinished_nethersteel_mediumcannon_recoil_barrel", List.of("cbcmodernwarfare", "cbcmw_recipe_fix"), "nethersteel_mediumcannon_recoil_barrel", 4, 12),
+            new UnfinishedPart("unfinished_bronze_rotarycannon_barrel", List.of("cbcmodernwarfare"), "bronze_rotarycannon_barrel", 3, 9),
+            new UnfinishedPart("unfinished_bronze_rotarycannon_breech", List.of("cbcmodernwarfare"), "bronze_rotarycannon_breech", 4, 12),
+            new UnfinishedPart("unfinished_bronze_rotarycannon_bearing", List.of("cbcmodernwarfare"), "bronze_rotarycannon_bearing", 4, 12),
+            new UnfinishedPart("unfinished_steel_rotarycannon_barrel", List.of("cbcmodernwarfare"), "steel_rotarycannon_barrel", 3, 9),
+            new UnfinishedPart("unfinished_steel_rotarycannon_breech", List.of("cbcmodernwarfare"), "steel_rotarycannon_breech", 4, 12),
+            new UnfinishedPart("unfinished_steel_rotarycannon_bearing", List.of("cbcmodernwarfare"), "steel_rotarycannon_bearing", 4, 12),
+            new UnfinishedPart("unfinished_nethersteel_rotarycannon_barrel", List.of("cbcmodernwarfare"), "nethersteel_rotarycannon_barrel", 3, 9),
+            new UnfinishedPart("unfinished_nethersteel_rotarycannon_breech", List.of("cbcmodernwarfare"), "nethersteel_rotarycannon_breech", 4, 12),
+            new UnfinishedPart("unfinished_nethersteel_rotarycannon_bearing", List.of("cbcmodernwarfare"), "nethersteel_rotarycannon_bearing", 4, 12),
+            new UnfinishedPart("unfinished_bronze_rotarycannon_breech_extractor", List.of("cbcmodernwarfare"), "bronze_rotarycannon_breech_extractor", 0, 1),
+            new UnfinishedPart("unfinished_steel_rotarycannon_breech_extractor", List.of("cbcmodernwarfare"), "steel_rotaryannon_breech_extractor", 0, 1),
+            new UnfinishedPart("unfinished_nethersteel_rotarycannon_breech_extractor", List.of("cbcmodernwarfare"), "nethersteel_rotarycannon_breech_extractor", 0, 1)
     );
 }

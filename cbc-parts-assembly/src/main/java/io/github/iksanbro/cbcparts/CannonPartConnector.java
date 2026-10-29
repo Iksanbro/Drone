@@ -30,7 +30,8 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 public final class CannonPartConnector {
     private CannonPartConnector() {}
 
-    private static final String[] FAMILY_INTERFACES = {
+    /** Block interfaces of the non-big cannon families, by class name. */
+    public static final String[] FAMILY_INTERFACES = {
             // Create Big Cannons: autocannon barrel, breech, recoil spring
             "rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock",
             // CBC: Advanced Technologies

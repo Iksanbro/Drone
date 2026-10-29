@@ -1,0 +1,163 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_at"
+    }
+  ],
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:ingots/bronze"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "cbc_at:bronze_rocket_pod_rail"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        },
+        {
+          "item": "cbc_at:rocket_pod_rail_mould"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ],
+      "keep_held_item": true
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_bronze",
+          "amount": 518
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        },
+        {
+          "type": "neoforge:tag",
+          "tag": "c:molten_bronze",
+          "amount": 517
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "cbcparts:unfinished_bronze_rocket_pod_rail"
+  }
+}
