@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:ingots/bronze"
+    "tag": "c:storage_blocks/bronze"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "createbigcannons:bronze_autocannon_barrel"
@@ -32,22 +32,6 @@
         }
       ],
       "keep_held_item": true
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_autocannon_barrel"
-        },
-        {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_autocannon_barrel"
-        }
-      ]
     },
     {
       "type": "create:pressing",

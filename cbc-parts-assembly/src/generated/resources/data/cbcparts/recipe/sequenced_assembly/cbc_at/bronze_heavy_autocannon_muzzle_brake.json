@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:ingots/bronze"
+    "tag": "c:storage_blocks/bronze"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "cbc_at:bronze_heavy_autocannon_muzzle_brake"
@@ -40,23 +40,7 @@
           "item": "cbcparts:unfinished_bronze_heavy_autocannon_muzzle_brake"
         },
         {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_heavy_autocannon_muzzle_brake"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_heavy_autocannon_muzzle_brake"
-        },
-        {
-          "tag": "c:ingots/bronze"
+          "tag": "c:storage_blocks/bronze"
         }
       ],
       "results": [

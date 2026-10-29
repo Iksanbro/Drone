@@ -6,11 +6,20 @@ Run from the project root:
     python3 tools/generate_data.py [--validate DIR ...]
 
 Outputs (all overwritten on every run):
-  * src/generated/resources/data/cbcparts/recipe/...         sequenced assembly + helper recipes
-  * src/generated/resources/data/<addon>/loot_table/blocks/  loot tables missing from addon jars
-  * src/generated/resources/assets/cbcparts/models/item/     models of unfinished items
-  * src/main/java/.../GeneratedParts.java                    list of unfinished items to register
-  * RECIPES.md                                               human readable list of the recipes
+  * src/generated/resources/data/cbcparts/recipe/...      sequenced assembly recipes
+  * src/generated/resources/assets/cbcparts/models/item/  models of unfinished items
+  * src/main/java/.../GeneratedParts.java                 list of unfinished items to register
+  * RECIPES.md                                            human readable list of the recipes
+
+Rules the recipes follow:
+  * Only parts that are made exclusively in the world (cast in a Cannon Cast and/or bored
+    with a Cannon Drill) get a recipe, and only when that world process actually works.
+    Parts whose world process is broken or missing get nothing.
+  * The recipes are added next to the world process, nothing is replaced.
+  * They use the same resources as the world process: the cast mould (returned after
+    casting, so it stays in the deployer), the metal, and the item the incomplete block
+    needs (breech extractor, spring...). Only the metal is tripled; everything else keeps
+    its original amount.
 
 --validate takes folders with extracted mod jars (CBC, CBC:AT, Neo Warfare) and checks
 that every item id used by the recipes really exists in them.
@@ -23,7 +32,7 @@ import json
 import os
 import shutil
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 MOD_ID = "cbcparts"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,34 +42,45 @@ JAVA_OUT = os.path.join(ROOT, "src", "main", "java", "io", "github", "iksanbro",
 CBC = "createbigcannons"
 CBCAT = "cbc_at"
 NW = "cbcmodernwarfare"
+# Neo Warfare 1.21.1 ships no working casting/boring for medium cannons; this mod adds it.
+NW_FIX = "cbcmw_recipe_fix"
 
 CAST_IRON, BRONZE, STEEL, NETHERSTEEL = "cast_iron", "bronze", "steel", "nethersteel"
 AUTOCANNON_MATERIALS = [CAST_IRON, BRONZE, STEEL]
+
+METAL_MULTIPLIER = 3
+INGOTS_PER_BLOCK = 9
+MAX_METAL_DEPLOYS_PER_LOOP = 4
+
+# CBC:AT 0.1.4c ships these mould recipes in a format 1.21.1 cannot parse. Without the mould
+# the part cannot be cast, so its world process is broken and it gets no recipe.
+CBCAT_BROKEN_MOULDS = {
+    f"{CBCAT}:twin_autocannon_barrel_mould",
+    f"{CBCAT}:rocket_pod_rail_mould",
+    f"{CBCAT}:rocket_pod_breech_mould",
+}
 
 
 def ingot(material: str) -> dict:
     return {"tag": f"c:ingots/{material}"}
 
 
-# Part kinds decide what is done in every loop after the mould and the metal:
-#   bore   - pressing, then the saw cuts the bore (barrels, rails, silencers, muzzle brakes)
-#   plain  - pressing only (bearings, rocket pod breeches)
-#   breech - pressing only, but the recipe starts from a breech mechanism instead of an ingot
-#   recoil - pressing, then a spring is added (recoil springs, recoil barrels)
-BORE, PLAIN, BREECH, RECOIL = "bore", "plain", "breech", "recoil"
+def storage_block(material: str) -> dict:
+    return {"tag": f"c:storage_blocks/{material}"}
 
 
 @dataclass
 class Part:
-    mod: str
+    mods: tuple          # mods that must be loaded; the first one owns the part
     block: str           # id of the finished part (block item)
     material: str
-    kind: str
-    mould: str           # full id of the cast mould held by the deployer
-    ingots: int          # metal cost, taken from the casting volume (90 mB per ingot)
-    base: dict | None = None    # starting item; an ingot of the material when None
-    spring: str | None = None   # spring added every loop for RECOIL parts
-    key: str | None = None      # name of the unfinished item when it differs from block
+    mould: str           # full id of the cast mould
+    ingots: int          # metal of the casting (cast shape volume / 90 mB)
+    component: str | None = None  # item the incomplete block needs after boring (one)
+
+    @property
+    def mod(self) -> str:
+        return self.mods[0]
 
     @property
     def result(self) -> str:
@@ -68,123 +88,112 @@ class Part:
 
     @property
     def unfinished(self) -> str:
-        return f"unfinished_{self.key or self.block}"
+        return f"unfinished_{self.block}"
 
 
 @dataclass
-class Component:
-    """A helper item that the addon has no recipe for in 1.21.1."""
-    mod: str
-    item: str
-    base: dict
-    steps: list            # list of ("deploy", ingredient) / ("press",) / ("cut",)
-    loops: int
-    key: str
-    conditions: list = field(default_factory=list)
-
-    @property
-    def unfinished(self) -> str:
-        return f"unfinished_{self.key}"
+class Skipped:
+    result: str
+    reason: str
 
 
-def build_parts() -> list[Part]:
+def build_parts() -> tuple[list[Part], list[Skipped]]:
     parts: list[Part] = []
+    skipped: list[Skipped] = []
 
-    def extractor(m: str) -> dict:
-        return {"item": f"{CBC}:{m}_autocannon_breech_extractor"}
+    def add(part: Part) -> None:
+        if part.mould in CBCAT_BROKEN_MOULDS:
+            skipped.append(Skipped(part.result, f"рецепт формы `{part.mould}` в CBC:AT 0.1.4c не загружается"))
+        else:
+            parts.append(part)
 
     # --- Create Big Cannons: autocannons -----------------------------------------------
+    # casting volumes: barrel 270 mB, breech 360 mB, recoil spring 360 mB
     for m in AUTOCANNON_MATERIALS:
-        parts += [
-            Part(CBC, f"{m}_autocannon_barrel", m, BORE, f"{CBC}:autocannon_barrel_cast_mould", 3),
-            Part(CBC, f"{m}_autocannon_breech", m, BREECH, f"{CBC}:autocannon_breech_cast_mould", 4,
-                 base=extractor(m)),
-            Part(CBC, f"{m}_autocannon_recoil_spring", m, RECOIL, f"{CBC}:autocannon_recoil_spring_cast_mould", 4,
-                 spring=f"{CBC}:recoil_spring"),
-        ]
+        add(Part((CBC,), f"{m}_autocannon_barrel", m, f"{CBC}:autocannon_barrel_cast_mould", 3))
+        add(Part((CBC,), f"{m}_autocannon_breech", m, f"{CBC}:autocannon_breech_cast_mould", 4,
+                 component=f"{CBC}:{m}_autocannon_breech_extractor"))
+        add(Part((CBC,), f"{m}_autocannon_recoil_spring", m, f"{CBC}:autocannon_recoil_spring_cast_mould", 4,
+                 component=f"{CBC}:recoil_spring"))
 
-    # --- CBC: Advanced Technologies --------------------------------------------------
+    # --- CBC: Advanced Technologies (cast + bored, no incomplete stage) ---------------
     for m in AUTOCANNON_MATERIALS:
-        parts += [
-            Part(CBCAT, f"{m}_autocannon_silencer", m, BORE, f"{CBCAT}:autocannon_silencer_mould", 3),
-            Part(CBCAT, f"{m}_autocannon_muzzle_brake", m, BORE, f"{CBCAT}:autocannon_muzzle_brake_mould", 3),
-        ]
-        for twin, big in (("twin", ()), ("vert_twin", ("recoil_spring", "breech", "silencer"))):
+        add(Part((CBCAT,), f"{m}_autocannon_silencer", m, f"{CBCAT}:autocannon_silencer_mould", 3))
+        add(Part((CBCAT,), f"{m}_autocannon_muzzle_brake", m, f"{CBCAT}:autocannon_muzzle_brake_mould", 3))
+        for twin in ("twin", "vert_twin"):
             for piece in ("barrel", "recoil_spring", "breech", "silencer", "muzzle_brake"):
-                cost = 8 if piece in big else 6
-                mould = f"{CBCAT}:{twin}_autocannon_{piece}_mould"
-                block = f"{m}_{twin}_autocannon_{piece}"
-                if piece == "breech":
-                    parts.append(Part(CBCAT, block, m, BREECH, mould, cost, base=extractor(m)))
-                elif piece == "recoil_spring":
-                    parts.append(Part(CBCAT, block, m, RECOIL, mould, cost, spring=f"{CBC}:recoil_spring"))
-                else:
-                    parts.append(Part(CBCAT, block, m, BORE, mould, cost))
+                cost = 8 if twin == "vert_twin" and piece in ("recoil_spring", "breech", "silencer") else 6
+                add(Part((CBCAT,), f"{m}_{twin}_autocannon_{piece}", m,
+                         f"{CBCAT}:{twin}_autocannon_{piece}_mould", cost))
         for piece in ("barrel", "muzzle_brake", "silencer", "recoil_spring", "breech", "qfbreech"):
-            mould = f"{CBCAT}:heavy_autocannon_{piece}_mould"
-            block = f"{m}_heavy_autocannon_{piece}"
-            if piece in ("breech", "qfbreech"):
-                parts.append(Part(CBCAT, block, m, BREECH, mould, 6, base=extractor(m)))
-            elif piece == "recoil_spring":
-                parts.append(Part(CBCAT, block, m, RECOIL, mould, 6, spring=f"{CBC}:recoil_spring"))
-            else:
-                parts.append(Part(CBCAT, block, m, BORE, mould, 6))
-        parts += [
-            Part(CBCAT, f"{m}_rocket_pod_rail", m, BORE, f"{CBCAT}:rocket_pod_rail_mould", 10),
-            Part(CBCAT, f"{m}_rocket_pod_breech", m, PLAIN, f"{CBCAT}:rocket_pod_breech_mould", 10),
-        ]
+            add(Part((CBCAT,), f"{m}_heavy_autocannon_{piece}", m, f"{CBCAT}:heavy_autocannon_{piece}_mould", 6))
+        add(Part((CBCAT,), f"{m}_rocket_pod_rail", m, f"{CBCAT}:rocket_pod_rail_mould", 10))
+        add(Part((CBCAT,), f"{m}_rocket_pod_breech", m, f"{CBCAT}:rocket_pod_breech_mould", 10))
 
-    # --- CBC Neo Warfare: medium cannons -----------------------------------------------
+    # --- CBC Neo Warfare: medium cannons (world process comes from CBCMW recipe fix) ---
     for m in (CAST_IRON, BRONZE, STEEL, NETHERSTEEL):
-        parts += [
-            Part(NW, f"{m}_mediumcannon_barrel", m, BORE, f"{NW}:mediumcannon_barrel_cast_mould", 3),
-            Part(NW, f"{m}_mediumcannon_breech", m, BREECH, f"{NW}:mediumcannon_breech_cast_mould", 4,
-                 base={"item": f"{NW}:{m}_mediumcannon_falling_breech"}),
-            Part(NW, f"{m}_mediumcannon_recoil_barrel", m, RECOIL, f"{NW}:mediumcannon_recoil_barrel_cast_mould", 4,
-                 spring=f"{NW}:heavy_recoil_spring"),
-        ]
+        add(Part((NW, NW_FIX), f"{m}_mediumcannon_barrel", m, f"{NW}:mediumcannon_barrel_cast_mould", 3))
+        add(Part((NW, NW_FIX), f"{m}_mediumcannon_breech", m, f"{NW}:mediumcannon_breech_cast_mould", 4,
+                 component=f"{NW}:{m}_mediumcannon_falling_breech"))
+        add(Part((NW, NW_FIX), f"{m}_mediumcannon_recoil_barrel", m, f"{NW}:mediumcannon_recoil_barrel_cast_mould", 4,
+                 component=f"{NW}:heavy_recoil_spring"))
 
-    # --- CBC Neo Warfare: rotary cannons (no cast iron variant exists) -----------------
+    # --- CBC Neo Warfare: rotary cannons ------------------------------------------------
     for m in (BRONZE, STEEL, NETHERSTEEL):
-        parts += [
-            Part(NW, f"{m}_rotarycannon_barrel", m, BORE, f"{NW}:rotarycannon_barrel_cast_mould", 3),
-            Part(NW, f"{m}_rotarycannon_breech", m, BREECH, f"{NW}:rotarycannon_breech_cast_mould", 4,
-                 base={"item": f"{NW}:{rotary_extractor_id(m)}"}),
-            Part(NW, f"{m}_rotarycannon_bearing", m, PLAIN, f"{NW}:rotarycannon_bearing_cast_mould", 4),
-        ]
-    return parts
+        for piece in ("barrel", "breech", "bearing"):
+            skipped.append(Skipped(f"{NW}:{m}_rotarycannon_{piece}",
+                                   "в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет"))
+    return parts, skipped
 
 
-def rotary_extractor_id(material: str) -> str:
-    # Neo Warfare registers the steel one with a typo
-    return "steel_rotaryannon_breech_extractor" if material == STEEL else f"{material}_rotarycannon_breech_extractor"
+# ----------------------------------------------------------------------------------------
+# Recipe plan
+
+def metal_deploys(material: str, amount: int) -> list:
+    blocks, ingots = divmod(amount, INGOTS_PER_BLOCK)
+    return [("deploy", storage_block(material))] * blocks + [("deploy", ingot(material))] * ingots
 
 
-def build_components() -> list[Component]:
-    comps: list[Component] = []
-    for m in (BRONZE, STEEL, NETHERSTEEL):
-        comps.append(Component(NW, rotary_extractor_id(m), ingot(m),
-                               [("deploy", {"tag": "c:plates/iron"}), ("cut",)], 2,
-                               key=f"{m}_rotarycannon_breech_extractor"))
-    for m in (CAST_IRON, BRONZE, STEEL, NETHERSTEEL):
-        comps.append(Component(NW, f"{m}_mediumcannon_falling_breech", ingot(m),
-                               [("deploy", {"item": "create:andesite_alloy"}), ("press",), ("cut",)], 2,
-                               key=f"{m}_mediumcannon_falling_breech"))
-    comps.append(Component(NW, "heavy_recoil_spring", {"item": f"{CBC}:recoil_spring"},
-                           [("deploy", {"tag": "c:plates/iron"}), ("press",)], 2,
-                           key="heavy_recoil_spring"))
-    return comps
+def part_plan(p: Part) -> tuple[dict, list, int]:
+    """Returns (base ingredient, steps of one loop, loops).
+
+    The base is a storage block (9 ingots); the remaining metal is deployed in the loops.
+    Every loop: mould in the deployer (kept), metal, press, saw (= boring). A part that needs
+    an item after boring gets it once, so its recipe has a single loop.
+    """
+    metal = p.ingots * METAL_MULTIPLIER
+    rest = metal - INGOTS_PER_BLOCK
+    if rest < 0:
+        raise ValueError(f"{p.result}: less metal than one block")
+    mould = ("deploy", {"item": p.mould}, True)
+    if p.component:
+        steps = [mould] + metal_deploys(p.material, rest) + [("press",), ("cut",), ("deploy", {"item": p.component})]
+        if len(steps) > 8:
+            raise ValueError(f"{p.result}: too many steps for one loop")
+        return storage_block(p.material), steps, 1
+    for loops in range(1, rest + 2):
+        if rest % loops:
+            continue
+        per_loop = metal_deploys(p.material, rest // loops)
+        if len(per_loop) <= MAX_METAL_DEPLOYS_PER_LOOP:
+            return storage_block(p.material), [mould] + per_loop + [("press",), ("cut",)], loops
+    raise ValueError(f"{p.result}: no plan")
 
 
-# Moulds that Neo Warfare 1.21.1 has no recipe for. Same recipe as the CBC moulds.
-NW_MOULDS = [
-    "mediumcannon_barrel_cast_mould", "mediumcannon_breech_cast_mould", "mediumcannon_recoil_barrel_cast_mould",
-    "rotarycannon_barrel_cast_mould", "rotarycannon_breech_cast_mould", "rotarycannon_bearing_cast_mould",
-]
+def plan_metal(p: Part) -> int:
+    base, steps, loops = part_plan(p)
+    per_loop = 0
+    for st in steps:
+        if st[0] == "deploy" and st[1] == ingot(p.material):
+            per_loop += 1
+        elif st[0] == "deploy" and st[1] == storage_block(p.material):
+            per_loop += INGOTS_PER_BLOCK
+    return INGOTS_PER_BLOCK + per_loop * loops
 
 
-# CBC:AT 0.1.4c ships these mould recipes in a format 1.21.1 cannot parse, so they never load.
-CBCAT_BROKEN_MOULDS = ["twin_autocannon_barrel_mould", "rocket_pod_rail_mould", "rocket_pod_breech_mould"]
+def plan_component_count(p: Part) -> int:
+    _, steps, loops = part_plan(p)
+    return sum(1 for st in steps if p.component and st[0] == "deploy" and st[1] == {"item": p.component}) * loops
 
 
 # ----------------------------------------------------------------------------------------
@@ -222,36 +231,6 @@ def sequenced(conditions: list, base: dict, steps: list, loops: int, transitiona
     }
 
 
-def part_plan(p: Part) -> tuple[dict, list, int]:
-    """Returns (base ingredient, steps of one loop, loops)."""
-    metal_left = p.ingots - 1  # the base (ingot or breech mechanism) counts as one ingot
-    per_loop = 2 if p.ingots >= 6 else 1
-    loops = max(1, metal_left // per_loop)
-    steps: list = [("deploy", {"item": p.mould}, True)]
-    steps += [("deploy", ingot(p.material))] * per_loop
-    steps.append(("press",))
-    if p.kind == BORE:
-        steps.append(("cut",))
-    elif p.kind == RECOIL:
-        steps.append(("deploy", {"item": p.spring}))
-    base = p.base if p.base is not None else ingot(p.material)
-    return base, steps, loops
-
-
-def drop_self_loot(block_id: str, mod: str) -> dict:
-    return {
-        "neoforge:conditions": mod_loaded(mod),
-        "type": "minecraft:block",
-        "pools": [{
-            "bonus_rolls": 0.0,
-            "conditions": [{"condition": "minecraft:survives_explosion"}],
-            "entries": [{"type": "minecraft:item", "name": block_id}],
-            "rolls": 1.0,
-        }],
-        "random_sequence": f"{block_id.split(':')[0]}:blocks/{block_id.split(':')[1]}",
-    }
-
-
 def write_json(path: str, data: dict) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
@@ -261,80 +240,47 @@ def write_json(path: str, data: dict) -> None:
 
 # ----------------------------------------------------------------------------------------
 
-def check_unique_starts(parts: list[Part], comps: list[Component]) -> None:
-    """Create picks a sequenced recipe by its base item and its first step.
-    Two recipes with the same pair would be ambiguous, so fail early."""
+def check(parts: list[Part]) -> None:
+    """Create picks a sequenced recipe by its base item and first step: those pairs must be
+    unique. Also re-check the cost rules."""
     seen: dict[str, str] = {}
-    entries = [(p.result, part_plan(p)[0], part_plan(p)[1][0]) for p in parts]
-    entries += [(f"{c.mod}:{c.item}", c.base, c.steps[0]) for c in comps]
-    for result, base, first in entries:
-        key = json.dumps([base, list(first)], sort_keys=True)
+    for p in parts:
+        base, steps, _ = part_plan(p)
+        key = json.dumps([base, list(steps[0])], sort_keys=True)
         if key in seen:
-            sys.exit(f"Ambiguous recipe start: {result} and {seen[key]}")
-        seen[key] = result
+            sys.exit(f"Ambiguous recipe start: {p.result} and {seen[key]}")
+        seen[key] = p.result
+        if plan_metal(p) != p.ingots * METAL_MULTIPLIER:
+            sys.exit(f"{p.result}: metal {plan_metal(p)} != {p.ingots} x {METAL_MULTIPLIER}")
+        if plan_component_count(p) != (1 if p.component else 0):
+            sys.exit(f"{p.result}: component used {plan_component_count(p)} times")
+    names = [p.unfinished for p in parts]
+    if len(names) != len(set(names)):
+        sys.exit("Duplicate unfinished item names")
 
 
-def generate() -> tuple[list[Part], list[Component]]:
-    parts = build_parts()
-    comps = build_components()
-    check_unique_starts(parts, comps)
-
-    names = [p.unfinished for p in parts] + [c.unfinished for c in comps]
-    dupes = {n for n in names if names.count(n) > 1}
-    if dupes:
-        sys.exit(f"Duplicate unfinished item names: {sorted(dupes)}")
+def generate() -> tuple[list[Part], list[Skipped]]:
+    parts, skipped = build_parts()
+    check(parts)
 
     if os.path.isdir(GEN_RES):
         shutil.rmtree(GEN_RES)
-    recipe_dir = os.path.join(GEN_RES, "data", MOD_ID, "recipe")
+    recipe_dir = os.path.join(GEN_RES, "data", MOD_ID, "recipe", "sequenced_assembly")
     model_dir = os.path.join(GEN_RES, "assets", MOD_ID, "models", "item")
 
     for p in parts:
         base, steps, loops = part_plan(p)
         transitional = f"{MOD_ID}:{p.unfinished}"
-        write_json(os.path.join(recipe_dir, "sequenced_assembly", p.mod, f"{p.block}.json"),
-                   sequenced(mod_loaded(p.mod), base, steps, loops, transitional, p.result))
+        write_json(os.path.join(recipe_dir, p.mod, f"{p.block}.json"),
+                   sequenced(mod_loaded(*p.mods), base, steps, loops, transitional, p.result))
         write_json(os.path.join(model_dir, f"{p.unfinished}.json"), {"parent": f"{p.mod}:item/{p.block}"})
-        if p.mod in (CBCAT, NW):
-            write_json(os.path.join(GEN_RES, "data", p.mod, "loot_table", "blocks", f"{p.block}.json"),
-                       drop_self_loot(p.result, p.mod))
 
-    for c in comps:
-        transitional = f"{MOD_ID}:{c.unfinished}"
-        write_json(os.path.join(recipe_dir, "sequenced_assembly", c.mod, "components", f"{c.key}.json"),
-                   sequenced(mod_loaded(c.mod), c.base, c.steps, c.loops, transitional, f"{c.mod}:{c.item}"))
-        write_json(os.path.join(model_dir, f"{c.unfinished}.json"), {"parent": f"{c.mod}:item/{c.item}"})
-
-    for mould in NW_MOULDS:
-        write_json(os.path.join(recipe_dir, "cutting", NW, f"{mould}.json"), {
-            "neoforge:conditions": mod_loaded(NW),
-            "type": "create:cutting",
-            "ingredients": [{"tag": "minecraft:logs"}],
-            "results": [{"id": f"{NW}:{mould}"}],
-        })
-
-    for mould in CBCAT_BROKEN_MOULDS:
-        write_json(os.path.join(recipe_dir, "cutting", CBCAT, f"{mould}.json"), {
-            "neoforge:conditions": mod_loaded(CBCAT),
-            "type": "create:cutting",
-            "ingredients": [{"tag": "minecraft:logs"}],
-            "results": [{"id": f"{CBCAT}:{mould}"}],
-        })
-
-    # Moulds are blocks too; addon loot tables are at the pre-1.21 path, so add working ones.
-    moulds = sorted({p.mould for p in parts if p.mod in (CBCAT, NW)})
-    for mould in moulds:
-        mod, path = mould.split(":")
-        write_json(os.path.join(GEN_RES, "data", mod, "loot_table", "blocks", f"{path}.json"),
-                   drop_self_loot(mould, mod))
-
-    write_java(parts, comps)
-    write_docs(parts, comps)
-    return parts, comps
+    write_java(parts)
+    write_docs(parts, skipped)
+    return parts, skipped
 
 
-def write_java(parts: list[Part], comps: list[Component]) -> None:
-    rows = [(p.unfinished, p.mod, p.block) for p in parts] + [(c.unfinished, c.mod, c.item) for c in comps]
+def write_java(parts: list[Part]) -> None:
     lines = [
         "package io.github.iksanbro.cbcparts;",
         "",
@@ -347,21 +293,33 @@ def write_java(parts: list[Part], comps: list[Component]) -> None:
         "public final class GeneratedParts {",
         "    private GeneratedParts() {}",
         "",
-        "    /** One unfinished item: its own name, the mod of the finished item and its id there. */",
-        "    public record UnfinishedPart(String name, String modId, String targetPath) {}",
+        "    /**",
+        "     * One unfinished item: its own name, the mods its recipe needs (the first one owns the",
+        "     * finished part), the id of the finished part, the ingots the world casting uses and the",
+        "     * ingots the recipe uses.",
+        "     */",
+        "    public record UnfinishedPart(String name, List<String> requiredMods, String targetPath,",
+        "                                 int castingIngots, int recipeIngots) {",
+        "        public String modId() {",
+        "            return requiredMods.get(0);",
+        "        }",
+        "    }",
         "",
         "    public static final List<UnfinishedPart> ALL = List.of(",
     ]
-    for i, (name, mod, target) in enumerate(rows):
-        comma = "," if i < len(rows) - 1 else ""
-        lines.append(f'            new UnfinishedPart("{name}", "{mod}", "{target}"){comma}')
+    for i, p in enumerate(parts):
+        comma = "," if i < len(parts) - 1 else ""
+        mods = ", ".join(f'"{m}"' for m in p.mods)
+        lines.append(f'            new UnfinishedPart("{p.unfinished}", List.of({mods}), "{p.block}", '
+                     f'{p.ingots}, {plan_metal(p)}){comma}')
     lines += ["    );", "}", ""]
     with open(JAVA_OUT, "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(lines))
 
 
 STEP_RU = {"press": "пресс", "cut": "пила"}
-MOD_TITLE = {CBC: "Create Big Cannons", CBCAT: "CBC: Advanced Technologies", NW: "CBC Neo Warfare"}
+MOD_TITLE = {CBC: "Create Big Cannons", CBCAT: "CBC: Advanced Technologies",
+             NW: "CBC Neo Warfare (нужен CBCMW recipe fix)"}
 
 
 def ing_name(ing: dict) -> str:
@@ -372,39 +330,39 @@ def steps_text(steps: list) -> str:
     out = []
     for st in steps:
         if st[0] == "deploy":
-            keep = " (остаётся в деплоере)" if len(st) > 2 and st[2] else ""
+            keep = " (остаётся)" if len(st) > 2 and st[2] else ""
             out.append(f"деплоер: {ing_name(st[1])}{keep}")
         else:
             out.append(STEP_RU[st[0]])
     return " → ".join(out)
 
 
-def write_docs(parts: list[Part], comps: list[Component]) -> None:
+def write_docs(parts: list[Part], skipped: list[Skipped]) -> None:
     lines = [
         "# Рецепты последовательной сборки",
         "",
         "Файл создан `tools/generate_data.py`, руками не править.",
         "",
-        "Каждая строка: стартовый предмет, затем шаги одного цикла, число циклов и итоговый расход слитков.",
-        "Форма (cast mould) держится в деплоере и не тратится.",
+        "Рецепт есть только у деталей, которые делаются исключительно в мире (литьё и сверление),",
+        "и только если этот процесс в мире работает. Рецепт добавлен рядом с литьём, ничего не заменено.",
+        "",
+        "Ресурсы те же, что у литья. Металл ×3, остальное в прежнем количестве:",
+        "форма держится в деплоере и не тратится (при литье она тоже возвращается),",
+        "предмет для incomplete-блока (экстрактор, пружина) тратится один раз.",
+        "Старт: блок материала (9 слитков).",
         "",
     ]
     for mod in (CBC, CBCAT, NW):
-        lines += [f"## {MOD_TITLE[mod]}", "", "| Деталь | Старт | Шаги одного цикла | Циклов | Слитков |", "|---|---|---|---|---|"]
+        lines += [f"## {MOD_TITLE[mod]}", "",
+                  "| Деталь | Литьё, слитков | Рецепт, слитков | Шаги одного цикла | Циклов |",
+                  "|---|---|---|---|---|"]
         for p in (p for p in parts if p.mod == mod):
-            base, steps, loops = part_plan(p)
-            per_loop = sum(1 for st in steps if st[0] == "deploy" and st[1] == ingot(p.material))
-            total = f"{per_loop * loops} + механизм" if p.base else str(1 + per_loop * loops)
-            lines.append(f"| `{p.result}` | {ing_name(base)} | {steps_text(steps)} | {loops} | {total} |")
+            _, steps, loops = part_plan(p)
+            lines.append(f"| `{p.result}` | {p.ingots} | {plan_metal(p)} | {steps_text(steps)} | {loops} |")
         lines.append("")
-    lines += ["## Компоненты Neo Warfare (в 1.21.1 у них нет рецептов)", "",
-              "| Предмет | Старт | Шаги одного цикла | Циклов |", "|---|---|---|---|"]
-    for c in comps:
-        lines.append(f"| `{c.mod}:{c.item}` | {ing_name(c.base)} | {steps_text(c.steps)} | {c.loops} |")
-    lines += ["", "## Формы", "",
-              "Распил любого бревна (`#minecraft:logs`) механической пилой:", ""]
-    lines += [f"- `{NW}:{m}`" for m in NW_MOULDS]
-    lines += [f"- `{CBCAT}:{m}` (рецепт CBC:AT 0.1.4c не загружается)" for m in CBCAT_BROKEN_MOULDS]
+    lines += ["## Без рецепта", "", "Процесс в мире сломан или отсутствует, поэтому мод ничего не добавляет.", "",
+              "| Деталь | Причина |", "|---|---|"]
+    lines += [f"| `{s.result}` | {s.reason} |" for s in skipped]
     lines.append("")
     with open(os.path.join(ROOT, "RECIPES.md"), "w", encoding="utf-8", newline="\n") as f:
         f.write("\n".join(lines))
@@ -426,23 +384,13 @@ def collect_ids(dirs: list[str]) -> set[str]:
     return ids
 
 
-def validate(dirs: list[str], parts: list[Part], comps: list[Component]) -> int:
-    known = collect_ids(dirs) | {"create:andesite_alloy"}
+def validate(dirs: list[str], parts: list[Part]) -> int:
+    known = collect_ids(dirs)
     needed: set[str] = set()
     for p in parts:
         needed |= {p.result, p.mould}
-        if p.base and "item" in p.base:
-            needed.add(p.base["item"])
-        if p.spring:
-            needed.add(p.spring)
-    for c in comps:
-        needed.add(f"{c.mod}:{c.item}")
-        if "item" in c.base:
-            needed.add(c.base["item"])
-    for m in NW_MOULDS:
-        needed.add(f"{NW}:{m}")
-    for m in CBCAT_BROKEN_MOULDS:
-        needed.add(f"{CBCAT}:{m}")
+        if p.component:
+            needed.add(p.component)
     missing = sorted(i for i in needed if i not in known)
     for i in missing:
         print("MISSING:", i)
@@ -454,10 +402,10 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--validate", nargs="*", default=None, help="folders with extracted mod jars")
     args = ap.parse_args()
-    parts, comps = generate()
-    print(f"parts: {len(parts)}, helper components: {len(comps)}, nw moulds: {len(NW_MOULDS)}")
+    parts, skipped = generate()
+    print(f"recipes: {len(parts)}, skipped parts: {len(skipped)}")
     if args.validate:
-        return validate(args.validate, parts, comps)
+        return validate(args.validate, parts)
     return 0
 
 

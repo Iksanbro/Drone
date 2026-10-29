@@ -9,8 +9,9 @@ version = "${mod_version}"
 displayName = "${mod_name}"
 authors = "${mod_authors}"
 description = '''
-Sequenced assembly recipes for every non-big cannon part of Create Big Cannons,
-CBC: Advanced Technologies and CBC Neo Warfare, and survival assembly of cannons from those parts.
+Sequenced assembly recipes (3x the metal of casting) for the non-big cannon parts of Create Big
+Cannons, CBC: Advanced Technologies and CBC Neo Warfare that are made only by casting and boring,
+and survival assembly of cannons from those parts.
 '''
 
 [[dependencies.${mod_id}]]
@@ -53,4 +54,11 @@ modId = "cbcmodernwarfare"
 type = "optional"
 versionRange = "[0.0.6,)"
 ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "cbcmw_recipe_fix"
+type = "optional"
+versionRange = "[0,)"
+ordering = "NONE"
 side = "BOTH"

@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:ingots/cast_iron"
+    "tag": "c:storage_blocks/cast_iron"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "cbc_at:cast_iron_heavy_autocannon_recoil_spring"
@@ -40,23 +40,7 @@
           "item": "cbcparts:unfinished_cast_iron_heavy_autocannon_recoil_spring"
         },
         {
-          "tag": "c:ingots/cast_iron"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_cast_iron_heavy_autocannon_recoil_spring"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_cast_iron_heavy_autocannon_recoil_spring"
-        },
-        {
-          "tag": "c:ingots/cast_iron"
+          "tag": "c:storage_blocks/cast_iron"
         }
       ],
       "results": [
@@ -79,13 +63,10 @@
       ]
     },
     {
-      "type": "create:deploying",
+      "type": "create:cutting",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_cast_iron_heavy_autocannon_recoil_spring"
-        },
-        {
-          "item": "createbigcannons:recoil_spring"
         }
       ],
       "results": [

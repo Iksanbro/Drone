@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:ingots/steel"
+    "tag": "c:storage_blocks/steel"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "cbc_at:steel_heavy_autocannon_muzzle_brake"
@@ -40,23 +40,7 @@
           "item": "cbcparts:unfinished_steel_heavy_autocannon_muzzle_brake"
         },
         {
-          "tag": "c:ingots/steel"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_steel_heavy_autocannon_muzzle_brake"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_steel_heavy_autocannon_muzzle_brake"
-        },
-        {
-          "tag": "c:ingots/steel"
+          "tag": "c:storage_blocks/steel"
         }
       ],
       "results": [

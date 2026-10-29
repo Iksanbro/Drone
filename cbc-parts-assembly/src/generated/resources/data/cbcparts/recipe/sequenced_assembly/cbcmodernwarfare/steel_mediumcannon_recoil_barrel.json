@@ -3,13 +3,17 @@
     {
       "type": "neoforge:mod_loaded",
       "modid": "cbcmodernwarfare"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmw_recipe_fix"
     }
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:ingots/steel"
+    "tag": "c:storage_blocks/steel"
   },
-  "loops": 3,
+  "loops": 1,
   "results": [
     {
       "id": "cbcmodernwarfare:steel_mediumcannon_recoil_barrel"
@@ -50,7 +54,52 @@
       ]
     },
     {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_mediumcannon_recoil_barrel"
+        },
+        {
+          "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_mediumcannon_recoil_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_mediumcannon_recoil_barrel"
+        },
+        {
+          "tag": "c:ingots/steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_mediumcannon_recoil_barrel"
+        }
+      ]
+    },
+    {
       "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_steel_mediumcannon_recoil_barrel"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_steel_mediumcannon_recoil_barrel"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_steel_mediumcannon_recoil_barrel"

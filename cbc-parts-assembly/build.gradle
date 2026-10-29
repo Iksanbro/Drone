@@ -90,6 +90,10 @@ dependencies {
     if (!project.hasProperty('withoutAddons')) {
         localRuntime "maven.modrinth:create-big-cannons-advanced-technologies:${cbcat_modrinth}"
         localRuntime "curse.maven:cbc-neo-warfare-1552960:${neo_warfare_curse_file}"
+        // -PwithoutCbcmwFix: Neo Warfare without CBCMW recipe fix (medium cannon recipes must disappear)
+        if (!project.hasProperty('withoutCbcmwFix')) {
+            localRuntime "curse.maven:cbcmw-recipe-fix-1598498:${cbcmw_fix_curse_file}"
+        }
     }
 }
 

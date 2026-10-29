@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:ingots/steel"
+    "tag": "c:storage_blocks/steel"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "cbc_at:steel_vert_twin_autocannon_barrel"
@@ -40,23 +40,7 @@
           "item": "cbcparts:unfinished_steel_vert_twin_autocannon_barrel"
         },
         {
-          "tag": "c:ingots/steel"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_steel_vert_twin_autocannon_barrel"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_steel_vert_twin_autocannon_barrel"
-        },
-        {
-          "tag": "c:ingots/steel"
+          "tag": "c:storage_blocks/steel"
         }
       ],
       "results": [

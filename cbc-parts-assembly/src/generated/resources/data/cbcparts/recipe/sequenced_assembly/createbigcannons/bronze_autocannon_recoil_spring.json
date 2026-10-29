@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:ingots/bronze"
+    "tag": "c:storage_blocks/bronze"
   },
-  "loops": 3,
+  "loops": 1,
   "results": [
     {
       "id": "createbigcannons:bronze_autocannon_recoil_spring"
@@ -50,7 +50,52 @@
       ]
     },
     {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_autocannon_recoil_spring"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_autocannon_recoil_spring"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
       "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_autocannon_recoil_spring"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_autocannon_recoil_spring"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_bronze_autocannon_recoil_spring"

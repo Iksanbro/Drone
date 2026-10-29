@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "item": "createbigcannons:cast_iron_autocannon_breech_extractor"
+    "tag": "c:storage_blocks/cast_iron"
   },
-  "loops": 3,
+  "loops": 5,
   "results": [
     {
       "id": "cbc_at:cast_iron_vert_twin_autocannon_breech"
@@ -66,7 +66,36 @@
       ]
     },
     {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_breech"
+        },
+        {
+          "tag": "c:ingots/cast_iron"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_breech"
+        }
+      ]
+    },
+    {
       "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_cast_iron_vert_twin_autocannon_breech"

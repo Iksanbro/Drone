@@ -12,15 +12,15 @@ import io.github.iksanbro.cbcparts.Config;
 import io.github.iksanbro.cbcparts.GeneratedParts;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -35,7 +35,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
@@ -44,6 +43,8 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.BlockRecipe;
+import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 
 @GameTestHolder(CBCPartsAssembly.MOD_ID)
 @PrefixGameTestTemplate(false)
@@ -58,30 +59,51 @@ public final class CannonPartsGameTests {
     /**
      * Runs every sequenced assembly recipe of the mod step by step, looking each step up the
      * same way the deployer, press and saw of Create do. Fails if a step is not found, if a
-     * different recipe answers (ambiguous start), or if the end result is wrong.
+     * different recipe answers (ambiguous start), if the end result is wrong, or if the recipe
+     * does not use exactly 3x the metal of the casting and at most one other consumed item.
      */
     @GameTest(template = "empty")
-    public static void everyRecipeBuildsItsPart(GameTestHelper helper) {
+    public static void everyRecipeBuildsItsPartForTripleMetal(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
         List<String> errors = new ArrayList<>();
         int checked = 0;
         for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
             if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
-            if (!(holder.value() instanceof SequencedAssemblyRecipe recipe)) continue;
+            if (!(holder.value() instanceof SequencedAssemblyRecipe recipe)) {
+                errors.add(holder.id() + ": the mod must only add sequenced assembly recipes");
+                continue;
+            }
             checked++;
             String problem = runRecipe(level, holder.id(), recipe);
             if (problem != null) errors.add(holder.id() + ": " + problem);
         }
-        int expected = expectedSequencedRecipes();
+        int expected = loadedParts().size();
         CBCPartsAssembly.LOGGER.info("[test] sequenced recipes checked: {} (expected {})", checked, expected);
-        if (checked != expected) errors.add("found " + checked + " sequenced recipes, expected " + expected);
+        if (checked != expected) errors.add("found " + checked + " recipes, expected " + expected);
         if (!errors.isEmpty()) helper.fail(String.join("\n", errors));
         helper.succeed();
     }
 
-    private static int expectedSequencedRecipes() {
+    private static List<GeneratedParts.UnfinishedPart> loadedParts() {
         ModList mods = ModList.get();
-        return (int) GeneratedParts.ALL.stream().filter(p -> mods.isLoaded(p.modId())).count();
+        return GeneratedParts.ALL.stream().filter(p -> p.requiredMods().stream().allMatch(mods::isLoaded)).toList();
+    }
+
+    private static Optional<GeneratedParts.UnfinishedPart> partFor(ResourceLocation result) {
+        return loadedParts().stream()
+                .filter(p -> p.modId().equals(result.getNamespace()) && p.targetPath().equals(result.getPath()))
+                .findFirst();
+    }
+
+    /** Ingots of metal in one item: 1 for an ingot, 9 for a storage block, 0 otherwise. */
+    private static int metalOf(ItemStack stack) {
+        return stack.getTags().mapToInt(tag -> {
+            if (!tag.location().getNamespace().equals("c")) return 0;
+            String path = tag.location().getPath();
+            if (path.startsWith("ingots/")) return 1;
+            if (path.startsWith("storage_blocks/")) return 9;
+            return 0;
+        }).max().orElse(0);
     }
 
     private static String runRecipe(ServerLevel level, ResourceLocation id, SequencedAssemblyRecipe recipe) {
@@ -89,6 +111,11 @@ public final class CannonPartsGameTests {
         if (bases.length == 0) return "base ingredient has no items";
         ItemStack item = bases[0].copy();
         ItemStack expected = recipe.getResultItem(level.registryAccess());
+        Optional<GeneratedParts.UnfinishedPart> part = partFor(BuiltInRegistries.ITEM.getKey(expected.getItem()));
+        if (part.isEmpty()) return "makes " + expected + ", which is not in the part list";
+
+        int metal = metalOf(item);
+        int otherItems = metal == 0 ? 1 : 0;
         List<SequencedRecipe<?>> sequence = recipe.getSequence();
         int total = recipe.getLoops() * sequence.size();
         for (int i = 0; i < total; i++) {
@@ -97,6 +124,11 @@ public final class CannonPartsGameTests {
             if (step instanceof DeployerApplicationRecipe deploy) {
                 ItemStack[] held = deploy.getRequiredHeldItem().getItems();
                 if (held.length == 0) return "step " + i + ": held item ingredient is empty";
+                if (!deploy.shouldKeepHeldItem()) {
+                    int m = metalOf(held[0]);
+                    metal += m;
+                    if (m == 0) otherItems++;
+                }
                 ItemStackHandler inv = new ItemStackHandler(2);
                 inv.setStackInSlot(0, item);
                 inv.setStackInSlot(1, held[0].copy());
@@ -120,69 +152,64 @@ public final class CannonPartsGameTests {
             item = out.get(0);
         }
         if (!ItemStack.isSameItem(item, expected)) return "ended with " + item + " instead of " + expected;
+        int wanted = part.get().castingIngots() * 3;
+        if (metal != wanted) return "uses " + metal + " ingots of metal, casting uses " + part.get().castingIngots();
+        if (otherItems > 1) return "consumes " + otherItems + " non-metal items";
         return null;
     }
 
-    /** Neo Warfare has no recipes for its moulds and components in 1.21.1; ours must be loaded. */
+    /**
+     * Each part with a recipe must also be made in the world: a CBC block recipe (casting or
+     * boring) produces it or its incomplete block, and its mould can be crafted. Those block
+     * recipes stay in place, the new recipe is only added next to them.
+     */
     @GameTest(template = "empty")
-    public static void neoWarfareHelperRecipesLoaded(GameTestHelper helper) {
-        if (!ModList.get().isLoaded(NW)) {
-            helper.succeed();
-            return;
+    public static void everyRecipePartIsMadeInTheWorld(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        Set<ResourceLocation> worldResults = new HashSet<>();
+        for (BlockRecipe recipe : BlockRecipesManager.getRecipes()) {
+            worldResults.add(BuiltInRegistries.BLOCK.getKey(recipe.getResultBlock()));
         }
-        var recipes = helper.getLevel().getRecipeManager();
-        String[] ids = {
-                "cutting/cbcmodernwarfare/mediumcannon_barrel_cast_mould",
-                "cutting/cbcmodernwarfare/rotarycannon_bearing_cast_mould",
-                "sequenced_assembly/cbcmodernwarfare/components/steel_mediumcannon_falling_breech",
-                "sequenced_assembly/cbcmodernwarfare/components/steel_rotarycannon_breech_extractor",
-                "sequenced_assembly/cbcmodernwarfare/components/heavy_recoil_spring",
-        };
-        for (String path : ids) {
-            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(CBCPartsAssembly.MOD_ID, path);
-            helper.assertTrue(recipes.byKey(id).isPresent(), "missing recipe " + id);
+        Set<Item> craftable = new HashSet<>();
+        for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
+            ItemStack out = holder.value().getResultItem(level.registryAccess());
+            if (!out.isEmpty()) craftable.add(out.getItem());
+            if (holder.value() instanceof ProcessingRecipe<?, ?> processing) {
+                processing.getRollableResultsAsItemStacks().forEach(s -> craftable.add(s.getItem()));
+            }
         }
+        List<String> errors = new ArrayList<>();
+        for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
+            if (!(holder.value() instanceof SequencedAssemblyRecipe recipe)) continue;
+            if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
+            ResourceLocation part = BuiltInRegistries.ITEM.getKey(recipe.getResultItem(level.registryAccess()).getItem());
+            ResourceLocation incomplete = ResourceLocation.fromNamespaceAndPath(part.getNamespace(), "incomplete_" + part.getPath());
+            if (!worldResults.contains(part) && !worldResults.contains(incomplete)) {
+                errors.add(part + ": no casting/boring recipe in the world");
+            }
+            SequencedRecipe<?> first = recipe.getSequence().get(0);
+            if (first.getRecipe() instanceof DeployerApplicationRecipe deploy && deploy.shouldKeepHeldItem()) {
+                Item mould = deploy.getRequiredHeldItem().getItems()[0].getItem();
+                if (!craftable.contains(mould)) errors.add(part + ": its mould " + BuiltInRegistries.ITEM.getKey(mould) + " cannot be crafted");
+            } else {
+                errors.add(part + ": first step is not the mould");
+            }
+        }
+        if (!errors.isEmpty()) helper.fail(String.join("\n", errors));
         helper.succeed();
     }
 
-    /** Three CBC:AT mould recipes fail to parse in 0.1.4c; ours replace them. */
+    /** Parts whose world process is broken or missing get nothing. */
     @GameTest(template = "empty")
-    public static void brokenAdvancedTechnologiesMouldsCraftable(GameTestHelper helper) {
-        if (skipWithout(helper, CBCAT)) return;
-        var recipes = helper.getLevel().getRecipeManager();
-        for (String mould : new String[] {"twin_autocannon_barrel_mould", "rocket_pod_rail_mould", "rocket_pod_breech_mould"}) {
-            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(CBCPartsAssembly.MOD_ID, "cutting/cbc_at/" + mould);
-            helper.assertTrue(recipes.byKey(id).isPresent(), "missing recipe " + id);
-        }
-        helper.succeed();
-    }
-
-    // ---------------------------------------------------------------------------------
-    // Loot tables
-
-    /** Addon loot tables sit at the pre-1.21 path, so parts would drop nothing. Ours fix that. */
-    @GameTest(template = "empty")
-    public static void addonPartsHaveLootTables(GameTestHelper helper) {
-        var registries = helper.getLevel().getServer().reloadableRegistries();
-        List<String> missing = new ArrayList<>();
-        for (GeneratedParts.UnfinishedPart part : GeneratedParts.ALL) {
-            if (!ModList.get().isLoaded(part.modId()) || part.modId().equals(CBC)) continue;
-            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(part.modId(), part.targetPath()));
-            if (!(item instanceof net.minecraft.world.item.BlockItem)) continue; // components are plain items
-            ResourceKey<LootTable> key = ResourceKey.create(Registries.LOOT_TABLE,
-                    ResourceLocation.fromNamespaceAndPath(part.modId(), "blocks/" + part.targetPath()));
-            if (registries.getLootTable(key) == LootTable.EMPTY) missing.add(key.location().toString());
-        }
-        if (!missing.isEmpty()) helper.fail("missing loot tables: " + missing);
-
-        // Blocks this mod does not cover show the original problem: their tables are not loaded.
-        String[][] uncovered = {{CBCAT, "unbored_steel_twin_autocannon_barrel"}, {NW, "unbored_steel_mediumcannon_barrel"}};
-        for (String[] block : uncovered) {
-            if (!ModList.get().isLoaded(block[0])) continue;
-            ResourceKey<LootTable> key = ResourceKey.create(Registries.LOOT_TABLE,
-                    ResourceLocation.fromNamespaceAndPath(block[0], "blocks/" + block[1]));
-            CBCPartsAssembly.LOGGER.info("[test] original loot table {} loaded: {}", key.location(),
-                    registries.getLootTable(key) != LootTable.EMPTY);
+    public static void brokenPartsGetNoRecipe(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        List<String> forbidden = List.of("rotarycannon", "twin_autocannon_barrel", "rocket_pod");
+        for (RecipeHolder<?> holder : level.getRecipeManager().getRecipes()) {
+            if (!holder.id().getNamespace().equals(CBCPartsAssembly.MOD_ID)) continue;
+            String path = BuiltInRegistries.ITEM.getKey(holder.value().getResultItem(level.registryAccess()).getItem()).getPath();
+            for (String f : forbidden) {
+                if (path.contains(f) && !path.contains("vert_twin")) helper.fail("unexpected recipe " + holder.id());
+            }
         }
         helper.succeed();
     }

@@ -15,8 +15,8 @@ public final class ModItems {
         ModList mods = ModList.get();
         int count = 0;
         for (GeneratedParts.UnfinishedPart part : GeneratedParts.ALL) {
-            // Items for addons that are not installed are skipped; their recipes are skipped too.
-            if (!mods.isLoaded(part.modId())) continue;
+            // Parts of mods that are not installed are skipped; their recipes are skipped too.
+            if (!part.requiredMods().stream().allMatch(mods::isLoaded)) continue;
             ResourceLocation target = ResourceLocation.fromNamespaceAndPath(part.modId(), part.targetPath());
             ITEMS.register(part.name(), () -> new UnfinishedPartItem(new Item.Properties(), target));
             count++;

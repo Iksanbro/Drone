@@ -2,137 +2,122 @@
 
 Файл создан `tools/generate_data.py`, руками не править.
 
-Каждая строка: стартовый предмет, затем шаги одного цикла, число циклов и итоговый расход слитков.
-Форма (cast mould) держится в деплоере и не тратится.
+Рецепт есть только у деталей, которые делаются исключительно в мире (литьё и сверление),
+и только если этот процесс в мире работает. Рецепт добавлен рядом с литьём, ничего не заменено.
+
+Ресурсы те же, что у литья. Металл ×3, остальное в прежнем количестве:
+форма держится в деплоере и не тратится (при литье она тоже возвращается),
+предмет для incomplete-блока (экстрактор, пружина) тратится один раз.
+Старт: блок материала (9 слитков).
 
 ## Create Big Cannons
 
-| Деталь | Старт | Шаги одного цикла | Циклов | Слитков |
+| Деталь | Литьё, слитков | Рецепт, слитков | Шаги одного цикла | Циклов |
 |---|---|---|---|---|
-| `createbigcannons:cast_iron_autocannon_barrel` | `#c:ingots/cast_iron` | деплоер: `createbigcannons:autocannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 3 |
-| `createbigcannons:cast_iron_autocannon_breech` | `createbigcannons:cast_iron_autocannon_breech_extractor` | деплоер: `createbigcannons:autocannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → пресс | 3 | 3 + механизм |
-| `createbigcannons:cast_iron_autocannon_recoil_spring` | `#c:ingots/cast_iron` | деплоер: `createbigcannons:autocannon_recoil_spring_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → пресс → деплоер: `createbigcannons:recoil_spring` | 3 | 4 |
-| `createbigcannons:bronze_autocannon_barrel` | `#c:ingots/bronze` | деплоер: `createbigcannons:autocannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 3 |
-| `createbigcannons:bronze_autocannon_breech` | `createbigcannons:bronze_autocannon_breech_extractor` | деплоер: `createbigcannons:autocannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс | 3 | 3 + механизм |
-| `createbigcannons:bronze_autocannon_recoil_spring` | `#c:ingots/bronze` | деплоер: `createbigcannons:autocannon_recoil_spring_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс → деплоер: `createbigcannons:recoil_spring` | 3 | 4 |
-| `createbigcannons:steel_autocannon_barrel` | `#c:ingots/steel` | деплоер: `createbigcannons:autocannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 3 |
-| `createbigcannons:steel_autocannon_breech` | `createbigcannons:steel_autocannon_breech_extractor` | деплоер: `createbigcannons:autocannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс | 3 | 3 + механизм |
-| `createbigcannons:steel_autocannon_recoil_spring` | `#c:ingots/steel` | деплоер: `createbigcannons:autocannon_recoil_spring_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс → деплоер: `createbigcannons:recoil_spring` | 3 | 4 |
+| `createbigcannons:cast_iron_autocannon_barrel` | 3 | 9 | деплоер: `createbigcannons:autocannon_barrel_cast_mould` (остаётся) → пресс → пила | 1 |
+| `createbigcannons:cast_iron_autocannon_breech` | 4 | 12 | деплоер: `createbigcannons:autocannon_breech_cast_mould` (остаётся) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила → деплоер: `createbigcannons:cast_iron_autocannon_breech_extractor` | 1 |
+| `createbigcannons:cast_iron_autocannon_recoil_spring` | 4 | 12 | деплоер: `createbigcannons:autocannon_recoil_spring_cast_mould` (остаётся) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила → деплоер: `createbigcannons:recoil_spring` | 1 |
+| `createbigcannons:bronze_autocannon_barrel` | 3 | 9 | деплоер: `createbigcannons:autocannon_barrel_cast_mould` (остаётся) → пресс → пила | 1 |
+| `createbigcannons:bronze_autocannon_breech` | 4 | 12 | деплоер: `createbigcannons:autocannon_breech_cast_mould` (остаётся) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила → деплоер: `createbigcannons:bronze_autocannon_breech_extractor` | 1 |
+| `createbigcannons:bronze_autocannon_recoil_spring` | 4 | 12 | деплоер: `createbigcannons:autocannon_recoil_spring_cast_mould` (остаётся) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила → деплоер: `createbigcannons:recoil_spring` | 1 |
+| `createbigcannons:steel_autocannon_barrel` | 3 | 9 | деплоер: `createbigcannons:autocannon_barrel_cast_mould` (остаётся) → пресс → пила | 1 |
+| `createbigcannons:steel_autocannon_breech` | 4 | 12 | деплоер: `createbigcannons:autocannon_breech_cast_mould` (остаётся) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила → деплоер: `createbigcannons:steel_autocannon_breech_extractor` | 1 |
+| `createbigcannons:steel_autocannon_recoil_spring` | 4 | 12 | деплоер: `createbigcannons:autocannon_recoil_spring_cast_mould` (остаётся) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила → деплоер: `createbigcannons:recoil_spring` | 1 |
 
 ## CBC: Advanced Technologies
 
-| Деталь | Старт | Шаги одного цикла | Циклов | Слитков |
+| Деталь | Литьё, слитков | Рецепт, слитков | Шаги одного цикла | Циклов |
 |---|---|---|---|---|
-| `cbc_at:cast_iron_autocannon_silencer` | `#c:ingots/cast_iron` | деплоер: `cbc_at:autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 3 |
-| `cbc_at:cast_iron_autocannon_muzzle_brake` | `#c:ingots/cast_iron` | деплоер: `cbc_at:autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 3 |
-| `cbc_at:cast_iron_twin_autocannon_barrel` | `#c:ingots/cast_iron` | деплоер: `cbc_at:twin_autocannon_barrel_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 5 |
-| `cbc_at:cast_iron_twin_autocannon_recoil_spring` | `#c:ingots/cast_iron` | деплоер: `cbc_at:twin_autocannon_recoil_spring_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → деплоер: `createbigcannons:recoil_spring` | 2 | 5 |
-| `cbc_at:cast_iron_twin_autocannon_breech` | `createbigcannons:cast_iron_autocannon_breech_extractor` | деплоер: `cbc_at:twin_autocannon_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс | 2 | 4 + механизм |
-| `cbc_at:cast_iron_twin_autocannon_silencer` | `#c:ingots/cast_iron` | деплоер: `cbc_at:twin_autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 5 |
-| `cbc_at:cast_iron_twin_autocannon_muzzle_brake` | `#c:ingots/cast_iron` | деплоер: `cbc_at:twin_autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 5 |
-| `cbc_at:cast_iron_vert_twin_autocannon_barrel` | `#c:ingots/cast_iron` | деплоер: `cbc_at:vert_twin_autocannon_barrel_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 5 |
-| `cbc_at:cast_iron_vert_twin_autocannon_recoil_spring` | `#c:ingots/cast_iron` | деплоер: `cbc_at:vert_twin_autocannon_recoil_spring_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → деплоер: `createbigcannons:recoil_spring` | 3 | 7 |
-| `cbc_at:cast_iron_vert_twin_autocannon_breech` | `createbigcannons:cast_iron_autocannon_breech_extractor` | деплоер: `cbc_at:vert_twin_autocannon_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс | 3 | 6 + механизм |
-| `cbc_at:cast_iron_vert_twin_autocannon_silencer` | `#c:ingots/cast_iron` | деплоер: `cbc_at:vert_twin_autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 3 | 7 |
-| `cbc_at:cast_iron_vert_twin_autocannon_muzzle_brake` | `#c:ingots/cast_iron` | деплоер: `cbc_at:vert_twin_autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 5 |
-| `cbc_at:cast_iron_heavy_autocannon_barrel` | `#c:ingots/cast_iron` | деплоер: `cbc_at:heavy_autocannon_barrel_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 5 |
-| `cbc_at:cast_iron_heavy_autocannon_muzzle_brake` | `#c:ingots/cast_iron` | деплоер: `cbc_at:heavy_autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 5 |
-| `cbc_at:cast_iron_heavy_autocannon_silencer` | `#c:ingots/cast_iron` | деплоер: `cbc_at:heavy_autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 5 |
-| `cbc_at:cast_iron_heavy_autocannon_recoil_spring` | `#c:ingots/cast_iron` | деплоер: `cbc_at:heavy_autocannon_recoil_spring_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → деплоер: `createbigcannons:recoil_spring` | 2 | 5 |
-| `cbc_at:cast_iron_heavy_autocannon_breech` | `createbigcannons:cast_iron_autocannon_breech_extractor` | деплоер: `cbc_at:heavy_autocannon_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс | 2 | 4 + механизм |
-| `cbc_at:cast_iron_heavy_autocannon_qfbreech` | `createbigcannons:cast_iron_autocannon_breech_extractor` | деплоер: `cbc_at:heavy_autocannon_qfbreech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс | 2 | 4 + механизм |
-| `cbc_at:cast_iron_rocket_pod_rail` | `#c:ingots/cast_iron` | деплоер: `cbc_at:rocket_pod_rail_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 4 | 9 |
-| `cbc_at:cast_iron_rocket_pod_breech` | `#c:ingots/cast_iron` | деплоер: `cbc_at:rocket_pod_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс | 4 | 9 |
-| `cbc_at:bronze_autocannon_silencer` | `#c:ingots/bronze` | деплоер: `cbc_at:autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 3 |
-| `cbc_at:bronze_autocannon_muzzle_brake` | `#c:ingots/bronze` | деплоер: `cbc_at:autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 3 |
-| `cbc_at:bronze_twin_autocannon_barrel` | `#c:ingots/bronze` | деплоер: `cbc_at:twin_autocannon_barrel_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 5 |
-| `cbc_at:bronze_twin_autocannon_recoil_spring` | `#c:ingots/bronze` | деплоер: `cbc_at:twin_autocannon_recoil_spring_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → деплоер: `createbigcannons:recoil_spring` | 2 | 5 |
-| `cbc_at:bronze_twin_autocannon_breech` | `createbigcannons:bronze_autocannon_breech_extractor` | деплоер: `cbc_at:twin_autocannon_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс | 2 | 4 + механизм |
-| `cbc_at:bronze_twin_autocannon_silencer` | `#c:ingots/bronze` | деплоер: `cbc_at:twin_autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 5 |
-| `cbc_at:bronze_twin_autocannon_muzzle_brake` | `#c:ingots/bronze` | деплоер: `cbc_at:twin_autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 5 |
-| `cbc_at:bronze_vert_twin_autocannon_barrel` | `#c:ingots/bronze` | деплоер: `cbc_at:vert_twin_autocannon_barrel_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 5 |
-| `cbc_at:bronze_vert_twin_autocannon_recoil_spring` | `#c:ingots/bronze` | деплоер: `cbc_at:vert_twin_autocannon_recoil_spring_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → деплоер: `createbigcannons:recoil_spring` | 3 | 7 |
-| `cbc_at:bronze_vert_twin_autocannon_breech` | `createbigcannons:bronze_autocannon_breech_extractor` | деплоер: `cbc_at:vert_twin_autocannon_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс | 3 | 6 + механизм |
-| `cbc_at:bronze_vert_twin_autocannon_silencer` | `#c:ingots/bronze` | деплоер: `cbc_at:vert_twin_autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 3 | 7 |
-| `cbc_at:bronze_vert_twin_autocannon_muzzle_brake` | `#c:ingots/bronze` | деплоер: `cbc_at:vert_twin_autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 5 |
-| `cbc_at:bronze_heavy_autocannon_barrel` | `#c:ingots/bronze` | деплоер: `cbc_at:heavy_autocannon_barrel_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 5 |
-| `cbc_at:bronze_heavy_autocannon_muzzle_brake` | `#c:ingots/bronze` | деплоер: `cbc_at:heavy_autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 5 |
-| `cbc_at:bronze_heavy_autocannon_silencer` | `#c:ingots/bronze` | деплоер: `cbc_at:heavy_autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 5 |
-| `cbc_at:bronze_heavy_autocannon_recoil_spring` | `#c:ingots/bronze` | деплоер: `cbc_at:heavy_autocannon_recoil_spring_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → деплоер: `createbigcannons:recoil_spring` | 2 | 5 |
-| `cbc_at:bronze_heavy_autocannon_breech` | `createbigcannons:bronze_autocannon_breech_extractor` | деплоер: `cbc_at:heavy_autocannon_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс | 2 | 4 + механизм |
-| `cbc_at:bronze_heavy_autocannon_qfbreech` | `createbigcannons:bronze_autocannon_breech_extractor` | деплоер: `cbc_at:heavy_autocannon_qfbreech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс | 2 | 4 + механизм |
-| `cbc_at:bronze_rocket_pod_rail` | `#c:ingots/bronze` | деплоер: `cbc_at:rocket_pod_rail_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 4 | 9 |
-| `cbc_at:bronze_rocket_pod_breech` | `#c:ingots/bronze` | деплоер: `cbc_at:rocket_pod_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс | 4 | 9 |
-| `cbc_at:steel_autocannon_silencer` | `#c:ingots/steel` | деплоер: `cbc_at:autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 3 |
-| `cbc_at:steel_autocannon_muzzle_brake` | `#c:ingots/steel` | деплоер: `cbc_at:autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 3 |
-| `cbc_at:steel_twin_autocannon_barrel` | `#c:ingots/steel` | деплоер: `cbc_at:twin_autocannon_barrel_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 5 |
-| `cbc_at:steel_twin_autocannon_recoil_spring` | `#c:ingots/steel` | деплоер: `cbc_at:twin_autocannon_recoil_spring_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → деплоер: `createbigcannons:recoil_spring` | 2 | 5 |
-| `cbc_at:steel_twin_autocannon_breech` | `createbigcannons:steel_autocannon_breech_extractor` | деплоер: `cbc_at:twin_autocannon_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс | 2 | 4 + механизм |
-| `cbc_at:steel_twin_autocannon_silencer` | `#c:ingots/steel` | деплоер: `cbc_at:twin_autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 5 |
-| `cbc_at:steel_twin_autocannon_muzzle_brake` | `#c:ingots/steel` | деплоер: `cbc_at:twin_autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 5 |
-| `cbc_at:steel_vert_twin_autocannon_barrel` | `#c:ingots/steel` | деплоер: `cbc_at:vert_twin_autocannon_barrel_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 5 |
-| `cbc_at:steel_vert_twin_autocannon_recoil_spring` | `#c:ingots/steel` | деплоер: `cbc_at:vert_twin_autocannon_recoil_spring_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → деплоер: `createbigcannons:recoil_spring` | 3 | 7 |
-| `cbc_at:steel_vert_twin_autocannon_breech` | `createbigcannons:steel_autocannon_breech_extractor` | деплоер: `cbc_at:vert_twin_autocannon_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс | 3 | 6 + механизм |
-| `cbc_at:steel_vert_twin_autocannon_silencer` | `#c:ingots/steel` | деплоер: `cbc_at:vert_twin_autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 3 | 7 |
-| `cbc_at:steel_vert_twin_autocannon_muzzle_brake` | `#c:ingots/steel` | деплоер: `cbc_at:vert_twin_autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 5 |
-| `cbc_at:steel_heavy_autocannon_barrel` | `#c:ingots/steel` | деплоер: `cbc_at:heavy_autocannon_barrel_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 5 |
-| `cbc_at:steel_heavy_autocannon_muzzle_brake` | `#c:ingots/steel` | деплоер: `cbc_at:heavy_autocannon_muzzle_brake_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 5 |
-| `cbc_at:steel_heavy_autocannon_silencer` | `#c:ingots/steel` | деплоер: `cbc_at:heavy_autocannon_silencer_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 5 |
-| `cbc_at:steel_heavy_autocannon_recoil_spring` | `#c:ingots/steel` | деплоер: `cbc_at:heavy_autocannon_recoil_spring_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → деплоер: `createbigcannons:recoil_spring` | 2 | 5 |
-| `cbc_at:steel_heavy_autocannon_breech` | `createbigcannons:steel_autocannon_breech_extractor` | деплоер: `cbc_at:heavy_autocannon_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс | 2 | 4 + механизм |
-| `cbc_at:steel_heavy_autocannon_qfbreech` | `createbigcannons:steel_autocannon_breech_extractor` | деплоер: `cbc_at:heavy_autocannon_qfbreech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс | 2 | 4 + механизм |
-| `cbc_at:steel_rocket_pod_rail` | `#c:ingots/steel` | деплоер: `cbc_at:rocket_pod_rail_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 4 | 9 |
-| `cbc_at:steel_rocket_pod_breech` | `#c:ingots/steel` | деплоер: `cbc_at:rocket_pod_breech_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс | 4 | 9 |
+| `cbc_at:cast_iron_autocannon_silencer` | 3 | 9 | деплоер: `cbc_at:autocannon_silencer_mould` (остаётся) → пресс → пила | 1 |
+| `cbc_at:cast_iron_autocannon_muzzle_brake` | 3 | 9 | деплоер: `cbc_at:autocannon_muzzle_brake_mould` (остаётся) → пресс → пила | 1 |
+| `cbc_at:cast_iron_twin_autocannon_recoil_spring` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_recoil_spring_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_twin_autocannon_breech` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_breech_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_twin_autocannon_silencer` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_silencer_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_twin_autocannon_muzzle_brake` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_muzzle_brake_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_vert_twin_autocannon_barrel` | 6 | 18 | деплоер: `cbc_at:vert_twin_autocannon_barrel_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_vert_twin_autocannon_recoil_spring` | 8 | 24 | деплоер: `cbc_at:vert_twin_autocannon_recoil_spring_mould` (остаётся) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 5 |
+| `cbc_at:cast_iron_vert_twin_autocannon_breech` | 8 | 24 | деплоер: `cbc_at:vert_twin_autocannon_breech_mould` (остаётся) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 5 |
+| `cbc_at:cast_iron_vert_twin_autocannon_silencer` | 8 | 24 | деплоер: `cbc_at:vert_twin_autocannon_silencer_mould` (остаётся) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила | 5 |
+| `cbc_at:cast_iron_vert_twin_autocannon_muzzle_brake` | 6 | 18 | деплоер: `cbc_at:vert_twin_autocannon_muzzle_brake_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_heavy_autocannon_barrel` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_barrel_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_heavy_autocannon_muzzle_brake` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_muzzle_brake_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_heavy_autocannon_silencer` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_silencer_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_heavy_autocannon_recoil_spring` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_recoil_spring_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_heavy_autocannon_breech` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_breech_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:cast_iron_heavy_autocannon_qfbreech` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_qfbreech_mould` (остаётся) → деплоер: `#c:storage_blocks/cast_iron` → пресс → пила | 1 |
+| `cbc_at:bronze_autocannon_silencer` | 3 | 9 | деплоер: `cbc_at:autocannon_silencer_mould` (остаётся) → пресс → пила | 1 |
+| `cbc_at:bronze_autocannon_muzzle_brake` | 3 | 9 | деплоер: `cbc_at:autocannon_muzzle_brake_mould` (остаётся) → пресс → пила | 1 |
+| `cbc_at:bronze_twin_autocannon_recoil_spring` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_recoil_spring_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_twin_autocannon_breech` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_breech_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_twin_autocannon_silencer` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_silencer_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_twin_autocannon_muzzle_brake` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_muzzle_brake_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_vert_twin_autocannon_barrel` | 6 | 18 | деплоер: `cbc_at:vert_twin_autocannon_barrel_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_vert_twin_autocannon_recoil_spring` | 8 | 24 | деплоер: `cbc_at:vert_twin_autocannon_recoil_spring_mould` (остаётся) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 5 |
+| `cbc_at:bronze_vert_twin_autocannon_breech` | 8 | 24 | деплоер: `cbc_at:vert_twin_autocannon_breech_mould` (остаётся) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 5 |
+| `cbc_at:bronze_vert_twin_autocannon_silencer` | 8 | 24 | деплоер: `cbc_at:vert_twin_autocannon_silencer_mould` (остаётся) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила | 5 |
+| `cbc_at:bronze_vert_twin_autocannon_muzzle_brake` | 6 | 18 | деплоер: `cbc_at:vert_twin_autocannon_muzzle_brake_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_heavy_autocannon_barrel` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_barrel_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_heavy_autocannon_muzzle_brake` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_muzzle_brake_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_heavy_autocannon_silencer` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_silencer_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_heavy_autocannon_recoil_spring` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_recoil_spring_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_heavy_autocannon_breech` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_breech_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:bronze_heavy_autocannon_qfbreech` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_qfbreech_mould` (остаётся) → деплоер: `#c:storage_blocks/bronze` → пресс → пила | 1 |
+| `cbc_at:steel_autocannon_silencer` | 3 | 9 | деплоер: `cbc_at:autocannon_silencer_mould` (остаётся) → пресс → пила | 1 |
+| `cbc_at:steel_autocannon_muzzle_brake` | 3 | 9 | деплоер: `cbc_at:autocannon_muzzle_brake_mould` (остаётся) → пресс → пила | 1 |
+| `cbc_at:steel_twin_autocannon_recoil_spring` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_recoil_spring_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_twin_autocannon_breech` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_breech_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_twin_autocannon_silencer` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_silencer_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_twin_autocannon_muzzle_brake` | 6 | 18 | деплоер: `cbc_at:twin_autocannon_muzzle_brake_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_vert_twin_autocannon_barrel` | 6 | 18 | деплоер: `cbc_at:vert_twin_autocannon_barrel_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_vert_twin_autocannon_recoil_spring` | 8 | 24 | деплоер: `cbc_at:vert_twin_autocannon_recoil_spring_mould` (остаётся) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 5 |
+| `cbc_at:steel_vert_twin_autocannon_breech` | 8 | 24 | деплоер: `cbc_at:vert_twin_autocannon_breech_mould` (остаётся) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 5 |
+| `cbc_at:steel_vert_twin_autocannon_silencer` | 8 | 24 | деплоер: `cbc_at:vert_twin_autocannon_silencer_mould` (остаётся) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила | 5 |
+| `cbc_at:steel_vert_twin_autocannon_muzzle_brake` | 6 | 18 | деплоер: `cbc_at:vert_twin_autocannon_muzzle_brake_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_heavy_autocannon_barrel` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_barrel_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_heavy_autocannon_muzzle_brake` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_muzzle_brake_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_heavy_autocannon_silencer` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_silencer_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_heavy_autocannon_recoil_spring` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_recoil_spring_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_heavy_autocannon_breech` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_breech_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
+| `cbc_at:steel_heavy_autocannon_qfbreech` | 6 | 18 | деплоер: `cbc_at:heavy_autocannon_qfbreech_mould` (остаётся) → деплоер: `#c:storage_blocks/steel` → пресс → пила | 1 |
 
-## CBC Neo Warfare
+## CBC Neo Warfare (нужен CBCMW recipe fix)
 
-| Деталь | Старт | Шаги одного цикла | Циклов | Слитков |
+| Деталь | Литьё, слитков | Рецепт, слитков | Шаги одного цикла | Циклов |
 |---|---|---|---|---|
-| `cbcmodernwarfare:cast_iron_mediumcannon_barrel` | `#c:ingots/cast_iron` | деплоер: `cbcmodernwarfare:mediumcannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → пресс → пила | 2 | 3 |
-| `cbcmodernwarfare:cast_iron_mediumcannon_breech` | `cbcmodernwarfare:cast_iron_mediumcannon_falling_breech` | деплоер: `cbcmodernwarfare:mediumcannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → пресс | 3 | 3 + механизм |
-| `cbcmodernwarfare:cast_iron_mediumcannon_recoil_barrel` | `#c:ingots/cast_iron` | деплоер: `cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/cast_iron` → пресс → деплоер: `cbcmodernwarfare:heavy_recoil_spring` | 3 | 4 |
-| `cbcmodernwarfare:bronze_mediumcannon_barrel` | `#c:ingots/bronze` | деплоер: `cbcmodernwarfare:mediumcannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 3 |
-| `cbcmodernwarfare:bronze_mediumcannon_breech` | `cbcmodernwarfare:bronze_mediumcannon_falling_breech` | деплоер: `cbcmodernwarfare:mediumcannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс | 3 | 3 + механизм |
-| `cbcmodernwarfare:bronze_mediumcannon_recoil_barrel` | `#c:ingots/bronze` | деплоер: `cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс → деплоер: `cbcmodernwarfare:heavy_recoil_spring` | 3 | 4 |
-| `cbcmodernwarfare:steel_mediumcannon_barrel` | `#c:ingots/steel` | деплоер: `cbcmodernwarfare:mediumcannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 3 |
-| `cbcmodernwarfare:steel_mediumcannon_breech` | `cbcmodernwarfare:steel_mediumcannon_falling_breech` | деплоер: `cbcmodernwarfare:mediumcannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс | 3 | 3 + механизм |
-| `cbcmodernwarfare:steel_mediumcannon_recoil_barrel` | `#c:ingots/steel` | деплоер: `cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс → деплоер: `cbcmodernwarfare:heavy_recoil_spring` | 3 | 4 |
-| `cbcmodernwarfare:nethersteel_mediumcannon_barrel` | `#c:ingots/nethersteel` | деплоер: `cbcmodernwarfare:mediumcannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/nethersteel` → пресс → пила | 2 | 3 |
-| `cbcmodernwarfare:nethersteel_mediumcannon_breech` | `cbcmodernwarfare:nethersteel_mediumcannon_falling_breech` | деплоер: `cbcmodernwarfare:mediumcannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/nethersteel` → пресс | 3 | 3 + механизм |
-| `cbcmodernwarfare:nethersteel_mediumcannon_recoil_barrel` | `#c:ingots/nethersteel` | деплоер: `cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/nethersteel` → пресс → деплоер: `cbcmodernwarfare:heavy_recoil_spring` | 3 | 4 |
-| `cbcmodernwarfare:bronze_rotarycannon_barrel` | `#c:ingots/bronze` | деплоер: `cbcmodernwarfare:rotarycannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс → пила | 2 | 3 |
-| `cbcmodernwarfare:bronze_rotarycannon_breech` | `cbcmodernwarfare:bronze_rotarycannon_breech_extractor` | деплоер: `cbcmodernwarfare:rotarycannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс | 3 | 3 + механизм |
-| `cbcmodernwarfare:bronze_rotarycannon_bearing` | `#c:ingots/bronze` | деплоер: `cbcmodernwarfare:rotarycannon_bearing_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/bronze` → пресс | 3 | 4 |
-| `cbcmodernwarfare:steel_rotarycannon_barrel` | `#c:ingots/steel` | деплоер: `cbcmodernwarfare:rotarycannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс → пила | 2 | 3 |
-| `cbcmodernwarfare:steel_rotarycannon_breech` | `cbcmodernwarfare:steel_rotaryannon_breech_extractor` | деплоер: `cbcmodernwarfare:rotarycannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс | 3 | 3 + механизм |
-| `cbcmodernwarfare:steel_rotarycannon_bearing` | `#c:ingots/steel` | деплоер: `cbcmodernwarfare:rotarycannon_bearing_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/steel` → пресс | 3 | 4 |
-| `cbcmodernwarfare:nethersteel_rotarycannon_barrel` | `#c:ingots/nethersteel` | деплоер: `cbcmodernwarfare:rotarycannon_barrel_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/nethersteel` → пресс → пила | 2 | 3 |
-| `cbcmodernwarfare:nethersteel_rotarycannon_breech` | `cbcmodernwarfare:nethersteel_rotarycannon_breech_extractor` | деплоер: `cbcmodernwarfare:rotarycannon_breech_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/nethersteel` → пресс | 3 | 3 + механизм |
-| `cbcmodernwarfare:nethersteel_rotarycannon_bearing` | `#c:ingots/nethersteel` | деплоер: `cbcmodernwarfare:rotarycannon_bearing_cast_mould` (остаётся в деплоере) → деплоер: `#c:ingots/nethersteel` → пресс | 3 | 4 |
+| `cbcmodernwarfare:cast_iron_mediumcannon_barrel` | 3 | 9 | деплоер: `cbcmodernwarfare:mediumcannon_barrel_cast_mould` (остаётся) → пресс → пила | 1 |
+| `cbcmodernwarfare:cast_iron_mediumcannon_breech` | 4 | 12 | деплоер: `cbcmodernwarfare:mediumcannon_breech_cast_mould` (остаётся) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила → деплоер: `cbcmodernwarfare:cast_iron_mediumcannon_falling_breech` | 1 |
+| `cbcmodernwarfare:cast_iron_mediumcannon_recoil_barrel` | 4 | 12 | деплоер: `cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould` (остаётся) → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → деплоер: `#c:ingots/cast_iron` → пресс → пила → деплоер: `cbcmodernwarfare:heavy_recoil_spring` | 1 |
+| `cbcmodernwarfare:bronze_mediumcannon_barrel` | 3 | 9 | деплоер: `cbcmodernwarfare:mediumcannon_barrel_cast_mould` (остаётся) → пресс → пила | 1 |
+| `cbcmodernwarfare:bronze_mediumcannon_breech` | 4 | 12 | деплоер: `cbcmodernwarfare:mediumcannon_breech_cast_mould` (остаётся) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила → деплоер: `cbcmodernwarfare:bronze_mediumcannon_falling_breech` | 1 |
+| `cbcmodernwarfare:bronze_mediumcannon_recoil_barrel` | 4 | 12 | деплоер: `cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould` (остаётся) → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → деплоер: `#c:ingots/bronze` → пресс → пила → деплоер: `cbcmodernwarfare:heavy_recoil_spring` | 1 |
+| `cbcmodernwarfare:steel_mediumcannon_barrel` | 3 | 9 | деплоер: `cbcmodernwarfare:mediumcannon_barrel_cast_mould` (остаётся) → пресс → пила | 1 |
+| `cbcmodernwarfare:steel_mediumcannon_breech` | 4 | 12 | деплоер: `cbcmodernwarfare:mediumcannon_breech_cast_mould` (остаётся) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила → деплоер: `cbcmodernwarfare:steel_mediumcannon_falling_breech` | 1 |
+| `cbcmodernwarfare:steel_mediumcannon_recoil_barrel` | 4 | 12 | деплоер: `cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould` (остаётся) → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → деплоер: `#c:ingots/steel` → пресс → пила → деплоер: `cbcmodernwarfare:heavy_recoil_spring` | 1 |
+| `cbcmodernwarfare:nethersteel_mediumcannon_barrel` | 3 | 9 | деплоер: `cbcmodernwarfare:mediumcannon_barrel_cast_mould` (остаётся) → пресс → пила | 1 |
+| `cbcmodernwarfare:nethersteel_mediumcannon_breech` | 4 | 12 | деплоер: `cbcmodernwarfare:mediumcannon_breech_cast_mould` (остаётся) → деплоер: `#c:ingots/nethersteel` → деплоер: `#c:ingots/nethersteel` → деплоер: `#c:ingots/nethersteel` → пресс → пила → деплоер: `cbcmodernwarfare:nethersteel_mediumcannon_falling_breech` | 1 |
+| `cbcmodernwarfare:nethersteel_mediumcannon_recoil_barrel` | 4 | 12 | деплоер: `cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould` (остаётся) → деплоер: `#c:ingots/nethersteel` → деплоер: `#c:ingots/nethersteel` → деплоер: `#c:ingots/nethersteel` → пресс → пила → деплоер: `cbcmodernwarfare:heavy_recoil_spring` | 1 |
 
-## Компоненты Neo Warfare (в 1.21.1 у них нет рецептов)
+## Без рецепта
 
-| Предмет | Старт | Шаги одного цикла | Циклов |
-|---|---|---|---|
-| `cbcmodernwarfare:bronze_rotarycannon_breech_extractor` | `#c:ingots/bronze` | деплоер: `#c:plates/iron` → пила | 2 |
-| `cbcmodernwarfare:steel_rotaryannon_breech_extractor` | `#c:ingots/steel` | деплоер: `#c:plates/iron` → пила | 2 |
-| `cbcmodernwarfare:nethersteel_rotarycannon_breech_extractor` | `#c:ingots/nethersteel` | деплоер: `#c:plates/iron` → пила | 2 |
-| `cbcmodernwarfare:cast_iron_mediumcannon_falling_breech` | `#c:ingots/cast_iron` | деплоер: `create:andesite_alloy` → пресс → пила | 2 |
-| `cbcmodernwarfare:bronze_mediumcannon_falling_breech` | `#c:ingots/bronze` | деплоер: `create:andesite_alloy` → пресс → пила | 2 |
-| `cbcmodernwarfare:steel_mediumcannon_falling_breech` | `#c:ingots/steel` | деплоер: `create:andesite_alloy` → пресс → пила | 2 |
-| `cbcmodernwarfare:nethersteel_mediumcannon_falling_breech` | `#c:ingots/nethersteel` | деплоер: `create:andesite_alloy` → пресс → пила | 2 |
-| `cbcmodernwarfare:heavy_recoil_spring` | `createbigcannons:recoil_spring` | деплоер: `#c:plates/iron` → пресс | 2 |
+Процесс в мире сломан или отсутствует, поэтому мод ничего не добавляет.
 
-## Формы
-
-Распил любого бревна (`#minecraft:logs`) механической пилой:
-
-- `cbcmodernwarfare:mediumcannon_barrel_cast_mould`
-- `cbcmodernwarfare:mediumcannon_breech_cast_mould`
-- `cbcmodernwarfare:mediumcannon_recoil_barrel_cast_mould`
-- `cbcmodernwarfare:rotarycannon_barrel_cast_mould`
-- `cbcmodernwarfare:rotarycannon_breech_cast_mould`
-- `cbcmodernwarfare:rotarycannon_bearing_cast_mould`
-- `cbc_at:twin_autocannon_barrel_mould` (рецепт CBC:AT 0.1.4c не загружается)
-- `cbc_at:rocket_pod_rail_mould` (рецепт CBC:AT 0.1.4c не загружается)
-- `cbc_at:rocket_pod_breech_mould` (рецепт CBC:AT 0.1.4c не загружается)
+| Деталь | Причина |
+|---|---|
+| `cbc_at:cast_iron_twin_autocannon_barrel` | рецепт формы `cbc_at:twin_autocannon_barrel_mould` в CBC:AT 0.1.4c не загружается |
+| `cbc_at:cast_iron_rocket_pod_rail` | рецепт формы `cbc_at:rocket_pod_rail_mould` в CBC:AT 0.1.4c не загружается |
+| `cbc_at:cast_iron_rocket_pod_breech` | рецепт формы `cbc_at:rocket_pod_breech_mould` в CBC:AT 0.1.4c не загружается |
+| `cbc_at:bronze_twin_autocannon_barrel` | рецепт формы `cbc_at:twin_autocannon_barrel_mould` в CBC:AT 0.1.4c не загружается |
+| `cbc_at:bronze_rocket_pod_rail` | рецепт формы `cbc_at:rocket_pod_rail_mould` в CBC:AT 0.1.4c не загружается |
+| `cbc_at:bronze_rocket_pod_breech` | рецепт формы `cbc_at:rocket_pod_breech_mould` в CBC:AT 0.1.4c не загружается |
+| `cbc_at:steel_twin_autocannon_barrel` | рецепт формы `cbc_at:twin_autocannon_barrel_mould` в CBC:AT 0.1.4c не загружается |
+| `cbc_at:steel_rocket_pod_rail` | рецепт формы `cbc_at:rocket_pod_rail_mould` в CBC:AT 0.1.4c не загружается |
+| `cbc_at:steel_rocket_pod_breech` | рецепт формы `cbc_at:rocket_pod_breech_mould` в CBC:AT 0.1.4c не загружается |
+| `cbcmodernwarfare:bronze_rotarycannon_barrel` | в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет |
+| `cbcmodernwarfare:bronze_rotarycannon_breech` | в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет |
+| `cbcmodernwarfare:bronze_rotarycannon_bearing` | в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет |
+| `cbcmodernwarfare:steel_rotarycannon_barrel` | в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет |
+| `cbcmodernwarfare:steel_rotarycannon_breech` | в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет |
+| `cbcmodernwarfare:steel_rotarycannon_bearing` | в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет |
+| `cbcmodernwarfare:nethersteel_rotarycannon_barrel` | в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет |
+| `cbcmodernwarfare:nethersteel_rotarycannon_breech` | в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет |
+| `cbcmodernwarfare:nethersteel_rotarycannon_bearing` | в Neo Warfare 1.21.1 нет литья, форм и экстрактора; CBCMW recipe fix их не добавляет |

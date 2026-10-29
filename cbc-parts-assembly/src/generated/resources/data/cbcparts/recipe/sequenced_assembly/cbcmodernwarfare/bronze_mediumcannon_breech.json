@@ -3,13 +3,17 @@
     {
       "type": "neoforge:mod_loaded",
       "modid": "cbcmodernwarfare"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmw_recipe_fix"
     }
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "item": "cbcmodernwarfare:bronze_mediumcannon_falling_breech"
+    "tag": "c:storage_blocks/bronze"
   },
-  "loops": 3,
+  "loops": 1,
   "results": [
     {
       "id": "cbcmodernwarfare:bronze_mediumcannon_breech"
@@ -50,10 +54,71 @@
       ]
     },
     {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        },
+        {
+          "tag": "c:ingots/bronze"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        }
+      ]
+    },
+    {
       "type": "create:pressing",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_mediumcannon_breech"
+        },
+        {
+          "item": "cbcmodernwarfare:bronze_mediumcannon_falling_breech"
         }
       ],
       "results": [

@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:ingots/steel"
+    "tag": "c:storage_blocks/steel"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "createbigcannons:steel_autocannon_barrel"
@@ -32,22 +32,6 @@
         }
       ],
       "keep_held_item": true
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_steel_autocannon_barrel"
-        },
-        {
-          "tag": "c:ingots/steel"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_steel_autocannon_barrel"
-        }
-      ]
     },
     {
       "type": "create:pressing",

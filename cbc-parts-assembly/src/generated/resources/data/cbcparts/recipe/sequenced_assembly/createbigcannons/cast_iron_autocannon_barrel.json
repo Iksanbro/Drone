@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "c:ingots/cast_iron"
+    "tag": "c:storage_blocks/cast_iron"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "createbigcannons:cast_iron_autocannon_barrel"
@@ -32,22 +32,6 @@
         }
       ],
       "keep_held_item": true
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_cast_iron_autocannon_barrel"
-        },
-        {
-          "tag": "c:ingots/cast_iron"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_cast_iron_autocannon_barrel"
-        }
-      ]
     },
     {
       "type": "create:pressing",

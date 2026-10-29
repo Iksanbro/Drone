@@ -7,9 +7,9 @@
   ],
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "item": "createbigcannons:bronze_autocannon_breech_extractor"
+    "tag": "c:storage_blocks/bronze"
   },
-  "loops": 2,
+  "loops": 1,
   "results": [
     {
       "id": "cbc_at:bronze_twin_autocannon_breech"
@@ -40,23 +40,7 @@
           "item": "cbcparts:unfinished_bronze_twin_autocannon_breech"
         },
         {
-          "tag": "c:ingots/bronze"
-        }
-      ],
-      "results": [
-        {
-          "id": "cbcparts:unfinished_bronze_twin_autocannon_breech"
-        }
-      ]
-    },
-    {
-      "type": "create:deploying",
-      "ingredients": [
-        {
-          "item": "cbcparts:unfinished_bronze_twin_autocannon_breech"
-        },
-        {
-          "tag": "c:ingots/bronze"
+          "tag": "c:storage_blocks/bronze"
         }
       ],
       "results": [
@@ -67,6 +51,19 @@
     },
     {
       "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "cbcparts:unfinished_bronze_twin_autocannon_breech"
+        }
+      ],
+      "results": [
+        {
+          "id": "cbcparts:unfinished_bronze_twin_autocannon_breech"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
       "ingredients": [
         {
           "item": "cbcparts:unfinished_bronze_twin_autocannon_breech"
