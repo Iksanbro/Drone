@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#forge:nuggets/carbon_steel",
+      "required": false
+    },
+    {
+      "id": "#c:nuggets/carbon_steel",
+      "required": false
+    },
+    {
+      "id": "#c:carbon_steel_nuggets",
+      "required": false
+    }
+  ]
+}

@@ -23,5 +23,10 @@ public final class Config {
                     "recipe for) back into the inventory as the part itself.")
             .define("wrenchPickupParts", true);
 
+    public static final ModConfigSpec.BooleanValue ROCKETS_LOAD_CHUNKS = BUILDER
+            .comment("Rockets of CBC Enchanced Shells keep flying through unloaded chunks: the chunks",
+                    "on their path are loaded for a moment as they pass.")
+            .define("rocketsLoadChunks", true);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 }

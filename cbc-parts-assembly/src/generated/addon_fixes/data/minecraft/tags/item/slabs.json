@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:era_slab",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:tan_era_slab",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:green_era_slab",
+      "required": false
+    }
+  ]
+}

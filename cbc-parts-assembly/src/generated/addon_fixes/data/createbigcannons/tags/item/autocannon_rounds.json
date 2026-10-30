@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:hvap_autocannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:apds_autocannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:canister_autocannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:he_autocannon_round",
+      "required": false
+    }
+  ]
+}

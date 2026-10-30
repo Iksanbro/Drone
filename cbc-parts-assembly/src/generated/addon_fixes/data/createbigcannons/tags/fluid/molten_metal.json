@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:flowing_molten_carbon_steel",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:molten_carbon_steel",
+      "required": false
+    }
+  ]
+}

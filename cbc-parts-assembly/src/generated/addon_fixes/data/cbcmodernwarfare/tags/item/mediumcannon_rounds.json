@@ -1,0 +1,37 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:ap_mediumcannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:apfsds_mediumcannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:aphe_mediumcannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:he_mediumcannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:hef_mediumcannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:heap_mediumcannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:canister_mediumcannon_round",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:smoke_mediumcannon_round",
+      "required": false
+    }
+  ]
+}

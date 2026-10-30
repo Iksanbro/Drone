@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "createbigcannons:flowing_molten_steel",
+      "required": false
+    },
+    {
+      "id": "createbigcannons:molten_steel",
+      "required": false
+    }
+  ]
+}

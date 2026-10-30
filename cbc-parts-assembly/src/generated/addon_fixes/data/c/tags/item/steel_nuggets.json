@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "createbigcannons:steel_scrap",
+      "required": false
+    }
+  ]
+}

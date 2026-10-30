@@ -20,5 +20,8 @@ public final class CBCPartsAssembly {
         // Lowest priority: run only when no other mod cancelled the placement.
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, CannonPartConnector::onBlockPlaced);
         NeoForge.EVENT_BUS.addListener(CannonPartWrench::onRightClickBlock);
+        NeoForge.EVENT_BUS.addListener(RocketChunkLoader::onEntityJoin);
+        NeoForge.EVENT_BUS.addListener(RocketChunkLoader::onLevelTickPre);
+        NeoForge.EVENT_BUS.addListener(RocketChunkLoader::onLevelTickPost);
     }
 }

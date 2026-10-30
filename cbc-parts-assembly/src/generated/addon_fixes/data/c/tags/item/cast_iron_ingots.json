@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "createbigcannons:cast_iron_ingot",
+      "required": false
+    }
+  ]
+}

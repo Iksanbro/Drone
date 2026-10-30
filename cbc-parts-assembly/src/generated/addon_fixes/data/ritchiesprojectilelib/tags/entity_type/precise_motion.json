@@ -1,0 +1,73 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:ap_mediumshell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:apds_mediumshell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:apfsds_mediumshell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:aphe_mediumshell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:canister_mediumshell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:he_mediumshell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:hef_mediumshell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:heap_mediumshell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:smoke_mediumshell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:smoke_grenade",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:hefrag_shell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:heap_shell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:apds_shot",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:hvap_autocannon",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:apds_autocannon",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:canister_autocannon",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:he_autocannon",
+      "required": false
+    }
+  ]
+}

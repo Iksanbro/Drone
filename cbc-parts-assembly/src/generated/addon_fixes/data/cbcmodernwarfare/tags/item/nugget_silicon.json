@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#forge:nuggets/silicon",
+      "required": false
+    },
+    {
+      "id": "#c:nuggets/silicon",
+      "required": false
+    },
+    {
+      "id": "#c:silicon_nuggets",
+      "required": false
+    }
+  ]
+}

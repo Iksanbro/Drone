@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:era_stairs",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:tan_era_stairs",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:green_era_stairs",
+      "required": false
+    }
+  ]
+}

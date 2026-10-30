@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#forge:storage_blocks/carbon_steel",
+      "required": false
+    },
+    {
+      "id": "#c:storage_blocks/carbon_steel",
+      "required": false
+    },
+    {
+      "id": "#c:carbon_steel_blocks",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:carbon_steel_block",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:carbon_steel_stairs",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:carbon_steel_slab",
+      "required": false
+    }
+  ]
+}

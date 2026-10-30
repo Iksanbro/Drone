@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:rotarycannon_ammo_drum",
+      "required": false
+    }
+  ]
+}

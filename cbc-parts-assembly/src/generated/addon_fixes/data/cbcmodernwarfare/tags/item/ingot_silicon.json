@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#forge:ingots/silicon",
+      "required": false
+    },
+    {
+      "id": "#c:ingots/silicon",
+      "required": false
+    },
+    {
+      "id": "#c:silicon_ingots",
+      "required": false
+    }
+  ]
+}

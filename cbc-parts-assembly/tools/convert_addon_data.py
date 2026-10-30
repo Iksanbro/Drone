@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Converts the pre-1.21 block data that CBC: Advanced Technologies and CBC Neo Warfare ship.
+"""Converts the pre-1.21 data that CBC: Advanced Technologies and CBC Neo Warfare ship.
 
 Both addons keep their block loot tables in `data/<ns>/loot_tables/` and their block tags in
 `data/<ns>/tags/blocks/`, the 1.20 paths. Minecraft 1.21 reads `loot_table/` and `tags/block/`,
 so none of their blocks drop anything when broken or taken with the Create wrench, and blocks
-that need a pickaxe are not in the pickaxe tag. This script writes the same data at the 1.21
-paths, converted to the 1.21 format.
+that need a pickaxe are not in the pickaxe tag. The same goes for Neo Warfare's item, fluid and
+entity type tags (`tags/items`, `tags/fluids`, `tags/entity_types`): its rounds, shells and
+cartridges are not in the tags that decide what a cannon can be loaded with. This script writes
+the same data at the 1.21 paths, converted to the 1.21 format, plus fixed copies of addon
+recipes that point at a wrong recipe type.
 
 Run from the project root with the extracted addon jars:
 
@@ -40,6 +43,22 @@ TABLE_RENAME_PATTERNS = [
     # CBC:AT heavy autocannon moulds: tables are named *_cast_mould, the blocks *_mould
     (re.compile(r"^cbc_at:(heavy_autocannon_[a-z_]+)_cast_mould$"), r"cbc_at:\1_mould"),
 ]
+
+# 1.20 tag folders and their 1.21 names
+TAG_DIRS = {"blocks": "block", "items": "item", "fluids": "fluid", "entity_types": "entity_type"}
+# NeoForge 1.21 uses the c: namespace; forge: tags are not read by anything any more
+SKIP_TAG_NAMESPACES = {"forge"}
+
+# Recipes of the addons that point at a recipe type that does not exist
+FIXED_RECIPES = {
+    # CBC:AT registers the rocket fuzing recipe type as cbc_at:rocket_fuzing, its recipe file
+    # says cbc_at:rocket_munition_fuzing, so fuzes cannot be put into rockets on a crafting table
+    "cbcparts/recipe/fixes/cbc_at/rocket_fuzing.json": {
+        "neoforge:conditions": [{"type": "neoforge:mod_loaded", "modid": "cbc_at"}],
+        "type": "cbc_at:rocket_fuzing",
+        "category": "misc",
+    },
+}
 
 # Tables of blocks that have no item in the game (the table would only log a parse error)
 SKIP_TABLES = {"cbcmodernwarfare:torpedo_screw_breech"}
@@ -138,11 +157,18 @@ def main(dirs: list[str]) -> int:
             table = {"neoforge:conditions": [{"type": "neoforge:mod_loaded", "modid": ns}], **table}
             write_json(os.path.join(OUT, "data", ns, "loot_table", path), table)
             tables += 1
-        for f in sorted(glob.glob(os.path.join(data, "*", "tags", "blocks", "**", "*.json"), recursive=True)):
-            rel = os.path.relpath(f, data).split(os.sep)
-            tag = f"{rel[0]}/tags/block/" + "/".join(rel[3:])
-            for v in json.load(open(f, encoding="utf-8")).get("values", []):
-                tags.setdefault(tag, []).append(v)
+        for old_dir, new_dir in TAG_DIRS.items():
+            for f in sorted(glob.glob(os.path.join(data, "*", "tags", old_dir, "**", "*.json"), recursive=True)):
+                rel = os.path.relpath(f, data).split(os.sep)
+                if rel[0] in SKIP_TAG_NAMESPACES:
+                    continue
+                tag = f"{rel[0]}/tags/{new_dir}/" + "/".join(rel[3:])
+                for v in json.load(open(f, encoding="utf-8")).get("values", []):
+                    tags.setdefault(tag, []).append(v)
+        # casting time of molten carbon steel, written for the 1.20 forge: fluid tag
+        for f in sorted(glob.glob(os.path.join(data, "forge", "fluid_casting_time", "tags", "*.json"))):
+            write_json(os.path.join(OUT, "data", "c", "fluid_casting_time", "tags", os.path.basename(f)),
+                       json.load(open(f, encoding="utf-8")))
     for block in DROP_SELF:
         ns, name = block.split(":")
         write_json(os.path.join(OUT, "data", ns, "loot_table", "blocks", f"{name}.json"), {
@@ -164,6 +190,8 @@ def main(dirs: list[str]) -> int:
             entries.append({"id": v["id"], "required": False})
         unique = list({e["id"]: e for e in entries}.values())
         write_json(os.path.join(OUT, "data", *tag.split("/")), {"replace": False, "values": unique})
+    for path, recipe in FIXED_RECIPES.items():
+        write_json(os.path.join(OUT, "data", *path.split("/")), recipe)
     for p in problems:
         print("PROBLEM:", p)
     print(f"loot tables: {tables}, block tags: {len(tags)}, skipped tables of missing blocks: {skipped}")

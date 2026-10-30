@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "cbcmodernwarfare:hefrag_shell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:heap_shell",
+      "required": false
+    },
+    {
+      "id": "cbcmodernwarfare:apds_shot",
+      "required": false
+    }
+  ]
+}

@@ -82,12 +82,18 @@ neoForge {
 
 dependencies {
     compileOnly("com.simibubi.create:create-1.21.1:${create_version}:slim") { transitive = false }
+    // Ritchie's Projectile Library: CBC requires it; used to load chunks for rockets like CBC does for shells
 
     gametestCompileOnly "maven.modrinth:create-big-cannons:${cbc_modrinth}"
 
     localRuntime "maven.modrinth:create:${create_modrinth}"
     localRuntime "maven.modrinth:rpl:${rpl_modrinth}"
     localRuntime "maven.modrinth:create-big-cannons:${cbc_modrinth}"
+    // Run with -PwithEnhancedShells to test rockets of CBC Enchanced Shells in unloaded chunks (1.2.5; 1.5.1: -PenhancedShellsFile=9336668)
+    if (project.hasProperty('withEnhancedShells')) {
+        localRuntime "curse.maven:cbc-enchanced-shells-1489732:${project.findProperty('enhancedShellsFile') ?: '8838000'}"
+    }
+
     // Run with -PwithoutAddons to test the mod with Create Big Cannons alone
     if (!project.hasProperty('withoutAddons')) {
         localRuntime "maven.modrinth:create-big-cannons-advanced-technologies:${cbcat_modrinth}"
