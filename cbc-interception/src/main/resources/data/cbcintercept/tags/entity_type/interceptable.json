@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    {"id": "cbc_enhanced_shells:small_missile", "required": false}
+  ]
+}

@@ -1,0 +1,113 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.141'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = "cbc-interception-${minecraft_version}"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    exclusiveContent {
+        forRepository { maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' } }
+        filter { includeGroup 'maven.modrinth' }
+    }
+    exclusiveContent {
+        forRepository { maven { name = 'CurseMaven'; url = 'https://cursemaven.com' } }
+        filter { includeGroup 'curse.maven' }
+    }
+}
+
+// In-game tests (./gradlew runGameTestServer). Not part of the released jar.
+sourceSets {
+    gametest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    // Mods that are only put on the classpath of dev runs, never into the published metadata
+    localRuntime
+    runtimeClasspath.extendsFrom localRuntime
+    gametestCompileOnly.extendsFrom compileOnly
+    gametestRuntimeClasspath.extendsFrom localRuntime
+}
+
+neoForge {
+    version = neo_version
+    addModdingDependenciesTo(sourceSets.gametest)
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+        gameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.gametest
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+        }
+        configureEach {
+            logLevel = org.slf4j.event.Level.INFO
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+            sourceSet(sourceSets.gametest)
+        }
+    }
+}
+
+dependencies {
+    // Create Big Cannons and Ritchie's Projectile Library (CBC requires it): projectile and fragment classes
+    compileOnly("maven.modrinth:create-big-cannons:${cbc_modrinth}") { transitive = false }
+    compileOnly("maven.modrinth:rpl:${rpl_modrinth}") { transitive = false }
+
+    localRuntime "maven.modrinth:create:${create_modrinth}"
+    localRuntime "maven.modrinth:rpl:${rpl_modrinth}"
+    localRuntime "maven.modrinth:create-big-cannons:${cbc_modrinth}"
+
+    // Run with -PwithoutAddons to test with Create Big Cannons alone
+    if (!project.hasProperty('withoutAddons')) {
+        localRuntime "maven.modrinth:create-big-cannons-advanced-technologies:${cbcat_modrinth}"
+        localRuntime "curse.maven:cbc-neo-warfare-1552960:${neo_warfare_curse_file}"
+        localRuntime "curse.maven:cbcmw-recipe-fix-1598498:${cbcmw_fix_curse_file}"
+    }
+    // Run with -PwithEnhancedShells to test rockets and missiles of CBC Enchanced Shells (1.5.1; 1.2.5: -PenhancedShellsFile=8838000)
+    if (project.hasProperty('withEnhancedShells')) {
+        localRuntime "curse.maven:cbc-enchanced-shells-1489732:${project.findProperty('enhancedShellsFile') ?: '9336668'}"
+    }
+}
+
+var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    var replaceProperties = [
+            minecraft_version: minecraft_version,
+            neo_version      : neo_version,
+            mod_id           : mod_id,
+            mod_name         : mod_name,
+            mod_license      : mod_license,
+            mod_version      : mod_version,
+            mod_authors      : mod_authors,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from 'src/main/templates'
+    into 'build/generated/sources/modMetadata'
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

@@ -82,7 +82,6 @@ neoForge {
 
 dependencies {
     compileOnly("com.simibubi.create:create-1.21.1:${create_version}:slim") { transitive = false }
-    // Ritchie's Projectile Library: CBC requires it; used to load chunks for rockets like CBC does for shells
 
     gametestCompileOnly "maven.modrinth:create-big-cannons:${cbc_modrinth}"
 

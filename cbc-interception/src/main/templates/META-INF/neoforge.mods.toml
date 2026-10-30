@@ -1,0 +1,39 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "${mod_license}"
+issueTrackerURL = "https://github.com/iksanbro/drone/issues"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+authors = "${mod_authors}"
+# Server-side logic only: players can join without the mod on their client
+displayTest = "IGNORE_SERVER_VERSION"
+description = '''
+Shots of Create Big Cannons and its addons can shoot down other cannon projectiles in flight:
+shells, autocannon and machine gun rounds, rockets and missiles. A hit projectile goes off the way
+it would on impact: explosive ones detonate in the air, solid ones break apart. Fragments of flak,
+shrapnel and grapeshot, explosions and armed proximity fuzes work against projectiles too.
+'''
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neo_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "[${minecraft_version}]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "createbigcannons"
+type = "required"
+versionRange = "[5.11.4,)"
+ordering = "AFTER"
+side = "BOTH"
