@@ -60,7 +60,7 @@
 
 ```bash
 cd cbc-interception
-./gradlew build    # build/libs/cbc-interception-1.21.1-1.0.0.jar
+./gradlew build    # build/libs/cbc-interception-1.21.1-1.0.jar
 ```
 
 ### Тесты

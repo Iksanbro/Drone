@@ -152,7 +152,7 @@ cd cbc-parts-assembly
 ./gradlew build
 ```
 
-Готовый jar: `build/libs/cbc-parts-assembly-1.21.1-1.0.0.jar`. Его нужно положить в `mods/` и на сервер, и клиентам.
+Готовый jar: `build/libs/cbc-parts-assembly-1.21.1-1.0.jar`. Его нужно положить в `mods/` и на сервер, и клиентам.
 
 Запуск игры для разработки (моды скачиваются автоматически): `./gradlew runClient`.
 

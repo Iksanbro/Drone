@@ -90,7 +90,7 @@
 
 ```bash
 cd create-smart-logistics
-./gradlew build                 # build/libs/create-smart-logistics-1.21.1-1.0.0.jar
+./gradlew build                 # build/libs/create-smart-logistics-1.21.1-1.0.jar
 ./gradlew runGameTestServer     # серверные тесты с Create
 xvfb-run ./gradlew runClientTest -PwithEmi   # клиентский самотест со скриншотами (run/screenshots)
 ```
