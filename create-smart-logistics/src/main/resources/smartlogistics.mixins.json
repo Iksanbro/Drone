@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.iksanbro.smartlogistics.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ItemProviderEntryMixin",
+    "BlockEntryMixin",
+    "BlockEntityEntryMixin",
+    "PackageItemMixin",
+    "ChainConveyorBlockEntityAccessor",
+    "ChainConveyorBlockEntityMixin",
+    "FactoryPanelBehaviourMixin",
+    "FactoryPanelGridStorageMixin"
+  ],
+  "client": [
+    "StockKeeperRequestScreenMixin",
+    "FactoryPanelScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

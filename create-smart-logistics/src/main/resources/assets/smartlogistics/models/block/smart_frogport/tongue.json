@@ -1,0 +1,7 @@
+{
+  "parent": "create:block/package_frogport/tongue",
+  "textures": {
+    "0": "smartlogistics:block/smart_port2",
+    "particle": "smartlogistics:block/smart_port2"
+  }
+}

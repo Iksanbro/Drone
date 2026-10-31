@@ -1,0 +1,129 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.141'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = "create-smart-logistics-${minecraft_version}"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    exclusiveContent {
+        forRepository { maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' } }
+        filter { includeGroup 'maven.modrinth' }
+    }
+    exclusiveContent {
+        forRepository { maven { name = 'BlameJared'; url = 'https://maven.blamejared.com' } }
+        filter { includeGroup 'mezz.jei' }
+    }
+}
+
+// In-game tests (./gradlew runGameTestServer). Not part of the released jar.
+sourceSets {
+    gametest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    // Mods that are only put on the classpath of dev runs, never into the published metadata
+    localRuntime
+    runtimeClasspath.extendsFrom localRuntime
+    gametestCompileOnly.extendsFrom compileOnly
+    gametestRuntimeClasspath.extendsFrom localRuntime
+    createJar
+}
+
+neoForge {
+    version = neo_version
+    addModdingDependenciesTo(sourceSets.gametest)
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+        // the client with a self test (screens and blocks, screenshots in run/screenshots); use under Xvfb
+        clientTest {
+            client()
+            sourceSet = sourceSets.gametest
+            systemProperty 'smartlogistics.clientTest', 'true'
+            programArguments.addAll('--width', '1280', '--height', '720')
+        }
+        gameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.gametest
+            systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+        }
+        configureEach {
+            logLevel = org.slf4j.event.Level.INFO
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+            sourceSet(sourceSets.gametest)
+        }
+    }
+}
+
+// Create ships Ponder (with Catnip), Flywheel and Registrate inside its jar; compile against those copies
+def createLibs = layout.buildDirectory.dir('createLibs')
+def extractCreateLibs = tasks.register('extractCreateLibs', Copy) {
+    from({ zipTree(configurations.createJar.singleFile).matching { include 'META-INF/jarjar/*.jar' } })
+    into createLibs
+    eachFile { path = name }
+    includeEmptyDirs = false
+}
+tasks.named('compileJava') { dependsOn extractCreateLibs }
+tasks.named('compileGametestJava') { dependsOn extractCreateLibs }
+
+dependencies {
+    createJar("maven.modrinth:create:${create_modrinth}") { transitive = false }
+    compileOnly("maven.modrinth:create:${create_modrinth}") { transitive = false }
+    compileOnly fileTree(createLibs) { include '*.jar' }
+    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:${jei_version}"
+    compileOnly("maven.modrinth:emi:${emi_modrinth}") { transitive = false }
+
+    localRuntime "maven.modrinth:create:${create_modrinth}"
+    // -PwithEmi: run the client with EMI (checks that the EMI plugin loads)
+    if (project.hasProperty('withEmi')) {
+        localRuntime("maven.modrinth:emi:${emi_modrinth}") { transitive = false }
+    }
+    // -PwithJei: run the client with JEI to try the recipe transfer
+    if (project.hasProperty('withJei')) {
+        localRuntime "mezz.jei:jei-1.21.1-neoforge:${jei_version}"
+    }
+}
+
+var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    var replaceProperties = [
+            minecraft_version: minecraft_version,
+            neo_version      : neo_version,
+            mod_id           : mod_id,
+            mod_name         : mod_name,
+            mod_license      : mod_license,
+            mod_version      : mod_version,
+            mod_authors      : mod_authors,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from 'src/main/templates'
+    into 'build/generated/sources/modMetadata'
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

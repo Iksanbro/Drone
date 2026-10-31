@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "smartlogistics:block/smart_frogport/block"
+    }
+  }
+}

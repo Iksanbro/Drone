@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/packager/item",
+  "textures": {
+    "0": "smartlogistics:block/smart_packager_frame",
+    "1": "smartlogistics:block/smart_packager_details",
+    "particle": "smartlogistics:block/smart_packager_particle"
+  }
+}

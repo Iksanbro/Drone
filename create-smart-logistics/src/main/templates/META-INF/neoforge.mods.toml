@@ -1,0 +1,41 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "${mod_license}"
+issueTrackerURL = "https://github.com/iksanbro/drone/issues"
+
+[[mixins]]
+config = "smartlogistics.mixins.json"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+authors = "${mod_authors}"
+description = '''
+Better logistics for Create 6: smart frogports (several addresses, send/receive modes, 5 packages
+at a time), smart packagers (address and auto-packaging in their menu, 5 boxes at a time), a smart
+stock ticker (default crafting address, ordering through processing recipes), big crafting grids for
+factory gauges and mechanical crafters, and fixes for jammed chain conveyors and factory gauges
+waiting on unloaded chunks.
+'''
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neo_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "[${minecraft_version}]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "create"
+type = "required"
+versionRange = "[6.0.10,6.1)"
+ordering = "AFTER"
+side = "BOTH"

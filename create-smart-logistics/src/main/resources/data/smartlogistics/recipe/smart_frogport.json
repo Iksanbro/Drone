@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "create:package_frogport"
+    },
+    {
+      "item": "create:precision_mechanism"
+    },
+    {
+      "item": "create:electron_tube"
+    }
+  ],
+  "result": {
+    "id": "smartlogistics:smart_frogport",
+    "count": 1
+  }
+}

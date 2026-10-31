@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/package_frogport/body",
+  "textures": {
+    "0": "smartlogistics:block/smart_port2",
+    "1": "smartlogistics:block/smart_port",
+    "particle": "smartlogistics:block/smart_port2"
+  }
+}
