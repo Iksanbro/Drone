@@ -11,7 +11,10 @@
     "ChainConveyorBlockEntityAccessor",
     "ChainConveyorBlockEntityMixin",
     "FactoryPanelBehaviourMixin",
-    "FactoryPanelGridStorageMixin"
+    "FactoryPanelGridStorageMixin",
+    "ConnectedInputAccessor",
+    "CrafterUnpackingHandlerMixin",
+    "PackageRepackageHelperMixin"
   ],
   "client": [
     "StockKeeperRequestScreenMixin",

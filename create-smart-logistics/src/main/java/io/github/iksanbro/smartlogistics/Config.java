@@ -27,6 +27,12 @@ public final class Config {
                     "counting only the stock that is loaded, instead of showing '?' and waiting.")
             .define("gaugesIgnoreUnloadedLinks", true);
 
+    public static final ModConfigSpec.BooleanValue CRAFTER_FIX = BUILDER
+            .comment("Crafting orders for mechanical crafters: the Re-Packager keeps the whole pattern of recipes",
+                    "bigger than 3x3 (Create cut it after 9 cells), and the crafters get every item at its place",
+                    "in the grid and start only when the pattern is complete.")
+            .define("mechanicalCrafterFix", true);
+
     static {
         BUILDER.pop().push("smart_blocks");
     }
