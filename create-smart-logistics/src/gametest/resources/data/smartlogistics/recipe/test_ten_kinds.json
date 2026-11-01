@@ -1,0 +1,22 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "category": "misc",
+  "key": {
+    "A": {"item": "minecraft:iron_ingot"},
+    "B": {"item": "minecraft:gold_ingot"},
+    "C": {"item": "minecraft:copper_ingot"},
+    "D": {"item": "minecraft:redstone"},
+    "E": {"item": "minecraft:lapis_lazuli"},
+    "F": {"item": "minecraft:diamond"},
+    "G": {"item": "minecraft:emerald"},
+    "H": {"item": "minecraft:coal"},
+    "I": {"item": "minecraft:quartz"},
+    "J": {"item": "minecraft:amethyst_shard"}
+  },
+  "pattern": [
+    "ABCDE",
+    "FGHIJ"
+  ],
+  "result": {"count": 1, "id": "minecraft:nether_star"}
+}

@@ -13,7 +13,7 @@ public final class AddressList {
 
     /** Starts every combined filter; a character nobody types into an address field. */
     public static final char MARK = '\u0001';
-    public static final int MAX = 8;
+    public static final int MAX = 16;
 
     public static String encode(List<String> addresses) {
         List<String> clean = clean(addresses);

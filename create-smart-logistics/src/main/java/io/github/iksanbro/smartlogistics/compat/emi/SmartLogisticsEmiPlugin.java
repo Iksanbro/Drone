@@ -47,7 +47,7 @@ public class SmartLogisticsEmiPlugin implements EmiPlugin {
         @Override
         public boolean supportsRecipe(EmiRecipe recipe) {
             RecipeHolder<?> holder = recipe.getBackingRecipe();
-            return holder != null && holder.value().getIngredients().size() <= 81;
+            return holder != null;
         }
 
         @Override
@@ -63,7 +63,6 @@ public class SmartLogisticsEmiPlugin implements EmiPlugin {
             Recipe<?> r = holder.value();
             for (CraftableBigItemStack ordered : screen.recipesToOrder)
                 if (ordered.recipe == r) return false;
-            if (screen.itemsToOrder.size() >= 9) return false;
             Minecraft mc = Minecraft.getInstance();
             if (mc.level == null) return false;
             ItemStack result = r.getResultItem(mc.level.registryAccess());

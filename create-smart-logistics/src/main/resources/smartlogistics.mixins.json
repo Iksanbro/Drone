@@ -18,7 +18,10 @@
   ],
   "client": [
     "StockKeeperRequestScreenMixin",
-    "FactoryPanelScreenMixin"
+    "FactoryPanelScreenMixin",
+    "StockKeeperOrderLimitMixin",
+    "StockKeeperTransferHandlerMixin",
+    "StockKeeperTabMixin"
   ],
   "injectors": {
     "defaultRequire": 1
