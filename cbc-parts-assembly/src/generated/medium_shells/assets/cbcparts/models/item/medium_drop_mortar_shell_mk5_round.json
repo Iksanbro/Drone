@@ -21,57 +21,58 @@
       "faces": {
         "north": {
           "uv": [
-            0,
-            0,
-            16,
-            16
+            3,
+            3,
+            13,
+            13
           ],
+          "rotation": 180,
           "texture": "#top"
         },
         "south": {
           "uv": [
-            0,
-            0,
-            16,
-            16
+            3,
+            3,
+            13,
+            13
           ],
           "texture": "#bottom"
         },
         "east": {
           "uv": [
+            3,
             0,
-            0,
-            16,
-            16
+            13,
+            14
           ],
           "texture": "#side",
           "rotation": 90
         },
         "west": {
           "uv": [
+            3,
             0,
-            0,
-            16,
-            16
+            13,
+            14
           ],
           "texture": "#side",
           "rotation": 270
         },
         "up": {
           "uv": [
+            3,
             0,
-            0,
-            16,
-            16
+            13,
+            14
           ],
           "texture": "#side"
         },
         "down": {
           "uv": [
+            3,
             0,
-            0,
-            16,
-            16
+            13,
+            14
           ],
           "texture": "#side",
           "rotation": 180

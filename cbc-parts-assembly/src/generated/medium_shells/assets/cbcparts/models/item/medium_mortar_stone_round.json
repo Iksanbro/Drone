@@ -3,7 +3,7 @@
   "textures": {
     "side": "createbigcannons:block/projectile/mortar_stone",
     "top": "createbigcannons:block/projectile/mortar_stone_top",
-    "bottom": "createbigcannons:block/projectile/mortar_stone_top",
+    "bottom": "createbigcannons:block/projectile/standard_bottom",
     "particle": "createbigcannons:block/projectile/mortar_stone_top"
   },
   "elements": [
@@ -21,27 +21,28 @@
       "faces": {
         "north": {
           "uv": [
-            0,
-            0,
-            16,
-            16
+            3,
+            3,
+            13,
+            13
           ],
+          "rotation": 180,
           "texture": "#top"
         },
         "south": {
           "uv": [
-            0,
-            0,
-            16,
-            16
+            3,
+            3,
+            13,
+            13
           ],
           "texture": "#bottom"
         },
         "east": {
           "uv": [
+            3,
             0,
-            0,
-            16,
+            13,
             16
           ],
           "texture": "#side",
@@ -49,9 +50,9 @@
         },
         "west": {
           "uv": [
+            3,
             0,
-            0,
-            16,
+            13,
             16
           ],
           "texture": "#side",
@@ -59,18 +60,18 @@
         },
         "up": {
           "uv": [
+            3,
             0,
-            0,
-            16,
+            13,
             16
           ],
           "texture": "#side"
         },
         "down": {
           "uv": [
+            3,
             0,
-            0,
-            16,
+            13,
             16
           ],
           "texture": "#side",

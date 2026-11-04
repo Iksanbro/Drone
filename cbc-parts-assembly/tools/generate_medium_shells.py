@@ -183,7 +183,19 @@ def textures(s: dict) -> tuple[str, str, str]:
     base = s["tex"]
     side = base + "_side" if s["name"].startswith("drop_mortar_shell") else base
     top = base + "_top"
-    return side, top, (base + "_bottom" if s["bottom"] else top)
+    # mortar stones and bags of grapeshot have CBC's plain bottom (createbigcannons:block/standard_projectile_block)
+    return side, top, (base + "_bottom" if s["bottom"] else f"{CBC}:block/projectile/standard_bottom")
+
+
+# The big shells' block models (createbigcannons:block/projectile_block) are 10 pixels wide: only these
+# parts of their 16x16 textures are the shell; the rest is empty or not meant to be seen.
+SIDE_UV = [3, 0, 13, 16]
+SIDE_UV_DROP_MORTAR = [3, 0, 13, 14]  # its lower 2 pixels are the fins (createbigcannons:block/drop_mortar_shell)
+END_UV = [3, 3, 13, 13]
+
+
+def side_uv(s: dict) -> list:
+    return SIDE_UV_DROP_MORTAR if s["name"].startswith("drop_mortar_shell") else SIDE_UV
 
 
 ROUND_DISPLAY = {
@@ -204,15 +216,15 @@ CARTRIDGE_DISPLAY = {
 def round_model(s: dict) -> dict:
     """Same shape as Neo Warfare's medium rounds, painted with the big shell's block textures."""
     side, top, bottom = textures(s)
-    face = {"uv": [0, 0, 16, 16], "texture": "#side"}
+    face = {"uv": side_uv(s), "texture": "#side"}
     return {
         "parent": "minecraft:block/block",
         "textures": {"side": side, "top": top, "bottom": bottom, "particle": top},
         "elements": [{
             "from": [5, 5, 2.5], "to": [11, 11, 13.5],
             "faces": {
-                "north": {"uv": [0, 0, 16, 16], "texture": "#top"},
-                "south": {"uv": [0, 0, 16, 16], "texture": "#bottom"},
+                "north": {"uv": END_UV, "rotation": 180, "texture": "#top"},
+                "south": {"uv": END_UV, "texture": "#bottom"},
                 "east": dict(face, rotation=90), "west": dict(face, rotation=270),
                 "up": face, "down": dict(face, rotation=180),
             },
@@ -237,8 +249,8 @@ def cartridge_model(s: dict) -> dict:
                 **{d: {"uv": [4, 0, 7, 2.5], "texture": case} for d in ("north", "east", "south", "west")},
                 "up": {"uv": [4, 2.5, 7, 5.5], "texture": case}}},
             {"from": [5, 21, 5], "to": [11, 32, 11], "faces": {
-                **{d: {"uv": [0, 0, 16, 16], "texture": "#side"} for d in ("north", "east", "south", "west")},
-                "up": {"uv": [0, 0, 16, 16], "texture": "#top"}, "down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}}},
+                **{d: {"uv": side_uv(s), "texture": "#side"} for d in ("north", "east", "south", "west")},
+                "up": {"uv": END_UV, "texture": "#top"}, "down": {"uv": END_UV, "texture": "#bottom"}}},
         ],
         "display": CARTRIDGE_DISPLAY,
     }
