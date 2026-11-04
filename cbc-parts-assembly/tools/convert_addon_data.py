@@ -48,6 +48,12 @@ TABLE_RENAME_PATTERNS = [
 TAG_DIRS = {"blocks": "block", "items": "item", "fluids": "fluid", "entity_types": "entity_type"}
 # NeoForge 1.21 uses the c: namespace; forge: tags are not read by anything any more
 SKIP_TAG_NAMESPACES = {"forge"}
+# This mod's medium cannon shells (tools/generate_medium_shells.py) join the fixed Neo Warfare tags
+EXTRA_TAG_ENTRIES = {
+    "cbcmodernwarfare/tags/item/mediumcannon_rounds.json": ["#cbcparts:medium_rounds"],
+    "cbcmodernwarfare/tags/item/mediumcannon_cartridges.json": ["#cbcparts:medium_cartridges"],
+    "ritchiesprojectilelib/tags/entity_type/precise_motion.json": ["#cbcparts:medium_shells"],
+}
 
 # Recipes of the addons that point at a recipe type that does not exist
 FIXED_RECIPES = {
@@ -182,6 +188,8 @@ def main(dirs: list[str]) -> int:
     tags.setdefault("minecraft/tags/block/mineable/pickaxe.json", []).extend(CBC_UNTAGGED_PICKAXE)
     tags["minecraft/tags/block/mineable/pickaxe.json"].extend(
         sorted(b for b in blocks if any(p.match(b) for p in UNTAGGED_PICKAXE_PATTERNS)))
+    for tag, extra in EXTRA_TAG_ENTRIES.items():
+        tags.setdefault(tag, []).extend(extra)
     for tag, values in tags.items():
         # optional entries: a tag with a missing required entry fails to load as a whole
         entries = []

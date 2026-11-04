@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_enhanced_shells"
+    }
+  ],
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "cbcmodernwarfare:filled_mediumcannon_cartridge"
+    },
+    {
+      "item": "cbcparts:medium_mortar_stone_mk4_round"
+    }
+  ],
+  "results": [
+    {
+      "id": "cbcparts:medium_mortar_stone_mk4_cartridge",
+      "count": 1,
+      "components": {
+        "createbigcannons:projectile": [
+          {
+            "item": {
+              "id": "cbcparts:medium_mortar_stone_mk4_round",
+              "count": 1
+            },
+            "slot": 0
+          }
+        ]
+      }
+    }
+  ]
+}

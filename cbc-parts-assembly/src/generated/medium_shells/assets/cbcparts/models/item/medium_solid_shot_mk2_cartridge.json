@@ -1,0 +1,283 @@
+{
+  "parent": "minecraft:block/block",
+  "texture_size": [
+    32,
+    32
+  ],
+  "textures": {
+    "case": "cbcmodernwarfare:item/cartridge_filled",
+    "side": "cbc_enhanced_shells:block/projectile/solid_shot_mk2",
+    "top": "cbc_enhanced_shells:block/projectile/solid_shot_mk2_top",
+    "bottom": "cbc_enhanced_shells:block/projectile/solid_shot_mk2_bottom",
+    "particle": "cbc_enhanced_shells:block/projectile/solid_shot_mk2_top"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            4,
+            4,
+            12
+          ],
+          "texture": "#case"
+        },
+        "east": {
+          "uv": [
+            0,
+            4,
+            4,
+            12
+          ],
+          "texture": "#case"
+        },
+        "south": {
+          "uv": [
+            0,
+            4,
+            4,
+            12
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            0,
+            4,
+            4,
+            12
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            0,
+            12,
+            4,
+            16
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        16,
+        5
+      ],
+      "to": [
+        11,
+        21,
+        11
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            0,
+            7,
+            2.5
+          ],
+          "texture": "#case"
+        },
+        "east": {
+          "uv": [
+            4,
+            0,
+            7,
+            2.5
+          ],
+          "texture": "#case"
+        },
+        "south": {
+          "uv": [
+            4,
+            0,
+            7,
+            2.5
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            4,
+            0,
+            7,
+            2.5
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            4,
+            2.5,
+            7,
+            5.5
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        21,
+        5
+      ],
+      "to": [
+        11,
+        32,
+        11
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#side"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#top"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#bottom"
+        }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [
+        0,
+        -4,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "thirdperson_lefthand": {
+      "translation": [
+        0,
+        -4,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -90,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        2.5
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -50,
+        0,
+        30
+      ],
+      "translation": [
+        2,
+        -2,
+        0
+      ],
+      "scale": [
+        0.58,
+        0.58,
+        0.58
+      ]
+    },
+    "fixed": {
+      "translation": [
+        0,
+        -5,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
+    }
+  }
+}

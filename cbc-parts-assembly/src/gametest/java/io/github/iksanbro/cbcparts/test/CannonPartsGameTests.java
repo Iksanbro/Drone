@@ -78,6 +78,7 @@ public final class CannonPartsGameTests {
             if (holder.value() instanceof DeployerApplicationRecipe) continue; // second stage, run below
             if (holder.value() instanceof CuttingRecipe) continue; // mould recipe, checked by the world test
             if (holder.id().getPath().startsWith("fixes/")) continue; // fixed copies of broken addon recipes
+            if (holder.id().getPath().startsWith("medium_shells/")) continue; // medium cannon rounds, see MediumShellGameTests
             if (!(holder.value() instanceof SequencedAssemblyRecipe recipe)) {
                 errors.add(holder.id() + ": unexpected recipe type " + holder.value().getClass().getSimpleName());
                 continue;

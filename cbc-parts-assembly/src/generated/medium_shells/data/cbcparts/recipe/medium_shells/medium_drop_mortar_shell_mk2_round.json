@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_enhanced_shells"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cbc_enhanced_shells:drop_mortar_shell_mk2"
+    }
+  ],
+  "result": {
+    "id": "cbcparts:medium_drop_mortar_shell_mk2_round",
+    "count": 2
+  }
+}

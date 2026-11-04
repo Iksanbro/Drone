@@ -11,7 +11,8 @@ authors = "${mod_authors}"
 description = '''
 Sequenced assembly recipes (3x the metal of casting) for the non-big cannon parts of Create Big
 Cannons, CBC: Advanced Technologies and CBC Neo Warfare that are made only by casting and boring,
-and survival assembly of cannons from those parts.
+and survival assembly of cannons from those parts. Medium cannon rounds (CBC Neo Warfare) for the
+big shells that have no medium version, half as strong.
 '''
 
 [[dependencies.${mod_id}]]
@@ -61,4 +62,11 @@ modId = "cbcmw_recipe_fix"
 type = "optional"
 versionRange = "[0,)"
 ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "cbc_enhanced_shells"
+type = "optional"
+versionRange = "[0,)"
+ordering = "AFTER"
 side = "BOTH"

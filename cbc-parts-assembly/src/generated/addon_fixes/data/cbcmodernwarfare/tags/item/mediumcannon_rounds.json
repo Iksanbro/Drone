@@ -32,6 +32,10 @@
     {
       "id": "cbcmodernwarfare:smoke_mediumcannon_round",
       "required": false
+    },
+    {
+      "id": "#cbcparts:medium_rounds",
+      "required": false
     }
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "createbigcannons:mortar_stone"
+    }
+  ],
+  "result": {
+    "id": "cbcparts:medium_mortar_stone_round",
+    "count": 2
+  }
+}

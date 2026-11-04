@@ -1,0 +1,244 @@
+{
+  "values": [
+    {
+      "id": "cbcparts:medium_shrapnel_shell_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_fluid_shell_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_solid_shot_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_drop_mortar_shell_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_mortar_stone_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_he_shell_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_he_shell_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_he_shell_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_he_shell_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_he_shell_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shell_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shell_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shell_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shell_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shell_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shot_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shot_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shot_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shot_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_ap_shot_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_solid_shot_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_solid_shot_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_solid_shot_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_solid_shot_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_solid_shot_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_shrapnel_shell_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_shrapnel_shell_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_shrapnel_shell_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_shrapnel_shell_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_shrapnel_shell_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_smoke_shell_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_smoke_shell_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_smoke_shell_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_smoke_shell_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_smoke_shell_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_drop_mortar_shell_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_drop_mortar_shell_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_drop_mortar_shell_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_drop_mortar_shell_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_drop_mortar_shell_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bag_of_grapeshot_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bag_of_grapeshot_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bag_of_grapeshot_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bag_of_grapeshot_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bag_of_grapeshot_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_mortar_stone_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_mortar_stone_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_mortar_stone_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_mortar_stone_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_mortar_stone_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_cluster_shell_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_cluster_shell_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_cluster_shell_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_cluster_shell_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_cluster_shell_mk5_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bunker_buster_shell_mk1_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bunker_buster_shell_mk2_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bunker_buster_shell_mk3_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bunker_buster_shell_mk4_round",
+      "required": false
+    },
+    {
+      "id": "cbcparts:medium_bunker_buster_shell_mk5_round",
+      "required": false
+    }
+  ]
+}

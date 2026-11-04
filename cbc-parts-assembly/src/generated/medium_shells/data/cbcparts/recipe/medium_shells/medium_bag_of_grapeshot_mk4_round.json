@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_enhanced_shells"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cbc_enhanced_shells:bag_of_grapeshot_mk4"
+    }
+  ],
+  "result": {
+    "id": "cbcparts:medium_bag_of_grapeshot_mk4_round",
+    "count": 2
+  }
+}

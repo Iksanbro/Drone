@@ -1,0 +1,20 @@
+{
+  "gravity": -0.05,
+  "drag": 0.01,
+  "quadratic_drag": false,
+  "durability_mass": 8,
+  "penetration": 7,
+  "toughness": 7,
+  "deflection": 0.7,
+  "entity_damage": 190,
+  "renders_invulnerable": false,
+  "ignores_invulnerability": true,
+  "ignores_entity_armor": true,
+  "knockback": 16,
+  "added_recoil": 1,
+  "can_squib": true,
+  "explosive_power": 13,
+  "cluster_count": 8,
+  "cluster_spread": 36,
+  "cluster_projectile": "cbcparts:medium_he_shell_mk3"
+}

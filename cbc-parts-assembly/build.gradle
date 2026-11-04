@@ -30,6 +30,8 @@ repositories {
 
 // Data files are produced by tools/generate_data.py
 sourceSets.main.resources.srcDir 'src/generated/resources'
+// Medium cannon shells (properties, models, lang, recipes), produced by tools/generate_medium_shells.py
+sourceSets.main.resources.srcDir 'src/generated/medium_shells'
 // Addon loot tables and block tags moved to the 1.21 paths, produced by tools/convert_addon_data.py
 sourceSets.main.resources.srcDir 'src/generated/addon_fixes'
 
@@ -47,6 +49,7 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
     gametestCompileOnly.extendsFrom compileOnly
     gametestRuntimeClasspath.extendsFrom localRuntime
+    createJar
 }
 
 neoForge {
@@ -60,6 +63,14 @@ neoForge {
         server {
             server()
             programArgument '--nogui'
+        }
+        // the client with a self test (medium shells: creative tab, item models, rounds in flight;
+        // screenshots in run/screenshots); use under Xvfb
+        clientTest {
+            client()
+            sourceSet = sourceSets.gametest
+            systemProperty 'cbcparts.clientTest', 'true'
+            programArguments.addAll('--width', '1280', '--height', '720')
         }
         gameTestServer {
             type = 'gameTestServer'
@@ -80,17 +91,35 @@ neoForge {
     }
 }
 
+// Create ships Ponder (with Catnip), Flywheel and Registrate inside its jar; compile against those copies
+def createLibs = layout.buildDirectory.dir('createLibs')
+def extractCreateLibs = tasks.register('extractCreateLibs', Copy) {
+    from({ zipTree(configurations.createJar.singleFile).matching { include 'META-INF/jarjar/*.jar' } })
+    into createLibs
+    eachFile { path = name }
+    includeEmptyDirs = false
+}
+tasks.named('compileJava') { dependsOn extractCreateLibs }
+tasks.named('compileGametestJava') { dependsOn extractCreateLibs }
+
 dependencies {
     compileOnly("com.simibubi.create:create-1.21.1:${create_version}:slim") { transitive = false }
+    createJar("maven.modrinth:create:${create_modrinth}") { transitive = false }
+    compileOnly fileTree(createLibs) { include '*.jar' }
 
-    gametestCompileOnly "maven.modrinth:create-big-cannons:${cbc_modrinth}"
+    // Medium cannon shells extend the projectiles and rounds of CBC Neo Warfare. That code is only
+    // loaded when Neo Warfare is installed.
+    compileOnly "maven.modrinth:create-big-cannons:${cbc_modrinth}"
+    compileOnly "maven.modrinth:rpl:${rpl_modrinth}"
+    compileOnly "curse.maven:cbc-neo-warfare-1552960:${neo_warfare_curse_file}"
 
     localRuntime "maven.modrinth:create:${create_modrinth}"
     localRuntime "maven.modrinth:rpl:${rpl_modrinth}"
     localRuntime "maven.modrinth:create-big-cannons:${cbc_modrinth}"
-    // Run with -PwithEnhancedShells to test rockets of CBC Enchanced Shells in unloaded chunks (1.2.5; 1.5.1: -PenhancedShellsFile=9336668)
+    // Run with -PwithEnhancedShells to test with CBC Enchanced Shells 1.5.1 (rockets in unloaded chunks,
+    // Mk medium shells); -PenhancedShellsFile=8838000 for 1.2.5
     if (project.hasProperty('withEnhancedShells')) {
-        localRuntime "curse.maven:cbc-enchanced-shells-1489732:${project.findProperty('enhancedShellsFile') ?: '8838000'}"
+        localRuntime "curse.maven:cbc-enchanced-shells-1489732:${project.findProperty('enhancedShellsFile') ?: '9336668'}"
     }
 
     // Run with -PwithoutAddons to test the mod with Create Big Cannons alone

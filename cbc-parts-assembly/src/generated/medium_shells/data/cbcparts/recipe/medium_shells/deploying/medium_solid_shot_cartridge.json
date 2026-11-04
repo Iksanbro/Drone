@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "cbcmodernwarfare:filled_mediumcannon_cartridge"
+    },
+    {
+      "item": "cbcparts:medium_solid_shot_round"
+    }
+  ],
+  "results": [
+    {
+      "id": "cbcparts:medium_solid_shot_cartridge",
+      "count": 1,
+      "components": {
+        "createbigcannons:projectile": [
+          {
+            "item": {
+              "id": "cbcparts:medium_solid_shot_round",
+              "count": 1
+            },
+            "slot": 0
+          }
+        ]
+      }
+    }
+  ]
+}

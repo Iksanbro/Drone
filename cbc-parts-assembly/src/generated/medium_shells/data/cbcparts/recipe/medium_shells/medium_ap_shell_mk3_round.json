@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbc_enhanced_shells"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cbc_enhanced_shells:ap_shell_mk3"
+    }
+  ],
+  "result": {
+    "id": "cbcparts:medium_ap_shell_mk3_round",
+    "count": 2
+  }
+}

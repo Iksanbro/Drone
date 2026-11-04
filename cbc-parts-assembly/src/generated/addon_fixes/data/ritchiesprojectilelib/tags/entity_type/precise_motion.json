@@ -68,6 +68,10 @@
     {
       "id": "cbcmodernwarfare:he_autocannon",
       "required": false
+    },
+    {
+      "id": "#cbcparts:medium_shells",
+      "required": false
     }
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "cbcmodernwarfare"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "createbigcannons:shrapnel_shell"
+    }
+  ],
+  "result": {
+    "id": "cbcparts:medium_shrapnel_shell_round",
+    "count": 2
+  }
+}

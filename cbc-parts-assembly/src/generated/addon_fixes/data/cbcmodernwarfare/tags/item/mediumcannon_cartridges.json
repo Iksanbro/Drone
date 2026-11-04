@@ -36,6 +36,10 @@
     {
       "id": "cbcmodernwarfare:smoke_mediumcannon_cartridge",
       "required": false
+    },
+    {
+      "id": "#cbcparts:medium_cartridges",
+      "required": false
     }
   ]
 }

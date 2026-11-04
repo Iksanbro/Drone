@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
+import io.github.iksanbro.cbcparts.medium.MediumShells;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
@@ -16,6 +18,8 @@ public final class CBCPartsAssembly {
 
     public CBCPartsAssembly(IEventBus modBus, ModContainer container) {
         ModItems.register(modBus);
+        // Classes of the medium shells refer to CBC Neo Warfare; they are loaded only when it is installed.
+        if (ModList.get().isLoaded("cbcmodernwarfare")) MediumShells.register(modBus);
         container.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
         // Lowest priority: run only when no other mod cancelled the placement.
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, CannonPartConnector::onBlockPlaced);
