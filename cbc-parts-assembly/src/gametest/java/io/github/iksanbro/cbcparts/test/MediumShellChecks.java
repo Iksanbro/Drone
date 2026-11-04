@@ -347,4 +347,19 @@ final class MediumShellChecks {
         }
         throw new NoSuchMethodException(target.getClass().getName() + "." + name);
     }
+
+    /** Every round flies like Neo Warfare's own medium rounds: same gravity and drag. */
+    public static void fliesLikeNeoWarfareRounds(GameTestHelper helper) throws Exception {
+        var nw = riftyboi.cbcmodernwarfare.index.CBCModernWarfareMunitionPropertiesHandlers.HE_MEDIUMCANNON
+                .getPropertiesOf(type(NW + ":he_mediumshell")).ballistics();
+        for (MediumShells.Entry e : MediumShells.entries()) {
+            Object properties = e.shell().kind().handler().getPropertiesOf(e.entity().get());
+            Method accessor = properties.getClass().getMethod("ballistics");
+            accessor.setAccessible(true);
+            var b = (rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent) accessor.invoke(properties);
+            helper.assertTrue(b.gravity() == nw.gravity() && b.drag() == nw.drag() && b.isQuadraticDrag() == nw.isQuadraticDrag(),
+                    e.shell().name() + ": gravity " + b.gravity() + ", drag " + b.drag() + "; Neo Warfare HE round " + nw.gravity() + ", " + nw.drag());
+        }
+        helper.succeed();
+    }
 }

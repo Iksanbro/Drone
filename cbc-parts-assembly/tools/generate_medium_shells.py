@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Data of the medium cannon shells (rounds and cartridges for CBC Neo Warfare's medium cannon).
 
-Each medium round is made after a big shell and is half as strong. Input: the munition properties of
+Each medium round is made after a big shell and is half as strong; it flies (gravity, drag) like
+Neo Warfare's own medium rounds (tools/medium_shells/neo_warfare/). Input: the munition properties of
 the big shells in tools/medium_shells/big/<mod>/<name>.json (Create Big Cannons defaults, and for
 CBC Enchanced Shells the server's tuned files where there are some, else the mod's defaults).
 
@@ -65,7 +66,12 @@ MAX_SMOKE_SCALE = 20
 BALLISTICS = ["gravity", "drag", "quadratic_drag", "durability_mass", "penetration", "toughness", "deflection"]
 DAMAGE = ["entity_damage", "renders_invulnerable", "ignores_invulnerability", "ignores_entity_armor", "knockback"]
 MEDIUM = ["added_recoil", "can_squib"]
-# combat values halved; flight (gravity, drag), spreads and flags are kept
+# Flight (gravity, drag) is that of Neo Warfare's own medium rounds: the closest one of each kind,
+# from tools/medium_shells/neo_warfare/
+FLIGHT = ["gravity", "drag", "quadratic_drag"]
+FLIGHT_OF_KIND = {"HE": "he", "AP_SHELL": "aphe", "SHOT": "ap", "SMOKE": "smoke", "SHRAPNEL": "he",
+                  "GRAPESHOT": "canister", "MORTAR_STONE": "he", "FLUID": "he", "CLUSTER": "he", "BUNKER_BUSTER": "he"}
+# combat values halved; spreads and flags are kept
 HALVED = {"durability_mass", "penetration", "toughness", "entity_damage", "knockback", "explosive_power",
           "entity_damaging_explosive_power", "block_damaging_explosive_power", "shrapnel_count",
           "grapeshot_count", "smoke_scale", "smoke_duration", "fluid_shell_capacity"}
@@ -143,7 +149,15 @@ def medium_properties(kind: str, big: dict, mk: int | None) -> dict:
             raise KeyError(f"{k} missing for {kind}")
         out[k] = number(k, half(k, v))
     out.update(extra)
+    flight = load_medium_round(FLIGHT_OF_KIND[kind])
+    for k in FLIGHT:
+        out[k] = number(k, flight.get(k, DEFAULTS[k]))
     return out
+
+
+def load_medium_round(name: str) -> dict:
+    with open(os.path.join(ROOT, "tools", "medium_shells", "neo_warfare", f"{name}_mediumshell.json"), encoding="utf-8") as f:
+        return json.load(f)
 
 
 def burst_properties(big: dict) -> dict:
@@ -288,7 +302,7 @@ def write_table(all_shells: list, props: dict) -> None:
         "",
         "Сгенерировано `tools/generate_medium_shells.py` из параметров больших снарядов (`tools/medium_shells/big/`), руками не править.",
         "",
-        "Взрыв: одно число, или «по существам / по блокам». Масса — `durability_mass`.",
+        "Взрыв: одно число, или «по существам / по блокам». Масса — `durability_mass`. Баллистика у всех как у снарядов средних пушек Neo Warfare: гравитация −0.04, сопротивление воздуха 0.01.",
         "",
         "| Снаряд | ID снаряда (патрон: `_cartridge`) | Урон | Взрыв | Пробитие | Прочность | Масса | Отдача | Особое |",
         "|---|---|---|---|---|---|---|---|---|",

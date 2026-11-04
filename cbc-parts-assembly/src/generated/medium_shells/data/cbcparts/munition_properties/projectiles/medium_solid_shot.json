@@ -1,5 +1,5 @@
 {
-  "gravity": -0.05,
+  "gravity": -0.04,
   "drag": 0.01,
   "quadratic_drag": false,
   "durability_mass": 1.5,

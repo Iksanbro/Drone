@@ -73,4 +73,9 @@ public final class MediumShellGameTests {
     public static void mediumCannonFiresTheRound(GameTestHelper helper) throws Exception {
         if (!skip(helper, false)) MediumShellChecks.mediumCannonFiresTheRound(helper);
     }
+
+    @GameTest(template = "empty")
+    public static void fliesLikeNeoWarfareRounds(GameTestHelper helper) throws Exception {
+        if (!skip(helper, false)) MediumShellChecks.fliesLikeNeoWarfareRounds(helper);
+    }
 }

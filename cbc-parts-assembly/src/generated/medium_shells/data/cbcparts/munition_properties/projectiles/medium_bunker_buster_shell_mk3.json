@@ -1,6 +1,6 @@
 {
   "gravity": -0.04,
-  "drag": 0.008,
+  "drag": 0.01,
   "quadratic_drag": false,
   "durability_mass": 22.5,
   "penetration": 37.5,
