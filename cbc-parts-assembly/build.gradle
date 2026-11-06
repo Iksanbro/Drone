@@ -32,6 +32,8 @@ repositories {
 sourceSets.main.resources.srcDir 'src/generated/resources'
 // Medium cannon shells (properties, models, lang, recipes), produced by tools/generate_medium_shells.py
 sourceSets.main.resources.srcDir 'src/generated/medium_shells'
+// their textures, drawn by tools/draw_medium_textures.py
+sourceSets.main.resources.srcDir 'src/generated/medium_textures'
 // Addon loot tables and block tags moved to the 1.21 paths, produced by tools/convert_addon_data.py
 sourceSets.main.resources.srcDir 'src/generated/addon_fixes'
 

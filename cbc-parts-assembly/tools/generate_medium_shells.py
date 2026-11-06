@@ -180,22 +180,13 @@ def shells() -> list[dict]:
 
 
 def textures(s: dict) -> tuple[str, str, str]:
+    """Side, top and bottom textures of the big shell (draw_medium_textures.py takes the colours from them)."""
     base = s["tex"]
     side = base + "_side" if s["name"].startswith("drop_mortar_shell") else base
     top = base + "_top"
     # mortar stones and bags of grapeshot have CBC's plain bottom (createbigcannons:block/standard_projectile_block)
     return side, top, (base + "_bottom" if s["bottom"] else f"{CBC}:block/projectile/standard_bottom")
 
-
-# The big shells' block models (createbigcannons:block/projectile_block) are 10 pixels wide: only these
-# parts of their 16x16 textures are the shell; the rest is empty or not meant to be seen.
-SIDE_UV = [3, 0, 13, 16]
-SIDE_UV_DROP_MORTAR = [3, 0, 13, 14]  # its lower 2 pixels are the fins (createbigcannons:block/drop_mortar_shell)
-END_UV = [3, 3, 13, 13]
-
-
-def side_uv(s: dict) -> list:
-    return SIDE_UV_DROP_MORTAR if s["name"].startswith("drop_mortar_shell") else SIDE_UV
 
 
 ROUND_DISPLAY = {
@@ -213,20 +204,27 @@ CARTRIDGE_DISPLAY = {
 }
 
 
+def round_texture(s: dict) -> str:
+    """Drawn by tools/draw_medium_textures.py, in the layout of Neo Warfare's medium round textures."""
+    return f"{MOD_ID}:item/medium/{s['name']}"
+
+
 def round_model(s: dict) -> dict:
-    """Same shape as Neo Warfare's medium rounds, painted with the big shell's block textures."""
-    side, top, bottom = textures(s)
-    face = {"uv": side_uv(s), "texture": "#side"}
+    """Neo Warfare's medium round model (cbcmodernwarfare:item/he_mediumcannon_round) with this round's texture."""
+    tex = round_texture(s)
     return {
         "parent": "minecraft:block/block",
-        "textures": {"side": side, "top": top, "bottom": bottom, "particle": top},
+        "textures": {"0": tex, "particle": tex},
         "elements": [{
             "from": [5, 5, 2.5], "to": [11, 11, 13.5],
+            "rotation": {"angle": 0, "axis": "x", "origin": [8, 8.5, 8]},
             "faces": {
-                "north": {"uv": END_UV, "rotation": 180, "texture": "#top"},
-                "south": {"uv": END_UV, "texture": "#bottom"},
-                "east": dict(face, rotation=90), "west": dict(face, rotation=270),
-                "up": face, "down": dict(face, rotation=180),
+                "north": {"uv": [6, 0, 12, 6], "rotation": 180, "texture": "#0"},
+                "east": {"uv": [0, 0, 6, 11], "rotation": 90, "texture": "#0"},
+                "south": {"uv": [6, 6, 12, 12], "texture": "#0"},
+                "west": {"uv": [0, 0, 6, 11], "rotation": 270, "texture": "#0"},
+                "up": {"uv": [0, 0, 6, 11], "texture": "#0"},
+                "down": {"uv": [0, 0, 6, 11], "rotation": 180, "texture": "#0"},
             },
         }],
         "display": ROUND_DISPLAY,
@@ -234,13 +232,13 @@ def round_model(s: dict) -> dict:
 
 
 def cartridge_model(s: dict) -> dict:
-    """Neo Warfare's cartridge (brass case) with the round on top."""
-    side, top, bottom = textures(s)
-    case = "#case"
+    """Neo Warfare's medium cartridge model (brass case, round on top) with this round's texture."""
+    tex = round_texture(s)
+    case = "#0"
     return {
         "parent": "minecraft:block/block",
         "texture_size": [32, 32],
-        "textures": {"case": f"{NW}:item/cartridge_filled", "side": side, "top": top, "bottom": bottom, "particle": top},
+        "textures": {"0": f"{NW}:item/cartridge_filled", "1_0": tex, "particle": tex},
         "elements": [
             {"from": [4, 0, 4], "to": [12, 16, 12], "faces": {
                 **{d: {"uv": [0, 4, 4, 12], "texture": case} for d in ("north", "east", "south", "west")},
@@ -249,8 +247,8 @@ def cartridge_model(s: dict) -> dict:
                 **{d: {"uv": [4, 0, 7, 2.5], "texture": case} for d in ("north", "east", "south", "west")},
                 "up": {"uv": [4, 2.5, 7, 5.5], "texture": case}}},
             {"from": [5, 21, 5], "to": [11, 32, 11], "faces": {
-                **{d: {"uv": side_uv(s), "texture": "#side"} for d in ("north", "east", "south", "west")},
-                "up": {"uv": END_UV, "texture": "#top"}, "down": {"uv": END_UV, "texture": "#bottom"}}},
+                **{d: {"uv": [0, 0, 6, 11], "texture": "#1_0"} for d in ("north", "east", "south", "west")},
+                "up": {"uv": [6, 0, 12, 6], "texture": "#1_0"}, "down": {"uv": [6, 6, 12, 12], "texture": "#1_0"}}},
         ],
         "display": CARTRIDGE_DISPLAY,
     }
