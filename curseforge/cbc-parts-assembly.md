@@ -27,7 +27,7 @@ The medium cannon gets rounds for every big shell it was missing:
 
 Each round is **half as strong** as its big shell — damage, explosion, penetration, fragments, smoke — and flies like Neo Warfare's own medium rounds.
 - **1 big shell → 2 rounds** in a crafting table; round + filled medium cartridge → cartridge (crafting table or deployer).
-- Fuzes and tracers are added with Neo Warfare's recipes.
+- Fuzes are added with Neo Warfare's recipes.
 - **Fluid rounds** are filled with a spout (up to 1000 mB).
 - **Cluster rounds** split into small HE rounds at the top of their flight; **bunker busters** drill into blocks, then explode.
 - Everything is in the **Medium Cannon Shells** creative tab.
