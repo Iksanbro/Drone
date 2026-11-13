@@ -24,23 +24,15 @@ Weather Physics brings in Weather, Storms & Tornadoes (237746) and CoroUtil itse
 
 ## Description
 
-A small fix for a server crash of **Weather Physics** together with **Sable**:
+**Fixes the server crash "Body has been removed" when you play Weather Physics together with Sable.**
 
-```
-java.lang.RuntimeException: Body has been removed
-    at dev.ryanhcode.sable...RapierPhysicsPipeline.assertBodyValid
-    at dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle.getLinearVelocity
-    at net.killey.tornadophysics.event.TornadoEvent.processPhysics
-```
+When a Sable structure broke apart, merged or was destroyed while a tornado was pulling at it, the whole server could crash. With this mod the tornado simply skips that structure, and the game goes on. Nothing else about tornadoes, wind or Sable changes.
 
-### Cause
+### Good to know
+- Only the **server** needs it; in singleplayer just put it in your mods folder.
+- Needs **Weather Physics** and **Sable**; without them it does nothing.
+- Safe to add to an existing world and safe to remove later.
 
-`TornadoEvent.processPhysics` asks a Sable sub-level's physics body for its velocity without checking that the body still exists. When the sub-level is removed in the same tick (it broke apart, merged or was destroyed), Sable throws and the server crashes. Weather Physics already does this check in its `WindPhysics` class, but not here.
+---
 
-### Fix
-
-A mixin adds the same check (`RigidBodyHandle.isValid()`) at the start of `processPhysics`: a removed body is skipped for that tick. Nothing else changes.
-
-### Tested with
-
-NeoForge 21.1.228, Weather Physics 1.0.3, Sable 2.0.6, Weather, Storms & Tornadoes. A game test creates and removes a Sable sub-level under a real Weather2 storm: without the fix it crashes with the same error, with it it does not.
+*This mod was made 100% by AI.*

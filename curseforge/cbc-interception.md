@@ -26,46 +26,30 @@ Create (328085) and Ritchie's Projectile Library (1279407) come in with Create B
 
 ## Description
 
-**CBC Interception** lets cannon projectiles hit each other. Shells, autocannon rounds and rockets that meet in flight collide, and the one that is hit goes off just as if it had hit its target:
+**Shoot down enemy shells in flight.**
 
-- HE, shrapnel, smoke, fluid and cluster shells, HE rounds and rockets with a warhead **explode in the air** where they were hit;
-- rockets of CBC Enchanced Shells release their warhead and set it off;
-- solid shot, AP shells and rounds, bullets and unarmed rockets **break apart**.
+Shells, autocannon rounds and rockets of Create Big Cannons can now hit each other in the air. A shell that gets hit goes off right there:
 
-The projectile that hits is used up too, and explodes if it is explosive itself.
+- **explosive** shells, rounds and rockets blow up in mid-air;
+- **solid** shot, armour-piercing rounds and bullets break apart.
 
-### What can shoot down a projectile
+Build anti-air autocannons, flak batteries or rocket defences and protect your base from incoming fire.
 
-| By | How |
-|---|---|
-| A direct hit | both paths during the tick are checked in full, so fast projectiles never pass through each other |
-| Fragments | flak, shrapnel, grapeshot and Neo Warfare canister fragments hit projectiles like shells do |
-| An explosion nearby | projectiles inside an explosion go off |
-| Proximity fuzes | an armed proximity fuze goes off when a projectile comes within its distance (in Create Big Cannons it only reacts to living things and contraptions) |
+### What can stop a shell
+- **A direct hit** — even very fast shells cannot slip past each other.
+- **Fragments** — flak, shrapnel and grapeshot shred incoming shells.
+- **Explosions** — a blast near a flying shell sets it off.
+- **Proximity fuzes** — they now go off when a shell flies close, not only near mobs.
 
-Projectiles of one volley (twin barrels, bursts of fire) do not hit each other, and a projectile that just left the barrel takes no part for 2 ticks.
+Your own volley is safe: shells fired together from twin barrels or in a burst never hit each other.
 
-### Which projectiles
+### Works with
+Create Big Cannons and its addons: **CBC: Advanced Technologies**, **CBC Neo Warfare**, **CBC Enchanced Shells** and others.
 
-Every projectile of Create Big Cannons and of every addon built on its projectile class: CBC: Advanced Technologies, CBC Neo Warfare, CBC Enchanced Shells and others. The mod finds how each one goes off by itself, no list needed. Entity type tags:
+### Good to know
+- Only the **server** needs the mod; in singleplayer just put it in your mods folder.
+- Every part of it can be turned off in `config/cbcintercept-server.toml`, and the hit distance can be changed.
 
-- `cbcintercept:interceptable` — add an entity of another mod (a projectile or rocket);
-- `cbcintercept:not_interceptable` — leave a projectile or fragment type out.
+---
 
-### Config
-
-`config/cbcintercept-server.toml`:
-
-| Option | Default | What it does |
-|---|---|---|
-| `projectilesCollide` | `true` | the whole mod |
-| `extraHitRadius` | `0.5` | blocks added to the sizes of two projectiles when checking a hit (0 = touching only) |
-| `fragmentsHitProjectiles` | `true` | fragments shoot down projectiles |
-| `explosionsHitProjectiles` | `true` | explosions set off projectiles |
-| `proximityFuzesReactToProjectiles` | `true` | proximity fuzes go off near projectiles |
-
-### Tested with
-
-NeoForge 21.1.228, Create Big Cannons 5.11.7, CBC: Advanced Technologies 0.1.4c, CBC Neo Warfare 0.0.6v, CBC Enchanced Shells 1.2.5 and 1.5.1.
-
-Known limits: a mortar stone breaks apart instead of exploding when hit; fragments fly at random, so flak that bursts far from the target can miss.
+*This mod was made 100% by AI.*

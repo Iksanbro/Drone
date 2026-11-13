@@ -23,56 +23,38 @@
 
 ## Description
 
-**Create: Smart Logistics** is an addon for **Create 6.0.10** with better versions of Create's logistics blocks and fixes for problems of its package network.
+**Smarter logistics for Create 6: better frogports, packagers and stock tickers, giant mechanical crafter recipes and fixes for the package network.**
 
-### New blocks
+### Smart Frogport
+- Up to **16 addresses** in one frogport.
+- Modes: **send and receive**, **send only**, **receive only**.
+- Catches and sends **5 packages at a time**.
 
-All three are brass versions of Create's blocks. Recipe (shapeless): the Create block + a precision mechanism + an electron tube.
+### Smart Packager
+- Set the box address right in its menu — no sign needed.
+- **Auto-packing**: packs everything next to it without a redstone signal.
+- Packs and unpacks **5 boxes at a time**.
 
-**Smart Frogport**
-- up to **16 addresses** in an "Addresses" tab next to its menu (`*` works as in Create); chain conveyor routing knows all of them;
-- modes: send and receive, send only, receive only;
-- catches and sends **5 packages at a time** (configurable).
+### Smart Stock Ticker
+- Send ingredients of crafting orders to your **mechanical crafters** automatically.
+- Add rows like *Crushing → Crusher room* or *Milling → Mill*: ingredients of recipes ordered from JEI or EMI go to the right place.
 
-**Smart Packager**
-- box address set in its own menu (sneak + right click with an empty hand), no sign needed;
-- auto-packing: packs everything from the inventory next to it, as if it were always powered;
-- makes and unpacks **5 boxes at a time**.
+All three are crafted from the normal Create block + a precision mechanism + an electron tube, and look like Create's blocks in brass.
 
-**Smart Stock Ticker**
-- an "Addresses" tab in the order menu of the stock keeper;
-- an address for mechanical crafting orders, and rows "recipe type → address" (crushing, milling, any recipe type) for recipes ordered from JEI or EMI.
+### Huge mechanical crafter recipes
+The factory gauge gets a grid editor for mechanical crafters up to **100×100**. Paint the recipe, fill it from a crafting recipe, and the gauge orders it for you.
 
-### Big factory gauge grid
+### Fixes for Create's logistics
+- **Chain conveyors no longer jam** when two full conveyors send packages to each other.
+- Factory gauges no longer show **"?"** and stop when part of the network is in an unloaded chunk.
+- Recipes with **more than 9 kinds of ingredients** can be ordered from the stock keeper, JEI and EMI.
+- Mechanical crafters get every ingredient in the **right place**, also for recipes bigger than 3×3.
 
-A new button in the factory gauge's recipe menu opens a grid editor for mechanical crafters: **3×3, 5×5, 10×10, 25×25, 50×50, 100×100**. Paint with the gauge's inputs, fill from a crafting or mechanical crafting recipe, scroll large grids. Each cell is the mechanical crafter in the same place, seen from the front.
+### Good to know
+- Install on the server **and** on every client. Needs **Create 6.0.10** or a newer 6.0 version.
+- Works with **JEI** and **EMI**.
+- Fixes and batch sizes can be changed in `config/smartlogistics-server.toml`.
 
-### Fixes
+---
 
-- **Chain conveyor jams:** two full chain conveyors sending packages to each other no longer wait for each other forever and stop the whole network.
-- **"?" on factory gauges:** a part of the network in an unloaded chunk no longer turns every gauge of the network to "?"; gauges count what is loaded and keep working.
-- **Recipes with more than 9 kinds of ingredients** (large mechanical crafting recipes) can be ordered from the stock keeper, JEI and EMI; Create cut them to 9 and they could not be ordered.
-- **Crafting through mechanical crafters:** ordered crafts are put into the right crafters, completely, also for recipes larger than 3×3. Create's re-packager dropped every ingredient past the 9th cell, put items into the wrong crafters for other grid sizes, and started crafting before the grid was full.
-
-### Compatibility
-
-JEI through Create's own support (recipes up to 9 ingredients), EMI through this mod's handler (with or without JEI). REI only through its JEI compatibility layer.
-
-### Config
-
-`config/smartlogistics-server.toml`:
-
-| Option | Default | What it does |
-|---|---|---|
-| `fixes.chainConveyorJamFix` | `true` | chain conveyor jam fix |
-| `fixes.chainConveyorOverflowFactor` | `3.0` | how many times its capacity a conveyor accepts from neighbouring conveyors |
-| `fixes.gaugesIgnoreUnloadedLinks` | `true` | gauges do not wait for unloaded parts of the network |
-| `fixes.mechanicalCrafterFix` | `true` | mechanical crafter fix |
-| `smart_blocks.smartFrogportBatch` | `5` | packages at a time for the smart frogport |
-| `smart_blocks.smartPackagerBatch` | `5` | boxes at a time for the smart packager |
-
-### Tested with
-
-NeoForge 21.1.228, Create 6.0.10, JEI 19.21.0.247, EMI 1.1.24.
-
-No textures of Create are included: the brass look is made in the game from your installed Create's textures.
+*This mod was made 100% by AI.*
