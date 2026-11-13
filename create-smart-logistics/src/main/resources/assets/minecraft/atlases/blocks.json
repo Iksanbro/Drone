@@ -1,0 +1,54 @@
+{
+  "sources": [
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "create:block/packager_details"
+      ],
+      "palette_key": "smartlogistics:palette/packager_details_key",
+      "permutations": {
+        "smartlogistics_brass": "smartlogistics:palette/packager_details_brass"
+      }
+    },
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "create:block/packager_particle"
+      ],
+      "palette_key": "smartlogistics:palette/packager_particle_key",
+      "permutations": {
+        "smartlogistics_brass": "smartlogistics:palette/packager_particle_brass"
+      }
+    },
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "create:block/port"
+      ],
+      "palette_key": "smartlogistics:palette/port_key",
+      "permutations": {
+        "smartlogistics_brass": "smartlogistics:palette/port_brass"
+      }
+    },
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "create:block/port2"
+      ],
+      "palette_key": "smartlogistics:palette/port2_key",
+      "permutations": {
+        "smartlogistics_brass": "smartlogistics:palette/port2_brass"
+      }
+    },
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "create:block/stock_ticker"
+      ],
+      "palette_key": "smartlogistics:palette/stock_ticker_key",
+      "permutations": {
+        "smartlogistics_brass": "smartlogistics:palette/stock_ticker_brass"
+      }
+    }
+  ]
+}

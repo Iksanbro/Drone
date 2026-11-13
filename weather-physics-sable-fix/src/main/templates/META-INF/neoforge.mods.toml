@@ -10,6 +10,7 @@ config = "wpfix.mixins.json"
 modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "${mod_name}"
+logoFile = "icon.png"
 authors = "${mod_authors}"
 description = '''
 Fixes the server crash "java.lang.RuntimeException: Body has been removed" of Weather Physics

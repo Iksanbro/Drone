@@ -10,6 +10,7 @@ config = "smartlogistics.mixins.json"
 modId = "${mod_id}"
 version = "${mod_version}"
 displayName = "${mod_name}"
+logoFile = "icon.png"
 authors = "${mod_authors}"
 description = '''
 Better logistics for Create 6: smart frogports (several addresses, send/receive modes, 5 packages

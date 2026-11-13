@@ -31,3 +31,9 @@ Mixin добавляет в начало `processPhysics` ту же провер
 - `TornadoEvent.processPhysics` с настоящим штормом Weather2 на этом теле больше не падает.
 
 Без mixin тот же тест падает с `RuntimeException: Body has been removed`, как в краш-репорте.
+
+## Лицензия
+
+MIT, см. [LICENSE](LICENSE) (он же лежит внутри jar). Там же раздел о сторонних частях. На CurseForge выбирать **MIT License**.
+
+Версия **1.0 Release** (`1.0-release`): файл `weather-physics-sable-fix-1.21.1-1.0-release.jar`, на CurseForge — «Weather Physics Sable Fix 1.0 Release». Иконка — `src/main/resources/icon.png` (рисует `mod-icons/draw_icons.py` в корне репозитория).

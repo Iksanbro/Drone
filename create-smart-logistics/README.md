@@ -15,7 +15,7 @@
 
 Крафт новых блоков (бесформенный): обычный блок Create + точный механизм + электронная лампа.
 
-Текстуры перекрашены из текстур Create в латунь (по цветам латунного блока Create), код визуала лягушки взят из Create (MIT) с другими моделями.
+Блоки выглядят как блоки Create из латуни. Своих копий текстур Create в моде нет (ассеты Create — All Rights Reserved): игра сама перекрашивает текстуры установленного Create при загрузке, по палитрам мода (`assets/minecraft/atlases/blocks.json`, `textures/palette`, их строит `tools/make_brass_palette.py`). Код визуала лягушки взят из Create (MIT) с другими моделями.
 
 ## Умный кваквапорт
 
@@ -93,7 +93,7 @@
 
 ```bash
 cd create-smart-logistics
-./gradlew build                 # build/libs/create-smart-logistics-1.21.1-1.0.jar
+./gradlew build                 # build/libs/create-smart-logistics-1.21.1-1.0-release.jar
 ./gradlew runGameTestServer     # серверные тесты с Create
 xvfb-run ./gradlew runClientTest -PwithEmi   # клиентский самотест со скриншотами (run/screenshots)
 ```
@@ -108,3 +108,9 @@ xvfb-run ./gradlew runClientTest -PwithEmi   # клиентский самоте
 - В заказе через обработку учитываются предметы; жидкие ингредиенты (наполнение и т.п.) не заказываются.
 - Сетки 50×50 и 100×100 работают, но каждая коробка заказа несёт схему сетки целиком (так устроен Create), поэтому такие коробки большие.
 - Контроллер с исправлением «?» не знает о запасах в непрогруженных чанках и может заказать больше, чем нужно.
+
+## Лицензия
+
+MIT, см. [LICENSE](LICENSE) (он же лежит внутри jar). Там же раздел о сторонних частях. На CurseForge выбирать **MIT License**.
+
+Версия **1.0 Release** (`1.0-release`): файл `create-smart-logistics-1.21.1-1.0-release.jar`, на CurseForge — «Create: Smart Logistics 1.0 Release». Иконка — `src/main/resources/icon.png` (рисует `mod-icons/draw_icons.py` в корне репозитория).

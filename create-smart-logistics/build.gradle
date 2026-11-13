@@ -127,3 +127,8 @@ neoForge.ideSyncTask generateModMetadata
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
+// the license goes into the jar too
+tasks.named('jar') {
+    from('LICENSE')
+}

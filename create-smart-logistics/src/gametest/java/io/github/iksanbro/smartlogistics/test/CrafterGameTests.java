@@ -61,8 +61,8 @@ public final class CrafterGameTests {
         craft(helper, "minecraft:chest", 3, 3, true);
     }
 
-    /** Create alone: the 5x5 recipe is cut after 9 cells and fails. Starts after the tests above. */
-    @GameTest(template = "tall", setupTicks = TIMEOUT + 20, timeoutTicks = TIMEOUT)
+    /** Create alone: the 5x5 recipe is cut after 9 cells and fails. In the "controls" batch, after the tests with the fix on. */
+    @GameTest(template = "tall", timeoutTicks = TIMEOUT, batch = "controls")
     public static void crushingWheelWithoutFix(GameTestHelper helper) {
         craft(helper, "create:mechanical_crafting/crushing_wheel", 5, 5, false);
     }

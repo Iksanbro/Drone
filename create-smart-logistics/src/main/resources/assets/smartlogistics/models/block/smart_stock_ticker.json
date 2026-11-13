@@ -1,7 +1,7 @@
 {
   "parent": "create:block/stock_ticker",
   "textures": {
-    "0": "smartlogistics:block/smart_stock_ticker",
+    "0": "create:block/stock_ticker_smartlogistics_brass",
     "particle": "create:block/andesite_casing"
   }
 }

@@ -188,70 +188,21 @@ def textures(s: dict) -> tuple[str, str, str]:
     return side, top, (base + "_bottom" if s["bottom"] else f"{CBC}:block/projectile/standard_bottom")
 
 
-
-ROUND_DISPLAY = {
-    "thirdperson_righthand": {"rotation": [88, 1, 2], "translation": [0, 0.75, 1], "scale": [0.4, 0.4, 0.4]},
-    "thirdperson_lefthand": {"rotation": [88, 1, 2], "translation": [0, 0.75, 1], "scale": [0.4, 0.4, 0.4]},
-    "gui": {"rotation": [50, 40, -30], "scale": [0.73, 0.73, 0.73]},
-    "fixed": {"rotation": [90, 0, 0]},
-}
-CARTRIDGE_DISPLAY = {
-    "thirdperson_righthand": {"translation": [0, -4, 0], "scale": [0.5, 0.5, 0.5]},
-    "thirdperson_lefthand": {"translation": [0, -4, 0], "scale": [0.5, 0.5, 0.5]},
-    "ground": {"rotation": [-90, 0, 0], "translation": [0, 0, 2.5], "scale": [0.4, 0.4, 0.4]},
-    "gui": {"rotation": [-50, 0, 30], "translation": [2, -2, 0], "scale": [0.58, 0.58, 0.58]},
-    "fixed": {"translation": [0, -5, 0], "scale": [0.6, 0.6, 0.6]},
-}
-
-
 def round_texture(s: dict) -> str:
     """Drawn by tools/draw_medium_textures.py, in the layout of Neo Warfare's medium round textures."""
     return f"{MOD_ID}:item/medium/{s['name']}"
 
 
 def round_model(s: dict) -> dict:
-    """Neo Warfare's medium round model (cbcmodernwarfare:item/he_mediumcannon_round) with this round's texture."""
+    """Neo Warfare's medium round model, with this round's texture (the model itself is not copied)."""
     tex = round_texture(s)
-    return {
-        "parent": "minecraft:block/block",
-        "textures": {"0": tex, "particle": tex},
-        "elements": [{
-            "from": [5, 5, 2.5], "to": [11, 11, 13.5],
-            "rotation": {"angle": 0, "axis": "x", "origin": [8, 8.5, 8]},
-            "faces": {
-                "north": {"uv": [6, 0, 12, 6], "rotation": 180, "texture": "#0"},
-                "east": {"uv": [0, 0, 6, 11], "rotation": 90, "texture": "#0"},
-                "south": {"uv": [6, 6, 12, 12], "texture": "#0"},
-                "west": {"uv": [0, 0, 6, 11], "rotation": 270, "texture": "#0"},
-                "up": {"uv": [0, 0, 6, 11], "texture": "#0"},
-                "down": {"uv": [0, 0, 6, 11], "rotation": 180, "texture": "#0"},
-            },
-        }],
-        "display": ROUND_DISPLAY,
-    }
+    return {"parent": f"{NW}:item/he_mediumcannon_round", "textures": {"0": tex, "particle": tex}}
 
 
 def cartridge_model(s: dict) -> dict:
-    """Neo Warfare's medium cartridge model (brass case, round on top) with this round's texture."""
+    """Neo Warfare's medium cartridge model (its brass case), with this round's texture on top."""
     tex = round_texture(s)
-    case = "#0"
-    return {
-        "parent": "minecraft:block/block",
-        "texture_size": [32, 32],
-        "textures": {"0": f"{NW}:item/cartridge_filled", "1_0": tex, "particle": tex},
-        "elements": [
-            {"from": [4, 0, 4], "to": [12, 16, 12], "faces": {
-                **{d: {"uv": [0, 4, 4, 12], "texture": case} for d in ("north", "east", "south", "west")},
-                "up": {"uv": [0, 0, 4, 4], "texture": case}, "down": {"uv": [0, 12, 4, 16], "texture": case}}},
-            {"from": [5, 16, 5], "to": [11, 21, 11], "faces": {
-                **{d: {"uv": [4, 0, 7, 2.5], "texture": case} for d in ("north", "east", "south", "west")},
-                "up": {"uv": [4, 2.5, 7, 5.5], "texture": case}}},
-            {"from": [5, 21, 5], "to": [11, 32, 11], "faces": {
-                **{d: {"uv": [0, 0, 6, 11], "texture": "#1_0"} for d in ("north", "east", "south", "west")},
-                "up": {"uv": [6, 0, 12, 6], "texture": "#1_0"}, "down": {"uv": [6, 6, 12, 12], "texture": "#1_0"}}},
-        ],
-        "display": CARTRIDGE_DISPLAY,
-    }
+    return {"parent": f"{NW}:item/he_mediumcannon_cartridge", "textures": {"1_0": tex, "particle": tex}}
 
 
 def conditions(s: dict) -> list:

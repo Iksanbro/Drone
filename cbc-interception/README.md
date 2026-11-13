@@ -60,7 +60,7 @@
 
 ```bash
 cd cbc-interception
-./gradlew build    # build/libs/cbc-interception-1.21.1-1.0.jar
+./gradlew build    # build/libs/cbc-interception-1.21.1-1.0-release.jar
 ```
 
 ### Тесты
@@ -89,3 +89,9 @@ cd cbc-interception
 - Каменное ядро мортиры (`mortar_stone`) при попадании разрушается, а не взрывается: у него нет отдельного метода подрыва.
 - Если у снаряда аддона подрыв падает с ошибкой (например, аддон собран под другую версию CBC), снаряд разрушается, а ошибка пишется в лог один раз. Так было в тестовой сборке с фугасными снарядами CBC:AT 0.1.4c и CBC 5.11.7.
 - Осколки летят случайно: зенитный снаряд, взорвавшийся в стороне от цели, может промахнуться.
+
+## Лицензия
+
+MIT, см. [LICENSE](LICENSE) (он же лежит внутри jar). Там же раздел о сторонних частях. На CurseForge выбирать **MIT License**.
+
+Версия **1.0 Release** (`1.0-release`): файл `cbc-interception-1.21.1-1.0-release.jar`, на CurseForge — «CBC Interception 1.0 Release». Иконка — `src/main/resources/icon.png` (рисует `mod-icons/draw_icons.py` в корне репозитория).

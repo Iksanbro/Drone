@@ -253,8 +253,11 @@ public final class SmartLogisticsGameTests {
         gaugeTest(helper, true);
     }
 
-    /** With the fix off the gauge waits ("?"), as in Create. Starts after the test above. */
-    @GameTest(template = "area", setupTicks = 100, timeoutTicks = 80)
+    /**
+     * With the fix off the gauge waits ("?"), as in Create. In a batch of its own: it turns the fix
+     * off for the whole server while it runs, so it must not overlap the tests with the fix on.
+     */
+    @GameTest(template = "area", timeoutTicks = 80, batch = "controls")
     public static void gaugeWaitsWithoutFix(GameTestHelper helper) {
         gaugeTest(helper, false);
     }
@@ -291,8 +294,8 @@ public final class SmartLogisticsGameTests {
         chainTest(helper, 24, true);
     }
 
-    /** The same with the fix off: Create's conveyors stop. Starts after the other tests. */
-    @GameTest(template = "area", setupTicks = 120, timeoutTicks = 1000)
+    /** The same with the fix off: Create's conveyors stop. In the "controls" batch, after the tests with the fix on. */
+    @GameTest(template = "area", timeoutTicks = 1000, batch = "controls")
     public static void chainConveyorsJamWithoutFix(GameTestHelper helper) {
         chainTest(helper, 36, false);
     }
