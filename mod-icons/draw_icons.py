@@ -1,407 +1,665 @@
 #!/usr/bin/env python3
-"""Draws the icons of the four mods (512x512 PNG): a white-ringed blue badge with a grid on a dark
-navy square, and the mod's subject in the middle.
+"""Draws the icons of the four mods: a white-ringed blue badge with a grid on a dark navy square,
+with the mod's subject rendered in 3D in the middle.
 
-Usage: python3 mod-icons/draw_icons.py   (needs Pillow)
-Writes mod-icons/<mod>.png and each mod's src/main/resources/icon.png.
+The subjects are signed distance field scenes, ray marched with numpy: lit by a key light with soft
+shadows, ambient occlusion, a blue sky reflected by the metal parts and a rim light. Rendered at twice
+the size and scaled down, so edges are smooth.
+
+Usage: python3 mod-icons/draw_icons.py [mod ...]   (needs numpy and Pillow; about a minute per icon)
+Writes mod-icons/<mod>.png (1024x1024, for the CurseForge project) and each mod's
+src/main/resources/icon.png (512x512).
 """
 import math
 import os
-import shutil
+import sys
 
+import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-SS = 4                      # supersampling
-SIZE = 512
-W = SIZE * SS
-C = W / 2
-
-NAVY = (11, 24, 44)
-RING = (236, 244, 255)
-BLUE_IN = (66, 150, 236)
-BLUE_OUT = (14, 72, 160)
-GRID = (150, 205, 255)
-
-STEEL_DARK = (38, 42, 50)
-STEEL = (70, 77, 90)
-STEEL_LIGHT = (132, 142, 160)
-GOLD = (246, 176, 46)
-GOLD_DARK = (176, 104, 18)
-BRASS = (222, 170, 72)
-BRASS_DARK = (150, 100, 34)
-BRASS_LIGHT = (250, 214, 130)
+OUT = int(os.environ.get("ICON_SIZE", "1024"))   # icon size (ICON_SIZE=256 for a quick preview)
+SS = 2              # supersampling of the 3D render and the badge
+R = OUT * SS        # working resolution
 
 
-def s(v: float) -> float:
-    return v * SS
+# =============================================================================================
+# colours
+
+def lin(c):
+    """sRGB 0-255 -> linear 0-1."""
+    return (np.array(c, dtype=np.float64) / 255.0) ** 2.2
 
 
-# ------------------------------------------------------------------ badge
+def srgb(x):
+    return np.clip(x, 0, 1) ** (1 / 2.2)
+
+
+# =============================================================================================
+# badge (2D, numpy)
+
+NAVY = np.array([10, 22, 42]) / 255
+BLUE_C = np.array([78, 162, 245]) / 255
+BLUE_E = np.array([12, 62, 150]) / 255
+
 
 def badge() -> Image.Image:
-    img = Image.new("RGBA", (W, W), NAVY + (255,))
-    r_out, r_in = s(232), s(214)
-    # inner radial gradient
-    grad = Image.new("RGBA", (W, W))
-    gp = grad.load()
-    for y in range(0, W, 2):
-        for x in range(0, W, 2):
-            d = min(1.0, math.hypot(x - C + s(40), y - C + s(50)) / r_in)
-            col = tuple(int(BLUE_IN[i] + (BLUE_OUT[i] - BLUE_IN[i]) * d ** 1.4) for i in range(3)) + (255,)
-            gp[x, y] = col
-            gp[x + 1, y] = col
-            gp[x, y + 1] = col
-            gp[x + 1, y + 1] = col
-    # grid lines
-    gd = ImageDraw.Draw(grad)
-    step = s(34)
-    k = -10
-    while k * step < W + step:
-        pos = C + k * step
-        gd.line([(pos, 0), (pos, W)], fill=GRID + (90,), width=int(s(1.6)))
-        gd.line([(0, pos), (W, pos)], fill=GRID + (90,), width=int(s(1.6)))
-        k += 1
-    # darker rim inside the ring
-    rim = Image.new("L", (W, W), 0)
-    ImageDraw.Draw(rim).ellipse([C - r_in, C - r_in, C + r_in, C + r_in], fill=255)
-    inner = Image.new("L", (W, W), 0)
-    ImageDraw.Draw(inner).ellipse([C - r_in + s(18), C - r_in + s(18), C + r_in - s(18), C + r_in - s(18)], fill=255)
-    inner = inner.filter(ImageFilter.GaussianBlur(s(14)))
-    shade = Image.new("RGBA", (W, W), (5, 25, 70, 0))
-    shade.putalpha(Image.eval(inner, lambda v: int((255 - v) * 0.55)))
-    grad = Image.alpha_composite(grad, shade)
+    n = R
+    yy, xx = np.mgrid[0:n, 0:n].astype(np.float64)
+    c = n / 2
+    x, y = (xx - c) / c, (yy - c) / c           # -1..1
+    r = np.hypot(x, y)
+    img = np.zeros((n, n, 3))
+    # background: navy with a faint lift in the middle
+    img[:] = NAVY[None, None, :] * (1 + 0.25 * np.clip(1 - r / 1.4, 0, 1))[..., None]
 
-    d = ImageDraw.Draw(img)
-    # soft glow behind the ring
-    glow = Image.new("RGBA", (W, W), (0, 0, 0, 0))
-    ImageDraw.Draw(glow).ellipse([C - r_out - s(6), C - r_out - s(6), C + r_out + s(6), C + r_out + s(6)], fill=(90, 160, 255, 120))
-    img = Image.alpha_composite(img, glow.filter(ImageFilter.GaussianBlur(s(8))))
-    d = ImageDraw.Draw(img)
-    d.ellipse([C - r_out, C - r_out, C + r_out, C + r_out], fill=RING + (255,))
-    img.paste(grad, (0, 0), rim)
-    return img
+    r_out, r_ring_in = 0.905, 0.835
+    # outer glow of the ring
+    glow = np.exp(-((r - r_out) / 0.035) ** 2) * (r > r_out)
+    img += glow[..., None] * np.array([0.25, 0.5, 1.0]) * 0.45
 
+    # inner disc: radial gradient (light from the upper left), grid, vignette, sheen
+    d = np.hypot(x + 0.22, y + 0.28) / 1.25
+    t = np.clip(d, 0, 1) ** 1.3
+    disc = BLUE_C[None, None, :] * (1 - t)[..., None] + BLUE_E[None, None, :] * t[..., None]
+    step = 0.135
+    gx = np.abs(((x + 1) / step) % 1 - 0.5) * step
+    gy = np.abs(((y + 1) / step) % 1 - 0.5) * step
+    g = np.minimum(gx, gy)
+    px = 2.0 / n
+    line = np.clip(1 - (g - 0.0035) / (1.5 * px), 0, 1)
+    line_glow = np.exp(-(g / 0.012) ** 2) * 0.35
+    disc = disc + (line * 0.32 + line_glow * 0.18)[..., None] * np.array([0.75, 0.9, 1.0])
+    # finer sub grid
+    step2 = step / 4
+    g2 = np.minimum(np.abs(((x + 1) / step2) % 1 - 0.5), np.abs(((y + 1) / step2) % 1 - 0.5)) * step2
+    disc = disc + (np.clip(1 - (g2 - 0.0012) / px, 0, 1) * 0.07)[..., None]
+    # inner shadow under the ring, darker towards the edge
+    vign = np.clip((r - (r_ring_in - 0.22)) / 0.22, 0, 1) ** 2
+    disc = disc * (1 - 0.45 * vign)[..., None]
+    # glossy sheen across the upper half
+    sheen = np.clip(1 - np.hypot(x + 0.05, (y + 0.62) * 1.7) / 0.95, 0, 1) ** 2 * 0.16
+    disc = disc + sheen[..., None]
 
-def circle_mask() -> Image.Image:
-    m = Image.new("L", (W, W), 0)
-    r = s(214)
-    ImageDraw.Draw(m).ellipse([C - r, C - r, C + r, C + r], fill=255)
-    return m
+    # ring: bevelled white
+    ring_t = np.clip((r - r_ring_in) / (r_out - r_ring_in), 0, 1)
+    bevel = 0.92 + 0.08 * np.cos((ring_t - 0.35) * math.pi)
+    light = 0.9 + 0.1 * (-(x + y) / np.maximum(r, 1e-6)) * 0.7
+    ring = np.array([0.93, 0.96, 1.0])[None, None, :] * (bevel * light)[..., None]
+    ring = ring * (1 - 0.18 * np.exp(-((ring_t - 0.0) / 0.12) ** 2))[..., None]   # dark inner edge
 
-
-# ------------------------------------------------------------------ geometry helpers
-
-def rot(points, cx, cy, ang):
-    ca, sa = math.cos(ang), math.sin(ang)
-    return [(cx + x * ca - y * sa, cy + x * sa + y * ca) for x, y in points]
+    aa = 1.5 * px
+    in_disc = np.clip((r_ring_in - r) / aa, 0, 1)
+    in_ring = np.clip((r_out - r) / aa, 0, 1) - in_disc
+    img = img * (1 - in_disc - in_ring)[..., None] + disc * in_disc[..., None] + ring * in_ring[..., None]
+    return Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8), "RGB").convert("RGBA")
 
 
-def shadow_of(layer: Image.Image, dx=10, dy=14, blur=12, alpha=120) -> Image.Image:
-    a = layer.getchannel("A").point(lambda v: v * alpha // 255)
-    sh = Image.new("RGBA", layer.size, (0, 10, 30, 0))
-    sh.putalpha(a)
-    sh = sh.filter(ImageFilter.GaussianBlur(s(blur)))
-    out = Image.new("RGBA", layer.size, (0, 0, 0, 0))
-    out.paste(sh, (int(s(dx)), int(s(dy))))
-    return out
+# =============================================================================================
+# signed distance fields
+
+def rotation(rx=0.0, ry=0.0, rz=0.0):
+    """Local -> world rotation from angles in degrees (applied x, then y, then z)."""
+    a, b, c = (math.radians(v) for v in (rx, ry, rz))
+    mx = np.array([[1, 0, 0], [0, math.cos(a), -math.sin(a)], [0, math.sin(a), math.cos(a)]])
+    my = np.array([[math.cos(b), 0, math.sin(b)], [0, 1, 0], [-math.sin(b), 0, math.cos(b)]])
+    mz = np.array([[math.cos(c), -math.sin(c), 0], [math.sin(c), math.cos(c), 0], [0, 0, 1]])
+    return mz @ my @ mx
 
 
-def shaded_band(d, pts_fn, colors, n=24):
-    """Draws a cylinder-like body as n strips across its width, darkest at the edges."""
-    for i in range(n):
-        t0, t1 = i / n, (i + 1) / n
-        tm = (t0 + t1) / 2
-        # light from the upper left: bright strip at 30%, dark edges
-        light = max(0.0, 1 - abs(tm - 0.3) / 0.7)
-        col = mix(colors[0], colors[1], light ** 0.8)
-        if 0.2 < tm < 0.32:
-            col = mix(col, colors[2], 0.6)
-        d.polygon(pts_fn(t0, t1), fill=col + (255,))
+class Frame:
+    """A placed object: local = (world - centre) rotated back."""
+
+    def __init__(self, centre, rot):
+        self.c = np.array(centre, dtype=np.float64)
+        self.m = rot
+
+    def local(self, p):
+        return (p - self.c) @ self.m
+
+    def child(self, offset, rot=None):
+        return Frame(self.c + self.m @ np.array(offset, dtype=np.float64), self.m @ (rot if rot is not None else np.eye(3)))
 
 
-def mix(a, b, t):
-    return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
+def length(v):
+    return np.sqrt(np.sum(v * v, axis=-1))
 
 
-# ------------------------------------------------------------------ subjects
+def sd_box(q, b, rr=0.0):
+    d = np.abs(q) - (np.array(b) - rr)
+    return length(np.maximum(d, 0)) + np.minimum(np.max(d, axis=-1), 0) - rr
 
-def shell(layer, cx, cy, ang, length, radius, body=(STEEL_DARK, STEEL_LIGHT, (190, 200, 215)), studs=True,
-          band=None):
-    """A shell lying along ang: flat base at -length/2, ogive nose at +length/2."""
-    d = ImageDraw.Draw(layer)
-    body_len = length * 0.62
-    nose_len = length - body_len
-    x0 = -length / 2
 
-    def strip(t0, t1):
-        y0, y1 = -radius + 2 * radius * t0, -radius + 2 * radius * t1
-        pts = []
-        # body rectangle part
-        pts += [(x0, y0), (x0 + body_len, y0)]
-        # nose: ogive, half width shrinks as sqrt
-        steps = 24
-        for k in range(1, steps + 1):
-            u = k / steps
-            w = math.sqrt(max(0.0, 1 - u ** 2))
-            pts.append((x0 + body_len + nose_len * u, y0 * w))
-        for k in range(steps, 0, -1):
-            u = k / steps
-            w = math.sqrt(max(0.0, 1 - u ** 2))
-            pts.append((x0 + body_len + nose_len * u, y1 * w))
-        pts += [(x0 + body_len, y1), (x0, y1)]
-        return rot(pts, cx, cy, ang)
+def sd_cyl(q, axis, h, r, rr=0.0):
+    """Capped cylinder along local axis 0/1/2, half length h, radius r, edge rounding rr."""
+    o = [i for i in range(3) if i != axis]
+    radial = np.sqrt(q[:, o[0]] ** 2 + q[:, o[1]] ** 2) - (r - rr)
+    along = np.abs(q[:, axis]) - (h - rr)
+    return np.sqrt(np.maximum(radial, 0) ** 2 + np.maximum(along, 0) ** 2) + np.minimum(np.maximum(radial, along), 0) - rr
 
-    shaded_band(d, strip, body)
-    # base rim
-    rim = [(x0 - radius * 0.06, -radius * 1.04), (x0 + radius * 0.22, -radius * 1.04),
-           (x0 + radius * 0.22, radius * 1.04), (x0 - radius * 0.06, radius * 1.04)]
-    d.polygon(rot(rim, cx, cy, ang), fill=STEEL_DARK + (255,))
-    if band:
-        bx = x0 + body_len * 0.22
-        d.polygon(rot([(bx, -radius * 1.02), (bx + radius * 0.35, -radius * 1.02),
-                       (bx + radius * 0.35, radius * 1.02), (bx, radius * 1.02)], cx, cy, ang), fill=band + (255,))
+
+def sd_ellipsoid(q, rad):
+    rad = np.array(rad)
+    k0 = length(q / rad)
+    k1 = length(q / (rad * rad))
+    return k0 * (k0 - 1) / np.maximum(k1, 1e-9)
+
+
+def sd_sphere(q, r):
+    return length(q) - r
+
+
+def smin(a, b, k):
+    h = np.clip(0.5 + 0.5 * (b - a) / k, 0, 1)
+    return b * (1 - h) + a * h - k * h * (1 - h)
+
+
+class Scene:
+    """Objects as (sdf function of world points, material name)."""
+
+    def __init__(self):
+        self.parts = []
+
+    def add(self, fn, material):
+        self.parts.append((fn, material))
+
+    def eval(self, p):
+        best = np.full(len(p), 1e9)
+        mat = np.zeros(len(p), dtype=np.int32)
+        for i, (fn, _) in enumerate(self.parts):
+            d = fn(p)
+            closer = d < best
+            best = np.where(closer, d, best)
+            mat = np.where(closer, i, mat)
+        return best, mat
+
+    def dist(self, p):
+        best = np.full(len(p), 1e9)
+        for fn, _ in self.parts:
+            best = np.minimum(best, fn(p))
+        return best
+
+
+# =============================================================================================
+# materials: base colour (sRGB), metalness, roughness (0 mirror .. 1 matte)
+
+MATERIALS = {
+    "steel": (lin((128, 136, 150)), 0.9, 0.3),
+    "steel_dark": (lin((92, 98, 112)), 0.9, 0.32),
+    "gold": (lin((255, 178, 40)), 1.0, 0.22),
+    "brass": (lin((232, 176, 78)), 1.0, 0.28),
+    "brass_dark": (lin((190, 130, 48)), 1.0, 0.35),
+    "copper": (lin((214, 118, 62)), 1.0, 0.3),
+    "chrome": (lin((205, 212, 224)), 1.0, 0.12),
+    "card": (lin((196, 146, 92)), 0.0, 0.85),
+    "paper": (lin((240, 236, 226)), 0.0, 0.7),
+    "ink": (lin((70, 64, 60)), 0.0, 0.8),
+    "cloud": (lin((226, 233, 242)), 0.0, 0.9),
+    "cloud_dark": (lin((168, 178, 194)), 0.0, 0.9),
+    "dirt": (lin((112, 84, 58)), 0.0, 0.9),
+    "black": (lin((14, 15, 18)), 0.0, 0.9),
+}
+
+KEY = np.array([-0.5, 0.72, 0.55])
+KEY = KEY / np.linalg.norm(KEY)
+
+
+def env(r):
+    """Light coming from direction r (the sky the metal reflects)."""
+    up = np.clip(r[:, 1] * 0.5 + 0.5, 0, 1)
+    sky = np.array([0.03, 0.035, 0.05])[None] * (1 - up[:, None]) + np.array([0.62, 0.68, 0.78])[None] * up[:, None]
+    # a soft box light up and to the left, and a thin horizon band
+    box = np.exp(-(((r[:, 0] + 0.45) / 0.35) ** 2 + ((r[:, 1] - 0.55) / 0.25) ** 2)) * 3.2
+    band = np.exp(-((r[:, 1] - 0.05) / 0.06) ** 2) * 0.6
+    return sky + (box + band)[:, None]
+
+
+def render(scene: Scene, size: int, fov=0.25, cam_z=10.0):
+    """Returns RGBA float image (linear colour, alpha coverage)."""
+    ys, xs = np.mgrid[0:size, 0:size]
+    u = ((xs + 0.5) / size * 2 - 1).ravel()
+    v = (1 - (ys + 0.5) / size * 2).ravel()
+    dirs = np.stack([u * fov, v * fov, -np.ones_like(u)], axis=-1)
+    dirs /= length(dirs)[:, None]
+    origin = np.array([0, 0, cam_z])
+    n = size * size
+    t = np.full(n, cam_z - 3.2)
+    hit = np.zeros(n, dtype=bool)
+    # rays that miss the scene's bounding sphere (radius 3) are not marched
+    alive = np.nonzero(np.abs(u * fov * cam_z) ** 2 + np.abs(v * fov * cam_z) ** 2 < 3.2 ** 2)[0]
+    for _ in range(220):
+        if len(alive) == 0:
+            break
+        p = origin + dirs[alive] * t[alive, None]
+        d = scene.dist(p)
+        t[alive] += d * 0.85
+        done = d < 4e-4 * t[alive]
+        hit[alive[done]] = True
+        gone = t[alive] > cam_z + 3.5
+        alive = alive[~(done | gone)]
+
+    out = np.zeros((n, 4))
+    idx = np.nonzero(hit)[0]
+    if len(idx) == 0:
+        return out.reshape(size, size, 4)
+    p = origin + dirs[idx] * t[idx, None]
+    _, mat = scene.eval(p)
+    e = 1.5e-3
+    nrm = np.stack([scene.dist(p + np.array(o)) - scene.dist(p - np.array(o)) for o in
+                    ([e, 0, 0], [0, e, 0], [0, 0, e])], axis=-1)
+    nrm /= np.maximum(length(nrm), 1e-9)[:, None]
+    view = -dirs[idx]
+
+    # soft shadow towards the key light
+    sh = np.ones(len(idx))
+    st = np.full(len(idx), 0.02)
+    for _ in range(64):
+        q = p + nrm * 0.003 + KEY[None] * st[:, None]
+        d = scene.dist(q)
+        sh = np.minimum(sh, np.clip(10 * d / st, 0, 1))
+        st += np.clip(d, 0.01, 0.25)
+    sh = np.clip(sh, 0, 1) ** 1.5
+
+    # ambient occlusion
+    ao = np.zeros(len(idx))
+    for k in range(1, 6):
+        hk = 0.035 * k
+        ao += (hk - scene.dist(p + nrm * hk)) / (2 ** k)
+    ao = np.clip(1 - 3.2 * ao, 0.25, 1)
+
+    base = np.zeros((len(idx), 3))
+    metal = np.zeros(len(idx))
+    rough = np.zeros(len(idx))
+    for i, (_, m) in enumerate(scene.parts):
+        sel = mat == i
+        c, me, ro = MATERIALS[m]
+        base[sel] = c
+        metal[sel] = me
+        rough[sel] = ro
+
+    ndl = np.clip(np.sum(nrm * KEY[None], axis=-1), 0, 1)
+    ndv = np.clip(np.sum(nrm * view, axis=-1), 0, 1)
+    h = KEY[None] + view
+    h /= length(h)[:, None]
+    ndh = np.clip(np.sum(nrm * h, axis=-1), 0, 1)
+    refl = -view + 2 * np.sum(nrm * view, axis=-1)[:, None] * nrm
+    shin = 8 + (1 - rough) ** 2 * 400
+    spec = ndh ** shin * (shin + 2) / 8 * 0.5 * sh
+
+    # blur the reflection for rough metal by mixing with the normal's sky
+    env_r = env(refl) * (1 - rough[:, None]) + env(nrm) * rough[:, None]
+    fres = 0.04 + 0.96 * (1 - ndv) ** 5
+    ambient = np.array([0.3, 0.31, 0.36])[None] * (0.55 + 0.45 * nrm[:, 1:2])
+
+    diffuse = base * (ambient + 1.25 * (ndl * sh)[:, None]) * ao[:, None]
+    metallic = base * env_r * (0.35 + 0.65 * ao)[:, None] * (0.55 + 0.45 * sh)[:, None] + base * (spec * 2.2)[:, None]
+    col = diffuse * (1 - metal[:, None]) + metallic * metal[:, None]
+    col += ((spec * (1 - metal))[:, None] * 0.6)
+    col += (fres * (1 - rough) * 0.35)[:, None] * env_r * (1 - metal[:, None])
+    rim = (1 - ndv) ** 3 * 0.55
+    col += rim[:, None] * np.array([0.35, 0.6, 1.0])[None] * ao[:, None]
+
+    # filmic tone curve
+    x = col * 1.05
+    col = (x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14)
+    out[idx, :3] = col
+    out[idx, 3] = 1
+    return out.reshape(size, size, 4)
+
+
+def to_image(rgba: np.ndarray) -> Image.Image:
+    rgb = srgb(rgba[..., :3])
+    a = rgba[..., 3:4]
+    arr = np.concatenate([rgb, a], axis=-1)
+    return Image.fromarray((arr * 255 + 0.5).astype(np.uint8), "RGBA")
+
+
+# =============================================================================================
+# parts of the scenes
+
+def shell(scene, frame: Frame, length_, radius, body="steel_dark", studs=True, band="copper"):
+    """A shell along local +x: flat base at -L/2, ogive nose ending at +L/2."""
+    L, Rr = length_, radius
+    body_end = 0.08 * L
+    nose = 0.5 * L - body_end
+
+    def body_fn(p):
+        q = frame.local(p)
+        cyl = sd_cyl(q - np.array([(-0.5 * L + body_end) / 2, 0, 0]), 0, (body_end + 0.5 * L) / 2, Rr, 0.02 * Rr)
+        tip = sd_ellipsoid(q - np.array([body_end, 0, 0]), (nose, Rr, Rr))
+        tip = np.maximum(tip, -(q[:, 0] - body_end))
+        return smin(cyl, tip, 0.02 * Rr)
+
+    scene.add(body_fn, body)
+    # base rim and driving band
+    scene.add(lambda p: sd_cyl(frame.local(p) - np.array([-0.47 * L, 0, 0]), 0, 0.03 * L, Rr * 1.05, 0.01 * L), "steel")
+    scene.add(lambda p: sd_cyl(frame.local(p) - np.array([-0.3 * L, 0, 0]), 0, 0.035 * L, Rr * 1.04, 0.008 * L), band)
+    # fuze tip
+    scene.add(lambda p: sd_sphere(frame.local(p) - np.array([0.5 * L - 0.05 * Rr, 0, 0]), 0.18 * Rr), "steel")
     if studs:
-        for px, py in [(0.12, -0.55), (0.12, 0.25), (0.42, -0.2), (0.42, 0.6), (0.7, -0.5), (0.7, 0.3)]:
-            x = x0 + length * px
-            y = radius * py
-            (sx, sy), = rot([(x, y)], cx, cy, ang)
-            rr = radius * 0.17
-            d.ellipse([sx - rr * 1.25, sy - rr * 1.25, sx + rr * 1.25, sy + rr * 1.25], fill=(25, 22, 18, 255))
-            d.ellipse([sx - rr, sy - rr, sx + rr, sy + rr], fill=GOLD + (255,))
-            d.ellipse([sx - rr * 0.8, sy - rr * 0.8, sx + rr * 0.2, sy + rr * 0.2], fill=(255, 220, 120, 255))
+        pts = []
+        for xf, ang in [(-0.2, 30), (-0.2, 100), (0.0, 65), (0.0, 135), (-0.05, -5), (0.2, 40), (0.2, 105)]:
+            a = math.radians(ang)
+            pts.append(np.array([xf * L, math.sin(a) * Rr * 0.98, math.cos(a) * Rr * 0.98]))
+        pts = np.array(pts)
+
+        def studs_fn(p):
+            q = frame.local(p)
+            d = np.full(len(p), 1e9)
+            for c in pts:
+                d = np.minimum(d, sd_sphere(q - c, 0.14 * Rr))
+            return d
+
+        scene.add(studs_fn, "gold")
 
 
-def wrench(layer, cx, cy, ang, length, width):
-    d = ImageDraw.Draw(layer)
-    half = length / 2
+def wrench(scene, frame: Frame, length_, width):
+    L, w = length_, width
+    th = w * 0.32
 
-    def strip(t0, t1):
-        y0, y1 = -width / 2 + width * t0, -width / 2 + width * t1
-        return rot([(-half * 0.8, y0), (half * 0.8, y0), (half * 0.8, y1), (-half * 0.8, y1)], cx, cy, ang)
+    def fn(p):
+        q = frame.local(p)
+        shaft = sd_box(q, (L * 0.36, w * 0.5, th), th * 0.6)
+        d = shaft
+        for sx in (1, -1):
+            hq = q - np.array([sx * L * 0.42, 0, 0])
+            head = sd_cyl(hq, 2, th * 1.05, w * 1.15, th * 0.5)
+            # open jaw: a slot from the end towards the shaft
+            jaw = sd_box(hq - np.array([sx * w * 0.75, 0, 0]), (w * 0.75, w * 0.42, th * 3))
+            head = np.maximum(head, -jaw)
+            d = smin(d, head, w * 0.12)
+        return d
 
-    shaded_band(d, strip, ((90, 98, 112), (214, 222, 235), (245, 248, 255)))
-    for end, flip in ((half * 0.8, 1), (-half * 0.8, -1)):
-        (hx, hy), = rot([(end, 0)], cx, cy, ang)
-        r = width * 1.25
-        d.ellipse([hx - r, hy - r, hx + r, hy + r], fill=(170, 180, 196, 255), outline=(70, 76, 90, 255), width=int(s(3)))
-        # jaw opening
-        jaw = [(end + flip * r * 0.2, -r * 0.45), (end + flip * r * 1.4, -r * 0.6),
-               (end + flip * r * 1.4, r * 0.6), (end + flip * r * 0.2, r * 0.45)]
-        d.polygon(rot(jaw, cx, cy, ang), fill=(0, 0, 0, 0))
-    return d
-
-
-def cut_jaws(layer, cx, cy, ang, length, width):
-    """Clears the wrench jaws (drawn as filled circles) to leave the U shape."""
-    mask = Image.new("L", layer.size, 0)
-    md = ImageDraw.Draw(mask)
-    half = length / 2
-    for end, flip in ((half * 0.8, 1), (-half * 0.8, -1)):
-        r = width * 1.25
-        jaw = [(end + flip * r * 0.15, -r * 0.42), (end + flip * r * 1.5, -r * 0.55),
-               (end + flip * r * 1.5, r * 0.55), (end + flip * r * 0.15, r * 0.42)]
-        md.polygon(rot(jaw, cx, cy, ang), fill=255)
-    a = layer.getchannel("A")
-    a = Image.composite(Image.new("L", layer.size, 0), a, mask)
-    layer.putalpha(a)
+    scene.add(fn, "chrome")
 
 
-def barrel(layer, cx, cy, ang, length, radius):
-    """A cannon barrel with reinforcing rings and a muzzle, along ang."""
-    d = ImageDraw.Draw(layer)
-    half = length / 2
+def barrel(scene, frame: Frame, length_, radius):
+    """A cannon barrel along local +x: breech block, tube with brass bands, muzzle with its bore."""
+    L, Rr = length_, radius
 
-    def strip_for(xa, xb, ra, rb):
-        def strip(t0, t1):
-            ya0, ya1 = -ra + 2 * ra * t0, -ra + 2 * ra * t1
-            yb0, yb1 = -rb + 2 * rb * t0, -rb + 2 * rb * t1
-            return rot([(xa, ya0), (xb, yb0), (xb, yb1), (xa, ya1)], cx, cy, ang)
-        return strip
+    def tube(p):
+        q = frame.local(p)
+        # tapering tube: radius shrinks towards the muzzle
+        taper = Rr * (1.0 - 0.12 * np.clip((q[:, 0] + 0.3 * L) / (0.75 * L), 0, 1))
+        radial = np.sqrt(q[:, 1] ** 2 + q[:, 2] ** 2) - taper
+        along = np.abs(q[:, 0] - 0.05 * L) - 0.45 * L
+        d = np.sqrt(np.maximum(radial, 0) ** 2 + np.maximum(along, 0) ** 2) + np.minimum(np.maximum(radial, along), 0)
+        d = d * 0.95
+        breech = sd_cyl(q - np.array([-0.42 * L, 0, 0]), 0, 0.1 * L, Rr * 1.28, Rr * 0.12)
+        knob = sd_sphere(q - np.array([-0.53 * L, 0, 0]), Rr * 0.45)
+        muzzle = sd_cyl(q - np.array([0.47 * L, 0, 0]), 0, 0.05 * L, Rr * 1.08, Rr * 0.05)
+        d = smin(smin(d, breech, Rr * 0.08), muzzle, Rr * 0.05)
+        d = smin(d, knob, Rr * 0.1)
+        bore = sd_cyl(q - np.array([0.52 * L, 0, 0]), 0, 0.12 * L, Rr * 0.58)
+        return np.maximum(d, -bore)
 
-    body = (STEEL_DARK, STEEL_LIGHT, (190, 200, 215))
-    # breech (wider), tube (tapering), muzzle (wider)
-    shaded_band(d, strip_for(-half, -half * 0.45, radius * 1.25, radius * 1.25), body)
-    shaded_band(d, strip_for(-half * 0.45, half * 0.85, radius, radius * 0.82), body)
-    shaded_band(d, strip_for(half * 0.85, half, radius * 1.02, radius * 1.02), body)
-    # brass reinforcing rings
-    for x in (-half * 0.45, -half * 0.05, half * 0.4):
-        rr = radius * (1.08 - 0.12 * (x + half) / length)
-        shaded_band(d, strip_for(x, x + radius * 0.32, rr, rr), (BRASS_DARK, BRASS, BRASS_LIGHT), n=16)
-    # bore
-    (mx, my), = rot([(half, 0)], cx, cy, ang)
-    br = radius * 0.55
-    pts = []
-    for k in range(32):
-        a = 2 * math.pi * k / 32
-        pts.append((half + math.cos(a) * br * 0.35, math.sin(a) * br))
-    d.polygon(rot(pts, cx, cy, ang), fill=(12, 14, 18, 255))
-    # breech knob
-    (kx, ky), = rot([(-half - radius * 0.35, 0)], cx, cy, ang)
-    kr = radius * 0.5
-    d.ellipse([kx - kr, ky - kr, kx + kr, ky + kr], fill=STEEL + (255,), outline=STEEL_DARK + (255,), width=int(s(4)))
+    scene.add(tube, "steel")
 
+    def bands(p):
+        q = frame.local(p)
+        d = np.full(len(p), 1e9)
+        for xf, rf in ((-0.27, 1.12), (-0.02, 1.08), (0.24, 1.04)):
+            d = np.minimum(d, sd_cyl(q - np.array([xf * L, 0, 0]), 0, 0.035 * L, Rr * rf, 0.01 * L))
+        return d
 
-def gear(layer, cx, cy, r, teeth, col, col_dark, hole=0.35):
-    d = ImageDraw.Draw(layer)
-    pts = []
-    for k in range(teeth * 4):
-        a = 2 * math.pi * k / (teeth * 4)
-        rr = r if (k % 4) in (1, 2) else r * 0.8
-        pts.append((cx + math.cos(a) * rr, cy + math.sin(a) * rr))
-    d.polygon(pts, fill=col_dark + (255,))
-    pts2 = [(cx + (x - cx) * 0.9, cy + (y - cy) * 0.9) for x, y in pts]
-    d.polygon(pts2, fill=col + (255,))
-    hr = r * hole
-    d.ellipse([cx - hr, cy - hr, cx + hr, cy + hr], fill=col_dark + (255,))
-    hr2 = hr * 0.55
-    d.ellipse([cx - hr2, cy - hr2, cx + hr2, cy + hr2], fill=(30, 26, 20, 255))
+    scene.add(bands, "brass")
+
+    def bolts(p):
+        q = frame.local(p)
+        d = np.full(len(p), 1e9)
+        for k in range(8):
+            a = 2 * math.pi * k / 8
+            c = np.array([-0.42 * L, math.sin(a) * Rr * 1.3, math.cos(a) * Rr * 1.3])
+            d = np.minimum(d, sd_sphere(q - c, Rr * 0.13))
+        return d
+
+    scene.add(bolts, "brass_dark")
 
 
-def starburst(layer, cx, cy, r_out, r_in, points, col, rot0=0.0):
+def gear(scene, frame: Frame, radius, teeth, thickness, material="brass"):
+    def fn(p):
+        q = frame.local(p)
+        rxy = np.sqrt(q[:, 0] ** 2 + q[:, 1] ** 2)
+        a = np.arctan2(q[:, 1], q[:, 0])
+        sector = 2 * math.pi / teeth
+        a2 = (a + sector / 2) % sector - sector / 2
+        lx, ly = rxy * np.cos(a2), rxy * np.sin(a2)
+        tooth = np.sqrt(np.maximum(np.abs(lx - radius * 0.93) - radius * 0.12, 0) ** 2 +
+                        np.maximum(np.abs(ly) - radius * 0.13, 0) ** 2) + \
+            np.minimum(np.maximum(np.abs(lx - radius * 0.93) - radius * 0.12, np.abs(ly) - radius * 0.13), 0)
+        disc = rxy - radius * 0.84
+        d2 = np.minimum(disc, tooth)
+        d2 = np.maximum(d2, -(rxy - radius * 0.3))                  # hole
+        ring = np.abs(rxy - radius * 0.62) - radius * 0.05           # sunk ring on the face
+        dz = np.abs(q[:, 2]) - thickness
+        d = np.sqrt(np.maximum(d2 + 0.01, 0) ** 2 + np.maximum(dz + 0.01, 0) ** 2) + np.minimum(np.maximum(d2, dz), 0) - 0.01
+        groove = np.maximum(ring, -(np.abs(q[:, 2]) - thickness * 0.7))   # sunk ring on both faces
+        d = np.maximum(d, -groove)
+        return d * 0.9
+
+    scene.add(fn, material)
+
+    def hub(p):
+        q = frame.local(p)
+        return np.maximum(sd_cyl(q, 2, thickness * 1.25, radius * 0.32, radius * 0.04), -sd_cyl(q, 2, thickness * 2, radius * 0.17))
+
+    scene.add(hub, "brass_dark")
+
+
+def package(scene, frame: Frame, size):
+    s = size
+
+    scene.add(lambda p: sd_box(frame.local(p), (s, s * 0.8, s), s * 0.05), "card")
+
+    def straps(p):
+        q = frame.local(p)
+        a = sd_box(q, (s * 1.012, s * 0.812, s * 0.13), s * 0.02)
+        b = sd_box(q, (s * 0.13, s * 0.812, s * 1.012), s * 0.02)
+        return np.minimum(a, b)
+
+    scene.add(straps, "brass")
+    # address label on the front face (+z) with lines of "text"
+    label = frame.child((-s * 0.52, -s * 0.2, s * 1.0))
+    scene.add(lambda p: sd_box(label.local(p), (s * 0.34, s * 0.26, s * 0.012), s * 0.02), "paper")
+
+    def ink(p):
+        q = label.local(p)
+        d = np.full(len(p), 1e9)
+        for k, wf in enumerate((0.8, 0.55, 0.7)):
+            d = np.minimum(d, sd_box(q - np.array([-s * 0.3 * (1 - wf), s * (0.12 - 0.11 * k), s * 0.014]),
+                                     (s * 0.26 * wf, s * 0.022, s * 0.006), s * 0.004))
+        return d
+
+    scene.add(ink, "ink")
+
+
+def tornado(scene, frame: Frame, height, width):
+    """A funnel of swirling cloud rings, widest at the top, swaying."""
+    H, W = height, width
+    rings = 9
+
+    def ring_fn(lo, hi):
+        def fn(p):
+            q = frame.local(p)
+            d = np.full(len(p), 1e9)
+            for k in range(lo, hi):
+                t = k / (rings - 1)                       # 0 top .. 1 bottom
+                y = H / 2 - t * H
+                major = W * (1.0 - 0.86 * t ** 0.9)
+                minor = W * (0.2 - 0.1 * t)
+                sway = 0.16 * W * math.sin(t * 3.4 + 0.6)
+                x, z = q[:, 0] - sway, q[:, 2]
+                ang = np.arctan2(z, x)
+                # each ring is a little lumpy, like cloud
+                lump = minor * 0.18 * np.sin(5 * ang + k * 1.7)
+                rr = np.sqrt(x * x + z * z)
+                tor = np.sqrt((rr - major) ** 2 + ((q[:, 1] - y) * 1.15) ** 2) - (minor + lump)
+                d = smin(d, tor * 0.8, minor * 0.6)
+            return d
+        return fn
+
+    scene.add(ring_fn(0, 5), "cloud")
+    scene.add(ring_fn(5, rings), "cloud_dark")
+
+    def debris(p):
+        q = frame.local(p)
+        d = np.full(len(p), 1e9)
+        for (a, yf, rf, sz) in [(0.3, -0.25, 0.85, 0.08), (2.4, -0.05, 1.05, 0.07), (4.0, 0.15, 1.15, 0.06),
+                                (5.3, -0.38, 0.7, 0.06), (1.2, 0.3, 1.2, 0.05), (3.3, -0.42, 0.6, 0.05)]:
+            c = np.array([math.cos(a) * W * rf, yf * H, math.sin(a) * W * rf])
+            m = rotation(a * 50, a * 30, a * 70)
+            d = np.minimum(d, sd_box((q - c) @ m, (W * sz, W * sz * 0.6, W * sz * 0.8), W * 0.01))
+        return d
+
+    scene.add(debris, "dirt")
+
+
+# =============================================================================================
+# 2D effects drawn behind or over the 3D subject
+
+def burst_layer(cx, cy, r_out, r_in, points, rot0, colour, size):
+    layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
     pts = []
     for k in range(points * 2):
         a = rot0 + math.pi * k / points
-        rr = r_out if k % 2 == 0 else r_in
+        rr = r_out * (1 if k % 2 == 0 else r_in / r_out) * (0.85 + 0.15 * math.sin(k * 2.7))
         pts.append((cx + math.cos(a) * rr, cy + math.sin(a) * rr))
-    d.polygon(pts, fill=col + (255,))
+    d.polygon(pts, fill=colour)
+    return layer
 
 
-def package(layer, cx, cy, size):
-    """An isometric brass-trimmed cardboard package."""
+def explosion(size, cx, cy, r):
+    base = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    glow = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    ImageDraw.Draw(glow).ellipse([cx - r * 1.3, cy - r * 1.3, cx + r * 1.3, cy + r * 1.3], fill=(255, 150, 40, 170))
+    base = Image.alpha_composite(base, glow.filter(ImageFilter.GaussianBlur(r * 0.35)))
+    base = Image.alpha_composite(base, burst_layer(cx, cy, r, r * 0.55, 13, 0.2, (255, 128, 30, 255), size)
+                                 .filter(ImageFilter.GaussianBlur(r * 0.02)))
+    base = Image.alpha_composite(base, burst_layer(cx, cy, r * 0.78, r * 0.42, 13, 0.45, (255, 196, 64, 255), size)
+                                 .filter(ImageFilter.GaussianBlur(r * 0.02)))
+    base = Image.alpha_composite(base, burst_layer(cx, cy, r * 0.5, r * 0.3, 11, 0.1, (255, 244, 190, 255), size)
+                                 .filter(ImageFilter.GaussianBlur(r * 0.03)))
+    core = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    ImageDraw.Draw(core).ellipse([cx - r * 0.28, cy - r * 0.28, cx + r * 0.28, cy + r * 0.28], fill=(255, 255, 245, 255))
+    return Image.alpha_composite(base, core.filter(ImageFilter.GaussianBlur(r * 0.08)))
+
+
+def crosshair(size, cx, cy, r):
+    layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
-    a = size
-    h = size * 0.95
-    top = [(cx, cy - a * 0.55 - h * 0.5), (cx + a, cy - h * 0.5), (cx, cy + a * 0.55 - h * 0.5), (cx - a, cy - h * 0.5)]
-    left = [(cx - a, cy - h * 0.5), (cx, cy + a * 0.55 - h * 0.5), (cx, cy + a * 0.55 + h * 0.5), (cx - a, cy + h * 0.5)]
-    right = [(cx + a, cy - h * 0.5), (cx, cy + a * 0.55 - h * 0.5), (cx, cy + a * 0.55 + h * 0.5), (cx + a, cy + h * 0.5)]
-    card, card_l, card_d = (200, 150, 96), (226, 184, 128), (150, 104, 60)
-    d.polygon(left, fill=card + (255,))
-    d.polygon(right, fill=card_d + (255,))
-    d.polygon(top, fill=card_l + (255,))
-    # brass straps
-    def lerp(p, q, t):
-        return (p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t)
-    strap_w = 0.16
-    # strap across the top (front-left to back-right) and down both faces
-    tl, tr, tb, tlft = top[0], top[1], top[2], top[3]
-    s0, s1 = 0.5 - strap_w / 2, 0.5 + strap_w / 2
-    strap_top = [lerp(tlft, tl, s0), lerp(tlft, tl, s1), lerp(tb, tr, s1), lerp(tb, tr, s0)]
-    d.polygon(strap_top, fill=BRASS_LIGHT + (255,))
-    rl0, rl1 = lerp(tb, tr, s0), lerp(tb, tr, s1)
-    strap_right = [rl0, rl1, (rl1[0], rl1[1] + h), (rl0[0], rl0[1] + h)]
-    d.polygon(strap_right, fill=BRASS_DARK + (255,))
-    ll0, ll1 = lerp(tlft, tb, s0), lerp(tlft, tb, s1)
-    strap_top2 = [ll0, ll1, lerp(tl, tr, s1), lerp(tl, tr, s0)]
-    d.polygon(strap_top2, fill=BRASS + (255,))
-    strap_left = [ll0, ll1, (ll1[0], ll1[1] + h), (ll0[0], ll0[1] + h)]
-    d.polygon(strap_left, fill=BRASS + (255,))
-    # edges
-    for poly in (top, left, right):
-        d.line(poly + [poly[0]], fill=(90, 60, 30, 255), width=int(s(3)))
-    # address label on the left face
-    lab = [lerp(left[0], left[1], 0.12), lerp(left[0], left[1], 0.36),
-           (lerp(left[0], left[1], 0.36)[0], lerp(left[0], left[1], 0.36)[1] + h * 0.45),
-           (lerp(left[0], left[1], 0.12)[0], lerp(left[0], left[1], 0.12)[1] + h * 0.45)]
-    d.polygon([(x, y + h * 0.18) for x, y in lab], fill=(245, 240, 228, 255))
-    for i in range(3):
-        y0 = lab[0][1] + h * (0.27 + i * 0.1)
-        d.line([(lab[0][0] + s(8), y0 + (lab[1][1] - lab[0][1]) * 0.15), (lab[1][0] - s(8), y0 + (lab[1][1] - lab[0][1]) * 0.85)],
-               fill=(120, 110, 100, 255), width=int(s(3)))
+    w = max(2, int(size * 0.006))
+    d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=(255, 255, 255, 150), width=w)
+    for k in range(4):
+        a = k * math.pi / 2 + math.pi / 4
+        d.line([(cx + math.cos(a) * r * 0.8, cy + math.sin(a) * r * 0.8),
+                (cx + math.cos(a) * r * 1.2, cy + math.sin(a) * r * 1.2)], fill=(255, 255, 255, 190), width=int(w * 1.6))
+    glow = layer.filter(ImageFilter.GaussianBlur(size * 0.006))
+    return Image.alpha_composite(glow, layer)
 
 
-def tornado(layer, cx, cy, height, width):
+def speed_lines(size, pts, colour=(200, 230, 255, 120)):
+    layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
-    rings = 9
-    for i in range(rings):
-        t = i / (rings - 1)
-        y = cy - height / 2 + height * t
-        w = width * (1 - t * 0.82)
-        hh = w * 0.28
-        off = math.sin(t * 3.2) * width * 0.12
-        col = mix((235, 242, 252), (140, 152, 170), t * 0.7)
-        d.ellipse([cx + off - w, y - hh, cx + off + w, y + hh], fill=mix(col, (90, 100, 118), 0.35) + (255,))
-        d.ellipse([cx + off - w * 0.92, y - hh * 0.95, cx + off + w * 0.92, y + hh * 0.55], fill=col + (255,))
-    # debris
-    for (px, py, r) in [(-0.55, 0.1, 0.05), (0.6, -0.15, 0.04), (0.45, 0.35, 0.035), (-0.4, 0.42, 0.03)]:
-        x, y = cx + px * width, cy + py * height
-        rr = r * width
-        d.polygon([(x - rr, y), (x, y - rr), (x + rr, y + rr * 0.3)], fill=(110, 84, 58, 255))
+    for (x0, y0, x1, y1, w) in pts:
+        d.line([(x0, y0), (x1, y1)], fill=colour, width=int(w))
+    return layer.filter(ImageFilter.GaussianBlur(size * 0.003))
 
 
-# ------------------------------------------------------------------ icons
+# =============================================================================================
+# icons
 
-def compose(draw_subject) -> Image.Image:
-    base = badge()
-    subject = Image.new("RGBA", (W, W), (0, 0, 0, 0))
-    draw_subject(subject)
-    base = Image.alpha_composite(base, shadow_of(subject))
-    base = Image.alpha_composite(base, subject)
-    return base.resize((SIZE, SIZE), Image.LANCZOS)
+def px(v):
+    """Badge coordinates (-1..1, y down) -> working pixels."""
+    return (v + 1) / 2 * R
 
 
-def icon_parts(layer):
-    barrel(layer, C - s(6), C + s(6), math.radians(-38), s(330), s(46))
-    w = Image.new("RGBA", layer.size, (0, 0, 0, 0))
-    wrench(w, C + s(10), C + s(18), math.radians(40), s(250), s(28))
-    cut_jaws(w, C + s(10), C + s(18), math.radians(40), s(250), s(28))
-    layer.alpha_composite(shadow_of(w, 6, 8, 6, 140))
-    layer.alpha_composite(w)
+def scene_parts():
+    s = Scene()
+    barrel(s, Frame((0.05, -0.05, 0.0), rotation(rx=20, ry=-25, rz=35)), 3.3, 0.42)
+    wrench(s, Frame((0.05, 0.05, 0.75), rotation(rx=0, ry=15, rz=-42)), 2.6, 0.3)
+    return s, [], []
 
 
-def icon_interception(layer):
-    # a shell coming up from the lower left, hit in flight: burst at the meeting point
-    starburst(layer, C + s(48), C - s(50), s(118), s(62), 12, (255, 196, 64), 0.1)
-    starburst(layer, C + s(48), C - s(50), s(80), s(42), 12, (255, 236, 150), 0.35)
-    shell(layer, C - s(42), C + s(40), math.radians(-40), s(270), s(46))
-    # a small round coming down from the upper right
-    shell(layer, C + s(112), C - s(112), math.radians(135), s(96), s(17), studs=False,
-          body=((60, 52, 30), (210, 170, 80), (250, 225, 150)))
-    d = ImageDraw.Draw(layer)
-    # crosshair
-    r = s(150)
-    d.ellipse([C - r, C - r, C + r, C + r], outline=(255, 255, 255, 170), width=int(s(5)))
-    for a in range(4):
-        ang = a * math.pi / 2 + math.pi / 4
-        d.line([(C + math.cos(ang) * r * 0.82, C + math.sin(ang) * r * 0.82),
-                (C + math.cos(ang) * r * 1.18, C + math.sin(ang) * r * 1.18)], fill=(255, 255, 255, 190), width=int(s(6)))
+def scene_interception():
+    s = Scene()
+    shell(s, Frame((-0.35, -0.35, 0.0), rotation(rx=35, ry=-20, rz=40)), 2.6, 0.42)
+    shell(s, Frame((1.08, 1.02, -0.3), rotation(rx=20, ry=10, rz=-138)), 1.25, 0.19, body="brass", studs=False, band="steel")
+    behind = [explosion(R, px(0.3), px(-0.27), R * 0.27)]
+    over = [crosshair(R, px(0.0), px(0.0), R * 0.33)]
+    return s, behind, over
 
 
-def icon_logistics(layer):
-    gear(layer, C + s(96), C - s(96), s(70), 10, BRASS, BRASS_DARK)
-    package(layer, C - s(10), C + s(20), s(130))
-    gear(layer, C - s(118), C + s(120), s(46), 8, BRASS_LIGHT, BRASS_DARK)
+def scene_logistics():
+    s = Scene()
+    gear(s, Frame((0.95, 0.95, -0.6), rotation(rx=-25, ry=-30, rz=10)), 0.72, 12, 0.13)
+    package(s, Frame((-0.12, -0.12, 0.0), rotation(rx=24, ry=-38, rz=0)), 0.95)
+    gear(s, Frame((-1.25, -1.15, 0.9), rotation(rx=-15, ry=30, rz=5)), 0.46, 9, 0.1, "brass")
+    return s, [], []
 
 
-def icon_weather(layer):
-    tornado(layer, C - s(8), C + s(6), s(290), s(118))
-    w = Image.new("RGBA", layer.size, (0, 0, 0, 0))
-    wrench(w, C + s(40), C + s(70), math.radians(-30), s(230), s(26))
-    cut_jaws(w, C + s(40), C + s(70), math.radians(-30), s(230), s(26))
-    layer.alpha_composite(shadow_of(w, 6, 8, 6, 140))
-    layer.alpha_composite(w)
+def scene_weather():
+    s = Scene()
+    tornado(s, Frame((-0.1, 0.18, -0.4), rotation(rx=14, ry=0, rz=-5)), 2.9, 1.05)
+    wrench(s, Frame((0.35, -0.75, 0.9), rotation(rx=10, ry=-20, rz=28)), 2.3, 0.27)
+    lines = speed_lines(R, [(px(-0.75), px(-0.35), px(-0.45), px(-0.42), R * 0.006),
+                            (px(0.48), px(-0.1), px(0.78), px(-0.18), R * 0.006),
+                            (px(-0.7), px(0.2), px(-0.48), px(0.16), R * 0.005)])
+    return s, [lines], []
 
 
-ICONS = {
-    "cbc-parts-assembly": icon_parts,
-    "cbc-interception": icon_interception,
-    "create-smart-logistics": icon_logistics,
-    "weather-physics-sable-fix": icon_weather,
+SCENES = {
+    "cbc-parts-assembly": scene_parts,
+    "cbc-interception": scene_interception,
+    "create-smart-logistics": scene_logistics,
+    "weather-physics-sable-fix": scene_weather,
 }
 
 
-def main() -> None:
-    for mod, fn in ICONS.items():
-        img = compose(fn)
-        out = os.path.join(HERE, f"{mod}.png")
-        img.save(out)
+def drop_shadow(subject: Image.Image) -> Image.Image:
+    a = subject.getchannel("A")
+    sh = Image.new("RGBA", subject.size, (0, 8, 30, 0))
+    sh.putalpha(a.point(lambda v: v * 150 // 255))
+    sh = sh.filter(ImageFilter.GaussianBlur(R * 0.018))
+    out = Image.new("RGBA", subject.size, (0, 0, 0, 0))
+    out.paste(sh, (int(R * 0.022), int(R * 0.03)))
+    return out
+
+
+def clip_to_disc(layer: Image.Image) -> Image.Image:
+    m = Image.new("L", layer.size, 0)
+    rr = 0.835 * R / 2
+    c = R / 2
+    ImageDraw.Draw(m).ellipse([c - rr, c - rr, c + rr, c + rr], fill=255)
+    a = Image.composite(layer.getchannel("A"), Image.new("L", layer.size, 0), m)
+    layer = layer.copy()
+    layer.putalpha(a)
+    return layer
+
+
+def draw(mod: str) -> Image.Image:
+    scene, behind, over = SCENES[mod]()
+    img = badge()
+    for layer in behind:
+        img = Image.alpha_composite(img, clip_to_disc(layer))
+    subject = to_image(render(scene, R))
+    img = Image.alpha_composite(img, drop_shadow(subject))
+    img = Image.alpha_composite(img, subject)
+    for layer in over:
+        img = Image.alpha_composite(img, clip_to_disc(layer))
+    return img.resize((OUT, OUT), Image.LANCZOS)
+
+
+def main(mods) -> None:
+    for mod in mods or SCENES:
+        img = draw(mod)
+        img.save(os.path.join(HERE, f"{mod}.png"))
         res = os.path.join(ROOT, mod, "src", "main", "resources")
         os.makedirs(res, exist_ok=True)
-        shutil.copy(out, os.path.join(res, "icon.png"))
-        print("drawn", mod)
+        img.resize((512, 512), Image.LANCZOS).save(os.path.join(res, "icon.png"))
+        print("drawn", mod, flush=True)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

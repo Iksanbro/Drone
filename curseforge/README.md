@@ -9,4 +9,4 @@
 | Create: Smart Logistics | [create-smart-logistics.md](create-smart-logistics.md) |
 | Weather Physics Sable Fix | [weather-physics-sable-fix.md](weather-physics-sable-fix.md) |
 
-ID проектов проверены на curseforge.com. Иконки (аватар проекта) — в `mod-icons/`.
+ID проектов проверены на curseforge.com. Иконки 1024×1024 (аватар проекта) — в `mod-icons/`.
