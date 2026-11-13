@@ -1,33 +1,3 @@
-# CBC Parts Assembly — CurseForge page
-
-## Project settings
-
-| Field | Value |
-|---|---|
-| Name | CBC Parts Assembly |
-| Summary | Assemble cannon parts in survival, craft them by sequenced assembly, and fire 60 new medium cannon rounds. |
-| License | MIT License |
-| Game version / loader | Minecraft 1.21.1, NeoForge |
-| Environment | Client and server (install on both) |
-| File | `cbc-parts-assembly-1.21.1-1.0-release.jar` |
-| File display name | CBC Parts Assembly 1.0 Release |
-| Release type | Release |
-
-## Dependencies
-
-| Relation | Project | Slug | Project ID |
-|---|---|---|---|
-| Required | Create | `create` | 328085 |
-| Required | Create Big Cannons | `create-big-cannons` | 646668 |
-| Optional | Create Big Cannons: Advanced Technologies | `create-big-cannons-advanced-technologies` | 1180196 |
-| Optional | CBC Neo Warfare | `cbc-neo-warfare` | 1552960 |
-| Optional | CBCMW recipe fix | `cbcmw-recipe-fix` | 1598498 |
-| Optional | CBC Enchanced Shells [Create Big Cannons] | `cbc-enchanced-shells-create-big-cannons` | 1489732 |
-
-Ritchie's Projectile Library (`ritchies-projectile-library`, 1279407) is needed by Create Big Cannons itself; it does not have to be listed here.
-
-## Description
-
 **Build the smaller cannons of Create Big Cannons in survival — and give the medium cannon a full arsenal.**
 
 ### Craft cannon parts with Create
@@ -61,10 +31,8 @@ Each round is **half as strong** as its big shell and flies like the other mediu
 - Cluster rounds split into small HE rounds at the top of their flight; bunker busters drill into blocks before they explode.
 - All rounds are in the **Medium Cannon Shells** creative tab.
 
-### Good to know
-- Install on the server **and** on every client.
+### Settings
 - Survival assembly, wrench pickup and the rocket fix can be turned off in `config/cbcparts-server.toml`.
-- Neo Warfare's medium cannons themselves are made with **CBCMW recipe fix**.
 
 ---
 

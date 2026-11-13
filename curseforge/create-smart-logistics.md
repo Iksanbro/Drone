@@ -1,28 +1,3 @@
-# Create: Smart Logistics — CurseForge page
-
-## Project settings
-
-| Field | Value |
-|---|---|
-| Name | Create: Smart Logistics |
-| Summary | Smarter frogports, packagers and stock tickers, big factory gauge grids and fixes for Create's logistics. |
-| License | MIT License |
-| Game version / loader | Minecraft 1.21.1, NeoForge |
-| Environment | Client and server (install on both) |
-| File | `create-smart-logistics-1.21.1-1.0-release.jar` |
-| File display name | Create: Smart Logistics 1.0 Release |
-| Release type | Release |
-
-## Dependencies
-
-| Relation | Project | Slug | Project ID |
-|---|---|---|---|
-| Required | Create (6.0.10 or newer 6.0.x) | `create` | 328085 |
-| Optional | Just Enough Items (JEI) | `jei` | 238222 |
-| Optional | EMI | `emi` | 580555 |
-
-## Description
-
 **Smarter logistics for Create 6: better frogports, packagers and stock tickers, giant mechanical crafter recipes and fixes for the package network.**
 
 ### Smart Frogport
@@ -50,9 +25,9 @@ The factory gauge gets a grid editor for mechanical crafters up to **100×100**.
 - Recipes with **more than 9 kinds of ingredients** can be ordered from the stock keeper, JEI and EMI.
 - Mechanical crafters get every ingredient in the **right place**, also for recipes bigger than 3×3.
 
-### Good to know
-- Install on the server **and** on every client. Needs **Create 6.0.10** or a newer 6.0 version.
-- Works with **JEI** and **EMI**.
+Recipes can be ordered straight from **JEI** or **EMI**.
+
+### Settings
 - Fixes and batch sizes can be changed in `config/smartlogistics-server.toml`.
 
 ---
